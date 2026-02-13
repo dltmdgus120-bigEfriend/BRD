@@ -158,51 +158,67 @@ public class UnitCommandPanel : MonoBehaviour
         return desc;
     }
 
+
     // --- 실행 함수들 ---
 
+   
     // 실제 조합 실행 (버튼 클릭 시 호출됨)
     void ExecuteMerge(CombinationRecipe recipe)
     {
-        // 클릭하는 순간에 다시 한 번 재료를 찾습니다. (안전하게)
-        UnitData mainUnit = rtsController.selectedUnits[0].GetComponent<UnitStat>().data;
-        List<UnitStat> partners = new List<UnitStat>();
+        // 1. 메인 재료 (선택된 유닛 중 대장)
+        // 안전장치: 선택된 게 없으면 중단
+        if (rtsController.selectedUnits.Count == 0) return;
 
+        var mainAgent = rtsController.selectedUnits[0];
+        UnitStat mainStat = mainAgent.GetComponent<UnitStat>();
+
+        // 2. 필요한 나머지 재료 찾기
+        List<UnitStat> partnersToDestroy = new List<UnitStat>();
         List<UnitData> required = new List<UnitData>(recipe.ingredients);
-        required.Remove(mainUnit);
 
-        var allUnits = FindObjectsOfType<UnitStat>()
-             .Where(u => !rtsController.selectedUnits.Contains(u.GetComponent<UnityEngine.AI.NavMeshAgent>()))
-             .ToList();
+        // 레시피 재료 목록에서 내 몫(메인 유닛) 하나를 뺍니다.
+        required.Remove(mainStat.data);
+
+        // 맵에 있는 모든 유닛을 가져오되, '메인 유닛(나 자신)'은 제외합니다.
+        // (이제 선택된 다른 유닛도 재료 후보에 포함됩니다!)
+        var allUnits = FindObjectsOfType<UnitStat>().ToList();
+        allUnits.Remove(mainStat);
 
         // 짝꿍들 수집
         foreach (var req in required)
         {
-            var p = allUnits.FirstOrDefault(u => u.data == req);
+            // 이미 재료로 쓰기로 한 녀석(`partnersToDestroy`에 있는 애)은 중복해서 뽑지 않도록 체크
+            var p = allUnits.FirstOrDefault(u => u.data == req && !partnersToDestroy.Contains(u));
+
             if (p != null)
             {
-                partners.Add(p);
-                allUnits.Remove(p);
+                partnersToDestroy.Add(p);
             }
             else
             {
-                // 혹시 그 사이에 재료가 죽거나 사라졌으면 경고 띄우고 취소
-                TooltipManager.Instance.ShowWarning("재료가 사라졌습니다!");
+                // 재료 부족 (타이밍 이슈로 사라졌을 때)
+                TooltipManager.Instance.ShowWarning("유닛이 부족합니다!");
                 return;
             }
         }
 
         // --- 진짜 조합 시작 ---
-        Vector3 spawnPos = rtsController.selectedUnits[0].transform.position;
+        Vector3 spawnPos = mainAgent.transform.position;
 
-        // 1. 나 삭제
-        foreach (var unit in rtsController.selectedUnits) Destroy(unit.gameObject);
+        // ★ 수정된 삭제 로직: 선택된 애들을 다 지우는 게 아니라, '재료로 쓰인 애들'만 지움
+
+        // 1. 나(메인) 삭제
+        Destroy(mainAgent.gameObject);
 
         // 2. 짝꿍들 삭제
-        foreach (var p in partners) Destroy(p.gameObject);
+        foreach (var p in partnersToDestroy) Destroy(p.gameObject);
 
         // 3. 소환
         GameObject newUnit = Instantiate(recipe.resultUnit.prefab, spawnPos, Quaternion.identity);
-        newUnit.GetComponent<UnitStat>().data = recipe.resultUnit;
+
+        // 데이터 주입 (혹시 프리팹에 데이터가 비어있을 경우를 대비)
+        UnitStat newStat = newUnit.GetComponent<UnitStat>();
+        if (newStat != null) newStat.data = recipe.resultUnit;
 
         // 4. 소리
         if (SoundManager.Instance != null)
@@ -210,6 +226,7 @@ public class UnitCommandPanel : MonoBehaviour
 
         Debug.Log($"{recipe.resultUnit.unitName} 조합 성공!");
 
+        // 선택 초기화 및 UI 갱신
         rtsController.ClearSelection();
         ClearAllSlots();
     }
