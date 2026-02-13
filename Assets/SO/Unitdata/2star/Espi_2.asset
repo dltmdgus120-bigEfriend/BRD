@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3a30350584c4a74f9b7243f05323a05, type: 3}
+  m_Name: Espi_2
+  m_EditorClassIdentifier: 
+  unitName: Espi
+  rank: 2
+  prefab: {fileID: 8316526242042261379, guid: c81c6348c112ba0419a27cf5e8e363a4, type: 3}
+  icon: {fileID: 21300000, guid: 30448f38fd1736e44bbb52f4482f9065, type: 3}
+  description: "\uC5D0\uC2A4\uD53C"

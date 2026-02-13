@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3a30350584c4a74f9b7243f05323a05, type: 3}
+  m_Name: Yumimi_2
+  m_EditorClassIdentifier: 
+  unitName: Yumimi
+  rank: 2
+  prefab: {fileID: 8316526242042261379, guid: bdab5265507a6524ca39016fb29308aa, type: 3}
+  icon: {fileID: 21300000, guid: dd56622c91a0f594cb8dcc34c7dcbc67, type: 3}
+  description: "\uC720\uBBF8\uBBF8"

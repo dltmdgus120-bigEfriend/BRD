@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3a30350584c4a74f9b7243f05323a05, type: 3}
+  m_Name: Amelia_3
+  m_EditorClassIdentifier: 
+  unitName: Amelia
+  rank: 3
+  prefab: {fileID: 8316526242042261379, guid: 69dde67d08bcf1b4e9f4f27dc1e0b0fc, type: 3}
+  description: "\uC544\uBA5C\uB9AC\uC544"

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3a30350584c4a74f9b7243f05323a05, type: 3}
+  m_Name: Veroo_1
+  m_EditorClassIdentifier: 
+  unitName: Veroo
+  rank: 1
+  prefab: {fileID: 8316526242042261379, guid: 4f30b8841eaf093419f5c81d914b66f8, type: 3}
+  description: "\uBCA0\uB8E8"
