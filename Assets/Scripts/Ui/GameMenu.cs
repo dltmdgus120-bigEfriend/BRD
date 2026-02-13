@@ -11,6 +11,12 @@ public class GameMenu : MonoBehaviour
 
     void Update()
     {
+        // ★ 추가: 게임 오버 상태라면 ESC 입력을 아예 무시하고 함수 종료!
+        if (DefenseManager.Instance != null && DefenseManager.Instance.isGameOver)
+        {
+            return;
+        }
+
         // ESC 키 입력 감지
         if (Input.GetKeyDown(KeyCode.Escape))
         {

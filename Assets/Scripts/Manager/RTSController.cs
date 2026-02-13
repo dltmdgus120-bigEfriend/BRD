@@ -13,12 +13,32 @@ public class RTSController : MonoBehaviour
     public LayerMask groundLayer;
 
     // 내부 변수
-    public List<NavMeshAgent> selectedUnits = new List<NavMeshAgent>();
+    public List<UnityEngine.AI.NavMeshAgent> selectedUnits = new List<UnityEngine.AI.NavMeshAgent>();
     private Vector2 startPos;
     private bool isDragging = false;
 
+    [Header("커서 설정")]
+    public Texture2D attackCursor; // (선택) 공격 모양 커서
+    public bool isAttackCommand = false; // ★ 공격 명령 대기 중인가?
+
     void Update()
     {
+        // 1. 공격 명령 대기 상태일 때 클릭 처리
+        if (isAttackCommand)
+        {
+            if (Input.GetMouseButtonDown(0)) // 좌클릭
+            {
+                PerformAttackCommand();
+                return; // 드래그 선택 로직 실행 안 되게 종료
+            }
+            else if (Input.GetMouseButtonDown(1)) // 우클릭 (취소)
+            {
+                isAttackCommand = false;
+                Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto); // 커서 초기화
+            }
+            return; // 공격 모드일 땐 드래그 선택 막기
+        }
+
         if (EventSystem.current.IsPointerOverGameObject())
         {
             return;
@@ -42,9 +62,26 @@ public class RTSController : MonoBehaviour
         }
 
         // 4. 우클릭 (이동)
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1) && selectedUnits.Count > 0)
         {
-            MoveSelectedUnits();
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                foreach (var agent in selectedUnits)
+                {
+                    var attack = agent.GetComponent<UnitAttack>();
+                    if (attack != null)
+                    {
+                        //OrderMove 함수를 통해 "정지 상태 해제"까지 같이 처리
+                        attack.OrderMove(hit.point);
+                    }
+                    else
+                    {
+                        // UnitAttack이 없는 유닛일 경우 대비
+                        agent.SetDestination(hit.point);
+                    }
+                }
+            }
         }
     }
 
@@ -178,4 +215,52 @@ public class RTSController : MonoBehaviour
     {
         DeselectAll(); // 기존에 있던 함수 활용
     }
+
+    void PerformAttackCommand()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            // 1. 적을 직접 클릭했나? (일점사)
+            EnemyHP enemy = hit.collider.GetComponent<EnemyHP>();
+            if (enemy != null)
+            {
+                foreach (var agent in selectedUnits)
+                {
+                    var attack = agent.GetComponent<UnitAttack>();
+                    if (attack != null)
+                    {
+                        attack.isAttackMoving = false;
+                        attack.target = enemy.transform; // 강제 타겟 지정
+                    }
+                    agent.SetDestination(enemy.transform.position); // 적 위치로 이동
+                }
+            }
+            // 2. 땅을 클릭했나? (어택 땅)
+            else
+            {
+                foreach (var agent in selectedUnits)
+                {
+                    var attack = agent.GetComponent<UnitAttack>();
+                    if (attack != null)
+                    {
+                        attack.OrderAttackMove(hit.point); // ★ 어택 땅 명령!
+                    }
+                }
+            }
+        }
+
+        // 명령 끝났으니 초기화
+        isAttackCommand = false;
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+    }
+
+    // 외부에서 호출할 공격 모드 진입 함수
+    public void EnterAttackMode()
+    {
+        isAttackCommand = true;
+        Cursor.SetCursor(attackCursor, Vector2.zero, CursorMode.Auto);
+        Debug.Log("공격 모드: 목표를 찍으세요");
+    }
 }
+

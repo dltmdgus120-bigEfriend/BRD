@@ -12,6 +12,8 @@ public class UnitAttack : MonoBehaviour
 
     [Header("상태")]
     public Transform target;
+    public bool isAttackMoving = false;
+    public bool isStopped = false;
 
     void Start()
     {
@@ -23,11 +25,30 @@ public class UnitAttack : MonoBehaviour
     }
 
     void Update()
-    {
+    { 
+        //완전 정지 상태면 아무것도 안 하고 함수 종료
+        if (isStopped) return;
+       
+
         // 쿨타임은 이동 중에도 흘러가게 둡니다. (도착하자마자 바로 쏠 수 있도록!)
         attackTimer += Time.deltaTime;
 
-        // ★ 핵심 추가 로직: 유닛이 이동 중인지 확인
+
+        if (isAttackMoving)
+        {
+            // 이동하면서 적을 계속 찾음
+            FindTarget();
+
+            // 적을 찾았다면?
+            if (target != null)
+            {
+                // 이동 멈추고 공격 모드로 전환!
+                agent.ResetPath();
+                isAttackMoving = false;
+            }
+        }
+
+       
         // velocity(현재 속도)가 조금이라도 있으면 걷고 있는 상태로 판단
         if (agent != null && agent.velocity.sqrMagnitude > 0.1f)
         {
@@ -110,6 +131,44 @@ public class UnitAttack : MonoBehaviour
             }
         }
     }
+
+    public void OrderAttackMove(Vector3 dest)
+    {
+        isStopped = false;      
+        isAttackMoving = true;
+        target = null;
+        if (agent != null) agent.SetDestination(dest);
+    }
+
+    public void OrderStop()
+    {
+        isStopped = true;       // 돌부처 모드 
+        isAttackMoving = false; // 어택땅 끄기
+        target = null;          // 타겟 잊기
+        if (agent != null) agent.ResetPath(); // 발 멈추기
+    }
+
+    public void OrderMove(Vector3 dest)
+    {
+        isStopped = false;     
+        isAttackMoving = false;
+        target = null;
+        if (agent != null) agent.SetDestination(dest);
+    }
+
+    // 홀드 명령 (H키) - 제자리 사수하지만 공격은 함
+    public void OrderHold()
+    {
+        isStopped = false;     
+        isAttackMoving = false;
+        if (agent != null)
+        {
+            agent.ResetPath();
+            agent.velocity = Vector3.zero;
+        }
+    }
+
+
 
     void OnDrawGizmosSelected()
     {

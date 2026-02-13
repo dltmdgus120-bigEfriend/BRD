@@ -1,175 +1,260 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
-using UnityEngine.AI;
+using System.Linq;
 
 public class UnitCommandPanel : MonoBehaviour
 {
-    [Header("연결 필요")]
-    public RTSController rtsController;
-    public RecipeDatabase recipeDatabase;
+    [Header("슬롯 연결")]
+    public CommandSlot[] slots; // 0~11번 슬롯
 
-    [Header("UI 요소")]
-    public GameObject panelObj;
-    public Button mergeButton;
-    public Image resultUnitIcon; // ★ 버튼 위에 띄울 결과물 얼굴
-    public Text recipeInfoText;  // ★ 조합식 설명 텍스트
-    public Button holdButton;
+    [Header("기본 아이콘")]
+    public Sprite attackIcon;
+    public Sprite stopIcon;
+    public Sprite holdIcon;
 
-    // 내부 변수: 지금 찾은 짝꿍 유닛 (조합할 때 얘를 희생양으로 씀)
-    private NavMeshAgent partnerUnit;
-    private CombinationRecipe currentRecipe;
+    [Header("조합 데이터베이스")]
+    public RecipeDatabase recipeDB;
+
+    private RTSController rtsController;
+
+    void Start()
+    {
+        rtsController = FindObjectOfType<RTSController>();
+        ClearAllSlots();
+    }
 
     void Update()
     {
         CheckSelection();
+
+        // ★ 단축키 입력 감지 (유닛이 선택되어 있을 때만)
+        if (rtsController.selectedUnits.Count > 0)
+        {
+            if (Input.GetKeyDown(KeyCode.A)) OnClickAttack();
+            if (Input.GetKeyDown(KeyCode.S)) OnClickStop();
+            if (Input.GetKeyDown(KeyCode.H)) OnClickHold();
+        }
     }
 
     void CheckSelection()
     {
-        // 1. 선택된 유닛이 딱 1마리일 때만 작동 (원랜디 방식)
-        if (rtsController.selectedUnits.Count != 1)
+        // 선택된 게 없으면 싹 비우기
+        if (rtsController == null || rtsController.selectedUnits.Count == 0)
         {
-            panelObj.SetActive(false);
+            ClearAllSlots();
             return;
         }
 
-        // 선택된 유닛 정보 가져오기
-        NavMeshAgent selectedUnit = rtsController.selectedUnits[0];
-        if (selectedUnit == null) return;
+        // 1. 기본 명령 (공격, 정지, 홀드) 세팅
+        SetBasicCommands();
 
-        UnitStat selectedStat = selectedUnit.GetComponent<UnitStat>();
-        if (selectedStat == null || selectedStat.data == null) return;
+        // 2. 조합 버튼 세팅 (가능한 모든 레시피 표시)
+        CheckMerge();
+    }
 
-        // 패널 켜기
-        panelObj.SetActive(true);
+    void SetBasicCommands()
+    {
+        // Setup(아이콘, 제목, 설명, 잠김여부, 클릭함수) - 5개를 꽉 채워야 에러가 안 납니다!
 
-        // 2. 이 유닛으로 만들 수 있는 레시피가 있는지, 그리고 재료가 맵에 있는지 검색
-        // (FindMatchRecipe 함수가 아래에 있습니다)
-        bool canMerge = FindMatchRecipe(selectedUnit, selectedStat.data);
+        if (slots.Length > 0)
+            slots[0].Setup(attackIcon, "공격 (A)", "지정한 위치로 이동하며 적을 공격합니다.", false, OnClickAttack);
 
-        if (canMerge)
+        if (slots.Length > 1)
+            slots[1].Setup(stopIcon, "정지 (S)", "모든 행동을 멈춥니다.", false, OnClickStop);
+
+        if (slots.Length > 2)
+            slots[2].Setup(holdIcon, "홀드 (H)", "제자리를 사수하며 사거리 내 적을 공격합니다.", false, OnClickHold);
+    }
+
+    void CheckMerge()
+    {
+        if (recipeDB == null || slots == null) return;
+
+        // 조합 버튼은 4번 슬롯(인덱스 4)부터 채우기 시작합니다. (0,1,2는 기본명령, 3은 비워둠)
+        int currentSlotIndex = 4;
+
+        // 기존에 4번부터 끝까지 남아있던 버튼들은 일단 지워줍니다.
+        for (int i = 4; i < slots.Length; i++)
         {
-            // 조합 가능!
-            mergeButton.interactable = true;
-
-            // ★ UI 업데이트: 결과물 얼굴 & 텍스트
-            if (resultUnitIcon != null)
-            {
-                resultUnitIcon.sprite = currentRecipe.resultUnit.icon;
-                resultUnitIcon.gameObject.SetActive(true);
-            }
-
-            // 텍스트 형식: [재료1] + [재료2] -> [결과물] \n 설명
-            string mat1 = currentRecipe.ingredients[0].unitName;
-            string mat2 = currentRecipe.ingredients[1].unitName; // 2개 재료 기준
-            string result = currentRecipe.resultUnit.unitName;
-            string desc = currentRecipe.resultUnit.description;
-
-            recipeInfoText.text = $"<color=yellow>{mat1} + {mat2}</color> = <color=green>{result}</color>\n{desc}";
+            slots[i].Clear();
         }
-        else
-        {
-            // 조합 불가능 (재료 부족 or 레시피 없음)
-            mergeButton.interactable = false;
 
-            if (resultUnitIcon != null) resultUnitIcon.gameObject.SetActive(false); // 아이콘 끄기
-            recipeInfoText.text = $"{selectedStat.Name}\n(미구현)";
+        // 선택된 유닛(대표) 정보 가져오기
+        if (rtsController.selectedUnits.Count == 0) return;
+        UnitData mainUnit = rtsController.selectedUnits[0].GetComponent<UnitStat>().data;
+
+        // ★ 핵심: 모든 레시피를 뒤져서 내가 재료로 들어가는 걸 다 찾습니다.
+        foreach (var recipe in recipeDB.allRecipes)
+        {
+            // 더 이상 슬롯이 없으면 중단
+            if (currentSlotIndex >= slots.Length) break;
+
+            // 내가 재료에 포함되어 있는가?
+            if (recipe.ingredients.Contains(mainUnit))
+            {
+                // 이 레시피의 상태(재료 다 모았나?) 확인
+                bool isReady = CheckIfRecipeIsReady(recipe, mainUnit);
+
+                // 툴팁 설명 만들기
+                string tooltipTitle = recipe.resultUnit.unitName; // 결과물 이름
+                string tooltipDesc = MakeRecipeDescription(recipe, mainUnit); // 재료 목록 설명
+
+                // ★ 중요: 버튼마다 클릭 시 실행할 함수를 다르게 지정해야 합니다. (람다식 사용)
+                // "이 버튼을 누르면 -> ExecuteMerge 함수에 이 recipe를 넣어서 실행해라"
+                slots[currentSlotIndex].Setup(
+                    recipe.resultUnit.icon,
+                    tooltipTitle,
+                    tooltipDesc,
+                    !isReady, // 준비 안 됐으면 잠금(true)
+                    () => ExecuteMerge(recipe)
+                );
+
+                currentSlotIndex++; // 다음 칸으로 이동
+            }
         }
     }
 
-    // ★ 핵심 로직: 짝꿍 찾기
-    bool FindMatchRecipe(NavMeshAgent myUnit, UnitData myData)
+    // 재료가 맵에 다 있는지 확인하는 함수
+    bool CheckIfRecipeIsReady(CombinationRecipe recipe, UnitData myData)
     {
-        // 1. 모든 레시피를 뒤져본다
-        foreach (var recipe in recipeDatabase.allRecipes)
+        List<UnitData> required = new List<UnitData>(recipe.ingredients);
+        required.Remove(myData); // 내 몫은 뺌
+
+        // 맵의 모든 유닛을 가져옴 (나 자신은 제외)
+        var allUnits = FindObjectsOfType<UnitStat>()
+            .Where(u => !rtsController.selectedUnits.Contains(u.GetComponent<UnityEngine.AI.NavMeshAgent>()))
+            .ToList();
+
+        foreach (var req in required)
         {
-            // 이 레시피에 내가 재료로 들어가는가?
-            if (recipe.ingredients.Contains(myData))
+            // 필요한 재료와 일치하는 유닛 찾기
+            var partner = allUnits.FirstOrDefault(u => u.data == req);
+            if (partner != null)
             {
-                // 2. 내가 재료라면, "나 말고 다른 재료(짝꿍)"가 뭔지 알아낸다
-                // (일단 재료 2개짜리 레시피라고 가정)
-                List<UnitData> ingredientsNeeded = new List<UnitData>(recipe.ingredients);
-                ingredientsNeeded.Remove(myData); // 내 데이터 하나 뺌
-
-                if (ingredientsNeeded.Count > 0)
-                {
-                    UnitData partnerData = ingredientsNeeded[0]; // 필요한 짝꿍 데이터
-
-                    // 3. 맵 전체에서 짝꿍 유닛을 찾는다 (나 자신은 제외!)
-                    partnerUnit = FindPartnerOnMap(partnerData, myUnit);
-
-                    if (partnerUnit != null)
-                    {
-                        // 찾았다!
-                        currentRecipe = recipe;
-                        return true;
-                    }
-                }
+                allUnits.Remove(partner); // 찾았으면 리스트에서 제거 (중복 사용 방지)
+            }
+            else
+            {
+                return false; // 하나라도 없으면 false
             }
         }
-        return false; // 맞는 레시피나 짝꿍이 없음
+        return true; // 다 있으면 true
     }
 
-    // 맵에 있는 유닛 중 조건에 맞는 녀석 하나 데려오기
-    NavMeshAgent FindPartnerOnMap(UnitData targetData, NavMeshAgent ignoreMe)
+    // 툴팁에 띄울 설명글 만드는 함수
+    string MakeRecipeDescription(CombinationRecipe recipe, UnitData myData)
     {
-        // 최적화를 위해 Tag나 Layer로 찾는 게 좋지만, 일단은 모든 UnitStat 검색
-        UnitStat[] allUnits = FindObjectsOfType<UnitStat>();
+        string desc = "<color=yellow>[조합식]</color>\n";
 
-        foreach (var unit in allUnits)
+        // 재료 목록 표시
+        foreach (var ing in recipe.ingredients)
         {
-            // 나 자신은 건너뜀
-            if (unit.gameObject == ignoreMe.gameObject) continue;
+            if (ing == myData) desc += $"- {ing.unitName} (나)\n";
+            else desc += $"- {ing.unitName}\n";
+        }
 
-            // 데이터가 일치하고, 아직 살아있는 녀석이라면
-            if (unit.data == targetData)
+        desc += $"\n<color=cyan>결과: {recipe.resultUnit.unitName}</color>";
+        return desc;
+    }
+
+    // --- 실행 함수들 ---
+
+    // 실제 조합 실행 (버튼 클릭 시 호출됨)
+    void ExecuteMerge(CombinationRecipe recipe)
+    {
+        // 클릭하는 순간에 다시 한 번 재료를 찾습니다. (안전하게)
+        UnitData mainUnit = rtsController.selectedUnits[0].GetComponent<UnitStat>().data;
+        List<UnitStat> partners = new List<UnitStat>();
+
+        List<UnitData> required = new List<UnitData>(recipe.ingredients);
+        required.Remove(mainUnit);
+
+        var allUnits = FindObjectsOfType<UnitStat>()
+             .Where(u => !rtsController.selectedUnits.Contains(u.GetComponent<UnityEngine.AI.NavMeshAgent>()))
+             .ToList();
+
+        // 짝꿍들 수집
+        foreach (var req in required)
+        {
+            var p = allUnits.FirstOrDefault(u => u.data == req);
+            if (p != null)
             {
-                return unit.GetComponent<NavMeshAgent>();
+                partners.Add(p);
+                allUnits.Remove(p);
+            }
+            else
+            {
+                // 혹시 그 사이에 재료가 죽거나 사라졌으면 경고 띄우고 취소
+                TooltipManager.Instance.ShowWarning("재료가 사라졌습니다!");
+                return;
             }
         }
-        return null;
+
+        // --- 진짜 조합 시작 ---
+        Vector3 spawnPos = rtsController.selectedUnits[0].transform.position;
+
+        // 1. 나 삭제
+        foreach (var unit in rtsController.selectedUnits) Destroy(unit.gameObject);
+
+        // 2. 짝꿍들 삭제
+        foreach (var p in partners) Destroy(p.gameObject);
+
+        // 3. 소환
+        GameObject newUnit = Instantiate(recipe.resultUnit.prefab, spawnPos, Quaternion.identity);
+        newUnit.GetComponent<UnitStat>().data = recipe.resultUnit;
+
+        // 4. 소리
+        if (SoundManager.Instance != null)
+            SoundManager.Instance.PlayVoice(recipe.resultUnit.summonVoice);
+
+        Debug.Log($"{recipe.resultUnit.unitName} 조합 성공!");
+
+        rtsController.ClearSelection();
+        ClearAllSlots();
     }
 
-    public void OnClickMerge()
+    public void OnClickAttack()
     {
-        // 조합 실행
-        if (currentRecipe != null && partnerUnit != null && rtsController.selectedUnits.Count > 0)
+        // 컨트롤러에게 "공격 모드 시작해"라고 전달
+        rtsController.EnterAttackMode();
+    }
+
+    public void OnClickStop()
+    {
+        foreach (var agent in rtsController.selectedUnits)
         {
-            NavMeshAgent myUnit = rtsController.selectedUnits[0];
-            Vector3 spawnPos = myUnit.transform.position;
-
-            // ★ 나(선택된 애)와 짝꿍(찾은 애) 둘 다 제거
-            Destroy(myUnit.gameObject);
-            Destroy(partnerUnit.gameObject);
-
-            // 결과물 소환
-            GameObject newUnit = Instantiate(currentRecipe.resultUnit.prefab, spawnPos, Quaternion.identity);
-
-            // 데이터 주입
-            UnitStat newStat = newUnit.GetComponent<UnitStat>();
-            if (newStat != null) newStat.data = currentRecipe.resultUnit;
-            SoundManager.Instance.PlayVoice(currentRecipe.resultUnit.summonVoice);
-
-            // 선택 초기화 및 패널 갱신
-            rtsController.ClearSelection();
-            CheckSelection(); // 바로 UI 갱신
-
-            Debug.Log($"조합 완료: {currentRecipe.resultUnit.unitName}");
+            if (agent != null)
+            {
+                var attack = agent.GetComponent<UnitAttack>();
+                // OrderStop 호출 (공격도 멈춤)
+                if (attack != null) attack.OrderStop();
+                else agent.ResetPath();
+            }
         }
     }
 
     public void OnClickHold()
     {
-        // 선택된 유닛들의 이동을 멈춤
         foreach (var agent in rtsController.selectedUnits)
         {
             if (agent != null)
             {
-                agent.ResetPath(); // 네비게이션 경로 삭제 (멈춤)
-                agent.velocity = Vector3.zero; // 즉시 정지
+                var attack = agent.GetComponent<UnitAttack>();
+                //  OrderHold 호출 (공격은 함)
+                if (attack != null) attack.OrderHold();
+                else
+                {
+                    agent.ResetPath();
+                    agent.velocity = Vector3.zero;
+                }
             }
         }
-        Debug.Log("모든 유닛 정지 (Hold)");
+    }
+
+    void ClearAllSlots()
+    {
+        if (slots == null) return;
+        foreach (var slot in slots) if (slot != null) slot.Clear();
     }
 }

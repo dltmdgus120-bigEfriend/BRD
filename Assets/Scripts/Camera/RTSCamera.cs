@@ -1,18 +1,17 @@
 using UnityEngine;
 
-public class RTSCamera : MonoBehaviour
+public class CameraController : MonoBehaviour
 {
     [Header("이동 설정")]
     public float panSpeed = 20f;        // 이동 속도
-    public float panBorderThickness = 10f; // 엣지 스크롤 범위
-    public bool useEdgeScrolling = true;   // 마우스 엣지 스크롤 켜기/끄기
-    public Vector2 mapLimit = new Vector2(50, 50); // 맵 제한
+    public float panBorderThickness = 20f; // 엣지 스크롤 감지 범위 (픽셀)
+    public Vector2 mapLimit = new Vector2(50, 50); // 맵 이동 제한 범위
 
     [Header("줌 설정")]
     public float zoomSpeed = 20f;
-    public float minSize = 3f;
-    public float maxSize = 15f;
-    public float smoothTime = 10f;
+    public float minSize = 3f;   // 줌인 최대치 (작을수록 가까움)
+    public float maxSize = 15f;  // 줌아웃 최대치
+    public float smoothTime = 10f; // 부드러운 줌
 
     private Camera cam;
     private float targetSize;
@@ -20,7 +19,18 @@ public class RTSCamera : MonoBehaviour
     void Start()
     {
         cam = GetComponent<Camera>();
-        targetSize = cam.orthographicSize;
+
+        // 카메라가 Orthographic(직교)인지 Perspective(원근)인지에 따라 초기값 설정
+        if (cam.orthographic)
+        {
+            targetSize = cam.orthographicSize;
+        }
+        else
+        {
+            // 만약 Perspective 카메라를 쓰고 계신다면 FOV를 조절하거나, 
+            // Orthographic으로 설정을 바꾸시는 것을 추천합니다. (보여주신 코드는 Ortho 기준)
+            targetSize = cam.fieldOfView;
+        }
     }
 
     void Update()
@@ -31,25 +41,33 @@ public class RTSCamera : MonoBehaviour
 
     void Move()
     {
-        // 1. 입력값 받기 (키보드 + 마우스 엣지)
+        // 1. 마우스 입력값 받기 (WASD 제거됨)
         float xInput = 0f;
         float zInput = 0f;
 
-        // 키보드 입력
-        xInput += Input.GetAxis("Horizontal"); // A, D
-        zInput += Input.GetAxis("Vertical");   // W, S
-
-        // 마우스 엣지 스크롤 (원하면 켜세요)
-        if (useEdgeScrolling)
+        // 마우스가 화면 위쪽 끝
+        if (Input.mousePosition.y >= Screen.height - panBorderThickness)
         {
-            if (Input.mousePosition.y >= Screen.height - panBorderThickness) zInput += 1;
-            if (Input.mousePosition.y <= panBorderThickness) zInput -= 1;
-            if (Input.mousePosition.x >= Screen.width - panBorderThickness) xInput += 1;
-            if (Input.mousePosition.x <= panBorderThickness) xInput -= 1;
+            zInput += 1;
+        }
+        // 마우스가 화면 아래쪽 끝 (UI가 있어도 작동함)
+        if (Input.mousePosition.y <= panBorderThickness)
+        {
+            zInput -= 1;
+        }
+        // 마우스가 화면 오른쪽 끝
+        if (Input.mousePosition.x >= Screen.width - panBorderThickness)
+        {
+            xInput += 1;
+        }
+        // 마우스가 화면 왼쪽 끝
+        if (Input.mousePosition.x <= panBorderThickness)
+        {
+            xInput -= 1;
         }
 
-        // 2. 카메라가 보고 있는 방향 알아내기
-        // (그냥 forward를 쓰면 땅으로 파고드니까, y값을 0으로 없애서 수평으로 만듦)
+        // 2. 카메라가 보고 있는 방향 기준으로 이동 방향 계산 (핵심!)
+        // y값을 0으로 만들어서 땅바닥과 수평하게 만듦
         Vector3 forward = transform.forward;
         forward.y = 0;
         forward.Normalize();
@@ -58,17 +76,23 @@ public class RTSCamera : MonoBehaviour
         right.y = 0;
         right.Normalize();
 
-        // 3. 방향과 입력값을 섞어서 최종 이동 방향 결정
-        // (카메라 정면 * 위아래 입력) + (카메라 우측 * 좌우 입력)
+        // 3. 최종 이동 방향 결정
+        // (카메라 정면 * 위아래) + (카메라 우측 * 좌우)
         Vector3 moveDir = (forward * zInput) + (right * xInput);
 
-        // 4. 이동 적용 (정규화해서 대각선 이동 시 빨라지는 것 방지)
-        if (moveDir.magnitude > 0) moveDir.Normalize();
+        // 4. 대각선 이동 속도 보정 (루트2 만큼 빨라지는 것 방지)
+        if (moveDir.sqrMagnitude > 0)
+        {
+            moveDir.Normalize();
+        }
 
+        // 5. 이동 적용
         Vector3 targetPos = transform.position + moveDir * panSpeed * Time.deltaTime;
 
-        // 5. 맵 밖으로 못 나가게 가두기
+        // 6. 맵 밖으로 못 나가게 가두기
         targetPos.x = Mathf.Clamp(targetPos.x, -mapLimit.x, mapLimit.x);
+
+        // z축 제한 (쿼터뷰라 z축 이동이 맵의 위아래 이동)
         targetPos.z = Mathf.Clamp(targetPos.z, -mapLimit.y, mapLimit.y);
 
         transform.position = targetPos;
@@ -84,6 +108,15 @@ public class RTSCamera : MonoBehaviour
             targetSize = Mathf.Clamp(targetSize, minSize, maxSize);
         }
 
-        cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetSize, Time.deltaTime * smoothTime);
+        // 부드러운 줌 적용
+        if (cam.orthographic)
+        {
+            cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetSize, Time.deltaTime * smoothTime);
+        }
+        else
+        {
+            // 혹시 Perspective 카메라일 경우 대비
+            cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, targetSize, Time.deltaTime * smoothTime);
+        }
     }
 }

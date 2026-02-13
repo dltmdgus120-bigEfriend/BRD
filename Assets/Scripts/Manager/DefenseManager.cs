@@ -18,7 +18,8 @@ public class DefenseManager : MonoBehaviour
     public int playerHP = 40;
     public int currentRound = 0;
     public float roundTime = 40f;    
-    public float prepTime = 30f;   
+    public float prepTime = 30f;
+    public bool isGameOver = false;
 
     private float timer = 0f;
     private Transform[] pathPoints;
@@ -142,8 +143,17 @@ public class DefenseManager : MonoBehaviour
 
     void GameOver()
     {
-        Time.timeScale = 0;
-        if (gameOverPanel != null) gameOverPanel.SetActive(true);
+        if (isGameOver) return; // 이미 끝났으면 실행 안 함
+
+        isGameOver = true; // 상태 변경
+        Debug.Log("게임 오버!");
+
+        Time.timeScale = 0; // 시간 정지
+
+        if (gameOverPanel != null)
+        {
+            gameOverPanel.SetActive(true); // 패널 켜기
+        }
     }
 
     void UpdateUI()

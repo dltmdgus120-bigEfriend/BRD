@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 321f0c870c89f754491a017f14fbaf74, type: 3}
-  m_Name: MainDatabase
+  m_Name: RecipeDatabase
   m_EditorClassIdentifier: 
   allRecipes:
   - {fileID: 11400000, guid: 6f6c3efa77afac5469fe40b54ad34c15, type: 2}
