@@ -12,4 +12,22 @@ public class CombinationRecipe : ScriptableObject
 
     [TextArea]
     public string description;   // 설명
+
+    // 편의 기능: 재료가 다 있는지 검사하는 함수
+    public bool CheckIngredients(List<UnitData> currentUnits)
+    {
+        // (이 함수는 나중에 UnitCommandPanel에서 씁니다)
+        // 로직: 필요한 재료 목록을 복사해서, 현재 유닛들과 하나씩 지워가며 검사
+        List<UnitData> tempIngredients = new List<UnitData>(ingredients);
+
+        foreach (var unit in currentUnits)
+        {
+            if (tempIngredients.Contains(unit))
+            {
+                tempIngredients.Remove(unit);
+            }
+        }
+
+        return tempIngredients.Count == 0; // 남은 재료가 없으면 통과
+    }
 }

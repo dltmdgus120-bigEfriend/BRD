@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -10,6 +11,7 @@ public class UnitData : ScriptableObject
     public GameObject prefab;     // 소환될 프리팹 (모델링)
     public Sprite icon;
     public AudioClip summonVoice;
+    public int sellPrice = 10; // 판매 시 돌려받을 재화 양
 
     [Header("전투 스펙")] // 
     public float attackRange = 5f;  // 사거리
@@ -20,4 +22,7 @@ public class UnitData : ScriptableObject
     [Header("설명")]
     [TextArea]
     public string description;    // (선택) 유닛 설명
+
+    [Header("조합 가능 목록 (내가 메인인 경우만 넣기)")]
+    public List<CombinationRecipe> availableRecipes;
 }

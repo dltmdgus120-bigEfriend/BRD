@@ -159,19 +159,18 @@ public class ChatSystem : MonoBehaviour
         }
     }
 
+   
     // 맵 전체에서 재료를 찾아 조합하는 함수
     void TryHiddenRecipe(CombinationRecipe recipe)
     {
         if (recipe == null) return;
 
-        // 1. 맵에 있는 모든 유닛 가져오기 (선택 여부 상관없음)
+        // 1. 재료 찾기
         List<UnitStat> allUnits = FindObjectsOfType<UnitStat>().ToList();
         List<UnitStat> ingredientsToDestroy = new List<UnitStat>();
 
-        // 2. 재료 확인
         foreach (var requiredData in recipe.ingredients)
         {
-            // 필요한 데이터와 일치하고, 아직 사용 안 된 유닛 찾기
             var target = allUnits.FirstOrDefault(u => u.data == requiredData && !ingredientsToDestroy.Contains(u));
 
             if (target != null)
@@ -180,34 +179,56 @@ public class ChatSystem : MonoBehaviour
             }
             else
             {
-                // 재료 부족!
                 AddChatMessage($"<color=red>[실패] '{recipe.resultUnit.unitName}' 소환 재료가 부족합니다.</color>");
                 return;
             }
         }
 
-        // 3. 재료가 다 있으면 조합 실행!
-        Vector3 spawnPos = ingredientsToDestroy[0].transform.position; // 첫 번째 재료 위치에 소환
+        // 2. 소환 위치 잡기 (첫 번째 재료 위치)
+        Vector3 spawnPos = ingredientsToDestroy[0].transform.position;
 
-        // 재료 삭제
+        // 3. 재료 삭제 (선택 해제 포함)
+        var rts = FindObjectOfType<RTSController>();
         foreach (var unit in ingredientsToDestroy)
         {
-            // ★ 중요: 만약 선택된 유닛이었다면 선택 리스트에서도 빼줘야 버그가 안 남
-            var rts = FindObjectOfType<RTSController>();
             if (rts != null && rts.selectedUnits.Contains(unit.GetComponent<UnityEngine.AI.NavMeshAgent>()))
             {
                 rts.selectedUnits.Remove(unit.GetComponent<UnityEngine.AI.NavMeshAgent>());
             }
-
             Destroy(unit.gameObject);
         }
 
-        // 결과물 소환 (UnitData에 연결된 프리팹 사용!)
-        GameObject newUnit = Instantiate(recipe.resultUnit.prefab, spawnPos, Quaternion.identity);
-        UnitStat newStat = newUnit.GetComponent<UnitStat>();
-        if (newStat != null) newStat.data = recipe.resultUnit; // 데이터 주입
+        // 선택 초기화 (찌꺼기 제거)
+        if (rts != null) rts.ClearSelection();
 
-        // 등장 사운드 (UnitData에 연결된 소리 사용!)
+        // 4. ★ 핵심 수정: 5성 유닛 소환 및 Warp 적용 (에러 방지)
+        GameObject newUnit = Instantiate(recipe.resultUnit.prefab, spawnPos, Quaternion.identity);
+
+        var agent = newUnit.GetComponent<UnityEngine.AI.NavMeshAgent>();
+        if (agent != null)
+        {
+            // (1) 일단 끈다 (생성 직후 에러 방지)
+            agent.enabled = false;
+
+            // (2) 위치를 확실하게 잡는다
+            newUnit.transform.position = spawnPos;
+
+            // (3) 다시 켠다
+            agent.enabled = true;
+
+            // (4) Warp로 바닥에 안착시킨다 (반경 5m 내 바닥 찾기)
+            UnityEngine.AI.NavMeshHit hit;
+            if (UnityEngine.AI.NavMesh.SamplePosition(spawnPos, out hit, 5.0f, UnityEngine.AI.NavMesh.AllAreas))
+            {
+                agent.Warp(hit.position);
+            }
+        }
+
+        // 5. 데이터 주입
+        UnitStat newStat = newUnit.GetComponent<UnitStat>();
+        if (newStat != null) newStat.data = recipe.resultUnit;
+
+        // 6. 등장 사운드
         if (SoundManager.Instance != null)
         {
             SoundManager.Instance.PlayVoice(recipe.resultUnit.summonVoice);
@@ -215,7 +236,10 @@ public class ChatSystem : MonoBehaviour
 
         AddChatMessage($"<color=cyan><b>[히든] {recipe.resultUnit.unitName} 소환 성공!</b></color>");
 
-        // UI 갱신 (선택된 게 사라졌을 수 있으니)
-        FindObjectOfType<RTSController>().ClearSelection();
+        // 7. 편의성: 소환된 히든 유닛 바로 선택해주기
+        if (rts != null && agent != null)
+        {
+            rts.SelectUnit(agent);
+        }
     }
 }

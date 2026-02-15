@@ -2219,7 +2219,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uC7AC\uB8CC\uAC00 \uBD80\uC871\uD569\uB2C8\uB2E4!"
+  m_Text: Warning
 --- !u!222 &759765689
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2525,7 +2525,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &868942335
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2899,6 +2899,37 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1 &1001479283
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1001479284}
+  m_Layer: 0
+  m_Name: SpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1001479284
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1001479283}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1022639152
 GameObject:
   m_ObjectHideFlags: 0
@@ -5454,12 +5485,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rank1Units:
   - {fileID: 11400000, guid: 35514f882c5d41d498bc3fcf77e642f2, type: 2}
-  - {fileID: 11400000, guid: 83e3d3c32ed0ca04f94741a9e3823286, type: 2}
-  - {fileID: 11400000, guid: 58fe6dc806db7c94cbd385401e8297b7, type: 2}
-  - {fileID: 11400000, guid: 98caedf6f88047944836632a1a27f1e5, type: 2}
-  - {fileID: 11400000, guid: b8cc9f74aa6131b42989b80e4245aa1b, type: 2}
-  - {fileID: 11400000, guid: ea2abfbc525720a43a045bdafb2d5cf4, type: 2}
+  rank2Units: []
+  rank3Units:
+  - {fileID: 11400000, guid: 88b1441afad011c4c96b2bb758df150b, type: 2}
+  - {fileID: 11400000, guid: e6ac579121ed4d54fa166deaacde2fec, type: 2}
+  - {fileID: 11400000, guid: 65a71b04a98a8e941bbb7968941eee89, type: 2}
+  hiddenUnits: []
+  probRank1: 0
+  probRank2: 0
+  probRank3: 100
+  probHidden: 0
   spawnRadius: 3
+  spawnPoint: {fileID: 1001479284}
   currentTickets: 0
   ticketInterval: 1
   ticketAmount: 2
@@ -5532,7 +5569,7 @@ MonoBehaviour:
   attackIcon: {fileID: 21300000, guid: 25b1f9d25a50a134380c3597f4608646, type: 3}
   stopIcon: {fileID: 21300000, guid: dc03be73b8da58a42b21fb9e9f69a4b4, type: 3}
   holdIcon: {fileID: 21300000, guid: e047b0445fa31ea4f963210961ef6916, type: 3}
-  recipeDB: {fileID: 11400000, guid: b645d95ee585bff4097373c0796e0629, type: 2}
+  sellIcon: {fileID: 21300000, guid: e5d41a36ef9de4b43bd1e3d5b076d0ef, type: 3}
 --- !u!114 &1752383331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5594,7 +5631,9 @@ MonoBehaviour:
   hideDelay: 3
   chatTextPrefab: {fileID: 881342160586921314, guid: 6d448bc6e5079784fa2784b5ca0beea3,
     type: 3}
-  hiddenCommands: []
+  hiddenCommands:
+  - command: "\uD074\uB85C\uC5D0 \uAC74\uCE58"
+    recipe: {fileID: 11400000, guid: 589f673e78f104243a4f6f41d7a45447, type: 2}
 --- !u!1 &1798925787
 GameObject:
   m_ObjectHideFlags: 0
@@ -7446,3 +7485,4 @@ SceneRoots:
   - {fileID: 152013902}
   - {fileID: 1356629122}
   - {fileID: 886716032}
+  - {fileID: 1001479284}

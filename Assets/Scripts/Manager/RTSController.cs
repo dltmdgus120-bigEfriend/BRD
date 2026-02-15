@@ -19,56 +19,46 @@ public class RTSController : MonoBehaviour
     private bool isDragging = false;
 
     [Header("커서 설정")]
-    public Texture2D defaultCursor; 
-    public Texture2D attackCursor;  
-    public Vector2 cursorHotspot = Vector2.zero; // 커서 클릭 지점 (보통 0,0)
+    public Texture2D defaultCursor;
+    public Texture2D attackCursor;
+    public Vector2 cursorHotspot = Vector2.zero;
 
-    public bool isAttackCommand = false; // 공격 모드 스위치
+    public bool isAttackCommand = false;
 
     void Start()
     {
-        // 게임 시작하면 기본 커서로 변경
         SetCursor(defaultCursor);
     }
 
     void Update()
     {
-        // 1. 공격 명령 대기 상태
+        // 1. 공격 명령 대기
         if (isAttackCommand)
         {
-            if (Input.GetMouseButtonDown(0)) // 좌클릭 (명령 실행)
+            if (Input.GetMouseButtonDown(0))
             {
                 PerformAttackCommand();
                 return;
             }
-            else if (Input.GetMouseButtonDown(1)) // 우클릭 (취소)
+            else if (Input.GetMouseButtonDown(1))
             {
                 isAttackCommand = false;
-                SetCursor(defaultCursor); // ★ 취소했으니 기본 커서로 복구
+                SetCursor(defaultCursor);
             }
             return;
         }
 
-        // UI 위를 클릭했다면 무시
+        // UI 클릭 무시
         if (EventSystem.current.IsPointerOverGameObject()) return;
 
-        // 2. 마우스 클릭 (드래그 시작)
-        if (Input.GetMouseButtonDown(0))
-        {
-            StartSelection();
-        }
+        // 2. 드래그 시작
+        if (Input.GetMouseButtonDown(0)) StartSelection();
 
-        // 3. 마우스 누르는 중 (박스 그리기)
-        if (Input.GetMouseButton(0) && isDragging)
-        {
-            UpdateSelectionBox();
-        }
+        // 3. 드래그 중
+        if (Input.GetMouseButton(0) && isDragging) UpdateSelectionBox();
 
-        // 4. 마우스 뗌 (선택 확정)
-        if (Input.GetMouseButtonUp(0))
-        {
-            EndSelection();
-        }
+        // 4. 드래그 끝
+        if (Input.GetMouseButtonUp(0)) EndSelection();
 
         // 5. 우클릭 (이동)
         if (Input.GetMouseButtonDown(1) && selectedUnits.Count > 0)
@@ -78,40 +68,31 @@ public class RTSController : MonoBehaviour
             {
                 foreach (var agent in selectedUnits)
                 {
+                    if (agent == null) continue;
                     var attack = agent.GetComponent<UnitAttack>();
-                    if (attack != null)
-                    {
-                        attack.OrderMove(hit.point);
-                    }
-                    else
-                    {
-                        agent.SetDestination(hit.point);
-                    }
+                    if (attack != null) attack.OrderMove(hit.point);
+                    else agent.SetDestination(hit.point);
                 }
             }
         }
     }
 
-    // ★ 커서 바꾸는 함수 (코드를 깔끔하게 쓰기 위해 만듦)
     void SetCursor(Texture2D cursorTexture)
     {
-        // cursorTexture: 바꿀 이미지
-        // cursorHotspot: 클릭 지점 (기본은 0,0 좌상단)
-        // CursorMode.Auto: 하드웨어 커서 사용 (반응 빠름)
         Cursor.SetCursor(cursorTexture, cursorHotspot, CursorMode.Auto);
     }
 
-    // (기존 선택 관련 함수들은 그대로 유지...)
     void StartSelection()
     {
         if (!Input.GetKey(KeyCode.LeftShift)) DeselectAll();
         startPos = Input.mousePosition;
         isDragging = true;
-        selectionBox.gameObject.SetActive(true);
+        if (selectionBox != null) selectionBox.gameObject.SetActive(true);
     }
 
     void UpdateSelectionBox()
     {
+        if (selectionBox == null) return;
         Vector2 currentPos = Input.mousePosition;
         float width = Mathf.Abs(currentPos.x - startPos.x);
         float height = Mathf.Abs(currentPos.y - startPos.y);
@@ -124,9 +105,11 @@ public class RTSController : MonoBehaviour
     void EndSelection()
     {
         isDragging = false;
-        selectionBox.gameObject.SetActive(false);
-        if (selectionBox.sizeDelta.magnitude < 10) SelectSingleUnit();
+        if (selectionBox != null) selectionBox.gameObject.SetActive(false);
+
+        if (selectionBox != null && selectionBox.sizeDelta.magnitude < 10) SelectSingleUnit();
         else SelectUnitsInBox();
+
         SortSelectedUnitsByPower();
         UpdateSelectionUI();
     }
@@ -137,6 +120,8 @@ public class RTSController : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, unitLayer))
         {
             NavMeshAgent agent = hit.collider.GetComponent<NavMeshAgent>();
+            if (agent == null) agent = hit.collider.GetComponentInParent<NavMeshAgent>();
+
             if (agent != null) AddUnitToSelection(agent);
         }
         else if (!Input.GetKey(KeyCode.LeftShift)) DeselectAll();
@@ -145,6 +130,8 @@ public class RTSController : MonoBehaviour
     void SelectUnitsInBox()
     {
         NavMeshAgent[] allUnits = FindObjectsOfType<NavMeshAgent>();
+        if (selectionBox == null) return;
+
         Vector2 min = selectionBox.anchoredPosition;
         Vector2 max = selectionBox.anchoredPosition + selectionBox.sizeDelta;
 
@@ -164,8 +151,6 @@ public class RTSController : MonoBehaviour
         if (!selectedUnits.Contains(unit))
         {
             selectedUnits.Add(unit);
-
-            // 원 켜기
             UnitSelection selection = unit.GetComponent<UnitSelection>();
             if (selection != null) selection.SetSelected(true);
         }
@@ -177,13 +162,24 @@ public class RTSController : MonoBehaviour
         {
             if (unit != null)
             {
-                // 원 끄기
                 UnitSelection selection = unit.GetComponent<UnitSelection>();
                 if (selection != null) selection.SetSelected(false);
             }
         }
         selectedUnits.Clear();
-        UpdateSelectionUI(); // UI 초기화
+        UpdateSelectionUI();
+    }
+
+    // ★ [오류 해결] UnitCommandPanel에서 호출할 수 있도록 새로 만든 함수
+    public void SelectUnit(NavMeshAgent unit)
+    {
+        DeselectAll(); // 기존 선택 다 해제
+
+        if (unit != null)
+        {
+            AddUnitToSelection(unit); // 새 유닛 추가
+            UpdateSelectionUI(); // UI 갱신
+        }
     }
 
     public void ClearSelection() { DeselectAll(); }
@@ -192,6 +188,7 @@ public class RTSController : MonoBehaviour
     {
         if (selectedUnits.Count <= 1) return;
         selectedUnits.Sort((a, b) => {
+            if (a == null || b == null) return 0;
             UnitStat statA = a.GetComponent<UnitStat>();
             UnitStat statB = b.GetComponent<UnitStat>();
             int damageA = (statA != null && statA.data != null) ? statA.data.damage : 0;
@@ -203,18 +200,24 @@ public class RTSController : MonoBehaviour
     void UpdateSelectionUI()
     {
         if (infoPanel == null) return;
-        if (selectedUnits.Count > 0 && selectedUnits[0] != null)
+        selectedUnits.RemoveAll(u => u == null);
+
+        if (selectedUnits.Count > 0)
         {
             UnitStat stat = selectedUnits[0].GetComponent<UnitStat>();
             infoPanel.UpdateInfo(stat);
+
+            // ★ [오류 해결] Instance가 이제 존재하므로 에러 없이 호출됨
+            if (UnitCommandPanel.Instance != null)
+                UnitCommandPanel.Instance.UpdateCommandPanel();
         }
         else
         {
             infoPanel.UpdateInfo(null);
+            if (UnitCommandPanel.Instance != null)
+                UnitCommandPanel.Instance.UpdateCommandPanel();
         }
     }
-
-    // --- 공격 명령 관련 수정됨 ---
 
     void PerformAttackCommand()
     {
@@ -222,10 +225,13 @@ public class RTSController : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
             EnemyHP enemy = hit.collider.GetComponent<EnemyHP>();
+            if (enemy == null) enemy = hit.collider.GetComponentInParent<EnemyHP>();
+
             if (enemy != null)
             {
                 foreach (var agent in selectedUnits)
                 {
+                    if (agent == null) continue;
                     var attack = agent.GetComponent<UnitAttack>();
                     if (attack != null)
                     {
@@ -239,30 +245,22 @@ public class RTSController : MonoBehaviour
             {
                 foreach (var agent in selectedUnits)
                 {
+                    if (agent == null) continue;
                     var attack = agent.GetComponent<UnitAttack>();
                     if (attack != null) attack.OrderAttackMove(hit.point);
                 }
             }
         }
 
-        // 명령 끝났으니 초기화
         isAttackCommand = false;
-        SetCursor(defaultCursor); // ★ 공격 끝났으니 기본 커서로 복구
+        SetCursor(defaultCursor);
     }
 
-    // 외부에서 호출할 공격 모드 진입 함수
     public void EnterAttackMode()
     {
         isAttackCommand = true;
-
-        // ★ 공격 커서로 변경
-        // 만약 attackCursor가 비어있으면 변경 안 함 (오류 방지)
         if (attackCursor != null)
-        {
             SetCursor(attackCursor);
-        }
-
-        Debug.Log("공격 모드: 목표를 찍으세요");
     }
 }
 
