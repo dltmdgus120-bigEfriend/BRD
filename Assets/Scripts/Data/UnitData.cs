@@ -13,6 +13,9 @@ public class UnitData : ScriptableObject
     public AudioClip summonVoice;
     public int sellPrice = 10; // 판매 시 돌려받을 재화 양
 
+    [Header("스킬 (Q, W, E, R 순서)")]
+    public List<SkillBase> skills; // 최대 4개
+
     [Header("전투 스펙")] // 
     public float attackRange = 5f;  // 사거리
     public float attackSpeed = 1f;  // 공격 속도 (초당 공격 횟수 or 쿨타임)

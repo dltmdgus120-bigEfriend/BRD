@@ -200,23 +200,16 @@ public class RTSController : MonoBehaviour
     void UpdateSelectionUI()
     {
         if (infoPanel == null) return;
+
+        // null인 유닛 청소 (죽은 유닛 제거)
         selectedUnits.RemoveAll(u => u == null);
 
-        if (selectedUnits.Count > 0)
-        {
-            UnitStat stat = selectedUnits[0].GetComponent<UnitStat>();
-            infoPanel.UpdateInfo(stat);
+        // 유닛 '하나'가 아니라 '리스트 전체'를 넘깁니다.
+        infoPanel.UpdateSelection(selectedUnits);
 
-            // ★ [오류 해결] Instance가 이제 존재하므로 에러 없이 호출됨
-            if (UnitCommandPanel.Instance != null)
-                UnitCommandPanel.Instance.UpdateCommandPanel();
-        }
-        else
-        {
-            infoPanel.UpdateInfo(null);
-            if (UnitCommandPanel.Instance != null)
-                UnitCommandPanel.Instance.UpdateCommandPanel();
-        }
+        // 커맨드 패널 갱신
+        if (UnitCommandPanel.Instance != null)
+            UnitCommandPanel.Instance.UpdateCommandPanel();
     }
 
     void PerformAttackCommand()

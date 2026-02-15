@@ -18,6 +18,8 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 79e80576c9f34ad489d221e9f999bd8f, type: 3}
   summonVoice: {fileID: 0}
   sellPrice: 0
+  skills:
+  - {fileID: 11400000, guid: d83b18694a081174ea6c6e843ddd106a, type: 2}
   attackRange: 5
   attackSpeed: 1
   damage: 10

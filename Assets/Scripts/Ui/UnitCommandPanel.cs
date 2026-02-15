@@ -40,6 +40,90 @@ public class UnitCommandPanel : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.A)) OnClickAttack();
             if (Input.GetKeyDown(KeyCode.S)) OnClickStop();
             if (Input.GetKeyDown(KeyCode.H)) OnClickHold();
+
+            var mainUnit = rtsController.selectedUnits[0].GetComponent<UnitSkillController>();
+            if (mainUnit != null)
+            {
+                if (Input.GetKeyDown(KeyCode.Q)) mainUnit.TryUseSkill(0);
+                if (Input.GetKeyDown(KeyCode.W)) mainUnit.TryUseSkill(1);
+                if (Input.GetKeyDown(KeyCode.E)) mainUnit.TryUseSkill(2);
+                if (Input.GetKeyDown(KeyCode.R)) mainUnit.TryUseSkill(3);
+            }
+        }
+        // ★ 쿨타임 UI 갱신 (매 프레임)
+        UpdateSkillCooldowns();
+        CheckSkills();
+    }
+
+    // ★ 스킬 버튼 세팅 함수 (CheckSelection 안에서 호출)
+    void CheckSkills()
+    {
+        
+        int startSlotIndex = 8;
+
+        // 일단 스킬 슬롯들 비우기
+        for (int i = startSlotIndex; i < startSlotIndex + 4; i++)
+        {
+            if (i < slots.Length) slots[i].Clear();
+        }
+
+        if (rtsController.selectedUnits.Count == 0) return;
+
+        UnitStat mainStat = rtsController.selectedUnits[0].GetComponent<UnitStat>();
+        if (mainStat == null || mainStat.data == null) return;
+
+        // 스킬 리스트가 있으면 버튼 생성
+        if (mainStat.data.skills != null)
+        {
+            for (int i = 0; i < mainStat.data.skills.Count; i++)
+            {
+                int slotIdx = startSlotIndex + i;
+                if (slotIdx >= slots.Length) break; // 슬롯 부족하면 중단
+
+                SkillBase skill = mainStat.data.skills[i];
+                if (skill == null) continue;
+
+                // 스킬 버튼 세팅
+                // 패시브면 클릭해도 아무 일 안 일어남 (action = null)
+                // 액티브면 TryUseSkill 연결
+                int skillIndex = i; // 람다 캡처용 임시 변수
+
+                slots[slotIdx].Setup(
+                    skill.icon,
+                    skill.skillName,
+                    skill.description + (skill.isPassive ? "\n<color=yellow>[패시브]</color>" : $"\n<color=cyan>[쿨타임: {skill.cooldown}초]</color>"),
+                    false, // 잠김 아님
+                    skill.isPassive ? null : () => OnClickSkill(skillIndex),
+                    ""
+                );
+            }
+        }
+    }
+
+    void OnClickSkill(int index)
+    {
+        if (rtsController.selectedUnits.Count > 0)
+        {
+            var skillController = rtsController.selectedUnits[0].GetComponent<UnitSkillController>();
+            if (skillController != null) skillController.TryUseSkill(index);
+        }
+    }
+
+    void UpdateSkillCooldowns()
+    {
+        if (rtsController.selectedUnits.Count == 0) return;
+
+        var skillController = rtsController.selectedUnits[0].GetComponent<UnitSkillController>();
+        if (skillController == null) return;
+
+        int startSlotIndex = 7;
+        for (int i = 0; i < 4; i++)
+        {
+            int slotIdx = startSlotIndex + i;
+            if (slotIdx >= slots.Length) break;
+
+            // CommandSlot에 쿨타임 표시 기능이 필요함 (아래에서 설명)
+            // slots[slotIdx].SetCooldown(skillController.GetCooldownRatio(i));
         }
     }
 
