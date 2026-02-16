@@ -107,6 +107,12 @@ public class RTSController : MonoBehaviour
                 foreach (var agent in selectedUnits)
                 {
                     if (agent == null) continue;
+                    UnitStat stat = agent.GetComponent<UnitStat>();
+                    if (stat != null && stat.data != null && stat.data.isBuilding)
+                    {
+                        // (선택 사항) 건물이면 이동 대신 "랠리 포인트 지정" 등을 넣을 수 있음                       
+                        continue;
+                    }
                     var attack = agent.GetComponent<UnitAttack>();
                     if (attack != null) attack.OrderMove(hit.point);
                     else agent.SetDestination(hit.point);

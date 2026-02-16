@@ -24,7 +24,10 @@ public class UnitAttack : MonoBehaviour
     }
 
     void Update()
-    { 
+    {
+        // 건물이면 공격 AI 작동 중지
+        if (stat != null && stat.data != null && stat.data.isBuilding) return;
+
         //완전 정지 상태면 아무것도 안 하고 함수 종료
         if (isStopped) return;
        

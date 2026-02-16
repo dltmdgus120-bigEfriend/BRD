@@ -26,6 +26,8 @@ public class DefenseManager : MonoBehaviour
     public float roundTime = 40f;
     public float prepTime = 30f;
     public bool isGameOver = false;
+    public int targetRound = 50; // 이 라운드를 클리어하면 승리!
+    public bool isVictory = false; // 승리 상태 플래그
 
     private GameObject currentBossInstance;
 
@@ -34,6 +36,7 @@ public class DefenseManager : MonoBehaviour
     public Text countText; //  적 카운트 표시 (예: "25 / 50")
     public Text roundText;
     public GameObject gameOverPanel;
+    public GameObject victoryPanel;
 
     [Header("--- 경제 시스템 ---")]
     public int gold = 0;    // 기본 골드
@@ -77,13 +80,13 @@ public class DefenseManager : MonoBehaviour
         // 1. 초기 준비 시간
         yield return StartCoroutine(RunTimer("준비 시간", prepTime));
 
-        // 2. 라운드 무한 반복 (게임오버가 아닐 때까지)
-        while (!isGameOver)
+        // 2. 라운드 루프 (게임오버도 아니고, 승리도 아닐 때만 계속)
+        while (!isGameOver && !isVictory)
         {
             currentRound++;
-            UpdateUI(); // 라운드 텍스트 갱신
+            UpdateUI();
 
-            //  10라운드 단위 체크 (10, 20, 30...)
+            // 10라운드 단위 체크
             if (currentRound % 10 == 0)
             {
                 yield return StartCoroutine(RunBossRound());
@@ -91,6 +94,17 @@ public class DefenseManager : MonoBehaviour
             else
             {
                 yield return StartCoroutine(RunNormalRound());
+            }
+
+            // 게임 오버 상태라면 루프 즉시 종료
+            if (isGameOver) yield break;
+
+            // ★ [승리 조건 체크]
+            // 방금 끝난 라운드가 목표 라운드였다면? -> 승리!
+            if (currentRound >= targetRound)
+            {
+                Victory();
+                yield break; // 더 이상 다음 라운드 진행 안 함 (코루틴 종료)
             }
 
             // 라운드 사이 짧은 대기
@@ -160,7 +174,7 @@ public class DefenseManager : MonoBehaviour
 
     IEnumerator RunTimer(string label, float time)
     {
-        while (time > 0 && !isGameOver)
+        while (time > 0 && !isGameOver && !isVictory)
         {
             time -= Time.deltaTime;
             UpdateTimerUI(label, time);
@@ -181,7 +195,7 @@ public class DefenseManager : MonoBehaviour
     {
         for (int i = 0; i < data.count; i++)
         {
-            if (isGameOver) yield break;
+            if (isGameOver || isVictory) yield break; // 승리했으면 스폰 중단
             SpawnEnemy(data.enemyPrefab, data.moveSpeed);
             yield return new WaitForSeconds(data.spawnRate);
         }
@@ -261,6 +275,26 @@ public class DefenseManager : MonoBehaviour
         {
             gameOverPanel.SetActive(true); // 패널 켜기
         }
+    }
+
+    void Victory()
+    {
+        if (isVictory || isGameOver) return;
+
+        isVictory = true;
+        Debug.Log("게임 승리! (클리어)");
+
+        // 시간은 멈추지 않음 (Time.timeScale 건드리지 않음)
+        // 대신 몬스터 스폰 코루틴이 isVictory 플래그 때문에 멈춤.
+
+        // 승리 UI 띄우기
+        if (victoryPanel != null)
+        {
+            victoryPanel.SetActive(true);
+        }
+
+        // 타이머 텍스트 갱신
+        if (timerText != null) timerText.text = "<color=yellow>VICTORY!</color>";
     }
 
     void UpdateUI()

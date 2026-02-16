@@ -19,8 +19,10 @@ MonoBehaviour:
   cooldown: 10
   needTarget: 1
   targetRange: 0
-  effectRadius: 6
+  effectRadius: 12
+  isAttackProc: 0
+  procChance: 0
   damage: 100
-  radius: 6
-  explosionVFX: {fileID: 3318289061747464350, guid: 7bda09be958a12b49a166ec67f8353e6,
+  radius: 12
+  explosionVFX: {fileID: 2433282508537954060, guid: 3ef3ae421f71c5c4e97fe12dc2fc6312,
     type: 3}

@@ -172,28 +172,44 @@ public class UnitCommandPanel : MonoBehaviour
 
     void SetBasicCommands()
     {
-        // 0: 공격, 1: 정지, 2: 홀드, 3: 판매
+        // 0~2번 (공격, 정지, 홀드) 설정은 그대로 유지...
         if (slots.Length > 0) slots[0].Setup(attackIcon, "공격 (A)", "적을 공격합니다.", false, OnClickAttack);
         if (slots.Length > 1) slots[1].Setup(stopIcon, "정지 (S)", "멈춥니다.", false, OnClickStop);
         if (slots.Length > 2) slots[2].Setup(holdIcon, "홀드 (H)", "제자리를 지킵니다.", false, OnClickHold);
 
-        // ★ 4번째 슬롯: 판매 버튼
+        // ★ 4번째 슬롯: 판매 버튼 
         if (slots.Length > 3)
         {
-            // 대표 유닛 정보 확인
             UnitStat mainStat = rtsController.selectedUnits[0].GetComponent<UnitStat>();
+
             if (mainStat != null && mainStat.data != null)
             {
-                // 3성 이하만 판매 가능 (rank <= 3)
-                bool canSell = mainStat.data.rank <= 3;
+                bool isBuilding = mainStat.data.isBuilding;
+                bool isLowRank = mainStat.data.rank <= 3; // 3성 이하만 판매 가능
 
-                slots[3].Setup(
-                    sellIcon,
-                    "판매 (V)",
-                    canSell ? $"유닛을 판매하여\n재화 {mainStat.data.sellPrice}를 얻습니다." : "최상위 유닛은\n판매할 수 없습니다.",
-                    !canSell, // 판매 불가면 잠금(true)
-                    OnClickSell
-                );
+                // ★판매 가능한 조건: "건물이 아니고" AND "3성 이하일 때"
+                bool canSell = !isBuilding && isLowRank;
+
+                if (canSell)
+                {
+                    // 조건이 맞을 때만 버튼 생성!
+                    slots[3].Setup(
+                        sellIcon,
+                        "판매 (V)",
+                        $"유닛을 판매하여\n재화 {mainStat.data.sellPrice}를 얻습니다.",
+                        false, // 잠금 아님
+                        OnClickSell
+                    );
+                }
+                else
+                {
+                    // 조건이 안 맞으면 버튼을 아예 없애버림 (화면에 안 보임)
+                    slots[3].Clear();
+                }
+            }
+            else
+            {
+                slots[3].Clear();
             }
         }
     }
