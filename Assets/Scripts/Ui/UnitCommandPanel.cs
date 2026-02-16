@@ -33,7 +33,7 @@ public class UnitCommandPanel : MonoBehaviour
 
     void Update()
     {
-        CheckSelection();
+        
 
         if (rtsController != null && rtsController.selectedUnits.Count > 0)
         {
@@ -44,29 +44,21 @@ public class UnitCommandPanel : MonoBehaviour
             var mainUnit = rtsController.selectedUnits[0].GetComponent<UnitSkillController>();
             if (mainUnit != null)
             {
-                if (Input.GetKeyDown(KeyCode.Q)) mainUnit.TryUseSkill(0);
-                if (Input.GetKeyDown(KeyCode.W)) mainUnit.TryUseSkill(1);
-                if (Input.GetKeyDown(KeyCode.E)) mainUnit.TryUseSkill(2);
-                if (Input.GetKeyDown(KeyCode.R)) mainUnit.TryUseSkill(3);
+                if (Input.GetKeyDown(KeyCode.Q)) mainUnit.OnClickSkillButton(0);
+                if (Input.GetKeyDown(KeyCode.W)) mainUnit.OnClickSkillButton(1);
+                if (Input.GetKeyDown(KeyCode.E)) mainUnit.OnClickSkillButton(2);
+                if (Input.GetKeyDown(KeyCode.R)) mainUnit.OnClickSkillButton(3);
             }
         }
         // ★ 쿨타임 UI 갱신 (매 프레임)
         UpdateSkillCooldowns();
-        CheckSkills();
+        
     }
 
     // ★ 스킬 버튼 세팅 함수 (CheckSelection 안에서 호출)
     void CheckSkills()
     {
         
-        int startSlotIndex = 8;
-
-        // 일단 스킬 슬롯들 비우기
-        for (int i = startSlotIndex; i < startSlotIndex + 4; i++)
-        {
-            if (i < slots.Length) slots[i].Clear();
-        }
-
         if (rtsController.selectedUnits.Count == 0) return;
 
         UnitStat mainStat = rtsController.selectedUnits[0].GetComponent<UnitStat>();
@@ -75,24 +67,25 @@ public class UnitCommandPanel : MonoBehaviour
         // 스킬 리스트가 있으면 버튼 생성
         if (mainStat.data.skills != null)
         {
+            int startSlotIndex = 8; // 8번 슬롯부터 시작
+
             for (int i = 0; i < mainStat.data.skills.Count; i++)
             {
                 int slotIdx = startSlotIndex + i;
-                if (slotIdx >= slots.Length) break; // 슬롯 부족하면 중단
+                if (slotIdx >= slots.Length) break;
 
                 SkillBase skill = mainStat.data.skills[i];
                 if (skill == null) continue;
 
-                // 스킬 버튼 세팅
-                // 패시브면 클릭해도 아무 일 안 일어남 (action = null)
-                // 액티브면 TryUseSkill 연결
-                int skillIndex = i; // 람다 캡처용 임시 변수
+                // 디버그 로그 (확인용)
+                // Debug.Log($"[UI 그리기] 스킬 {i}: {skill.skillName}");
 
+                int skillIndex = i;
                 slots[slotIdx].Setup(
                     skill.icon,
                     skill.skillName,
                     skill.description + (skill.isPassive ? "\n<color=yellow>[패시브]</color>" : $"\n<color=cyan>[쿨타임: {skill.cooldown}초]</color>"),
-                    false, // 잠김 아님
+                    false,
                     skill.isPassive ? null : () => OnClickSkill(skillIndex),
                     ""
                 );
@@ -100,12 +93,28 @@ public class UnitCommandPanel : MonoBehaviour
         }
     }
 
+    // 버튼을 클릭하면 이 함수가 실행됩니다.
     void OnClickSkill(int index)
     {
-        if (rtsController.selectedUnits.Count > 0)
+        Debug.Log($"[UI] 스킬 버튼 클릭됨! 슬롯 번호: {index}"); // 1. 여기까지 오는지 확인
+
+        if (rtsController == null || rtsController.selectedUnits.Count == 0)
         {
-            var skillController = rtsController.selectedUnits[0].GetComponent<UnitSkillController>();
-            if (skillController != null) skillController.TryUseSkill(index);
+            Debug.LogError("[UI] 선택된 유닛이 없습니다!");
+            return;
+        }
+
+        // 대표 유닛(0번) 가져오기
+        var unitSkill = rtsController.selectedUnits[0].GetComponent<UnitSkillController>();
+
+        if (unitSkill != null)
+        {
+            Debug.Log($"[UI] 유닛({unitSkill.name})에게 스킬({index}) 사용 명령 보냄"); // 2. 여기까지 오는지 확인
+            unitSkill.OnClickSkillButton(index);
+        }
+        else
+        {
+            Debug.LogError("[UI] 유닛에 UnitSkillController가 없습니다!");
         }
     }
 
@@ -129,8 +138,20 @@ public class UnitCommandPanel : MonoBehaviour
 
     public void UpdateCommandPanel()
     {
-        // 외부(RTSController)에서 강제로 UI 갱신하고 싶을 때 부르는 함수
-        CheckSelection();
+        // 1. 일단 싹 비운다. (잔상 제거)
+        ClearAllSlots();
+
+        // 2. 유닛이 없으면 끝
+        if (rtsController == null || rtsController.selectedUnits.Count == 0) return;
+
+        // 3. 기본 명령 버튼 (공격, 정지, 홀드, 판매) 그리기
+        SetBasicCommands();
+
+        // 4. 조합 버튼 그리기
+        CheckMerge();
+
+        // 5. ★ 스킬 버튼 그리기 (여기서 호출!)
+        CheckSkills();
     }
 
     void CheckSelection()
@@ -146,10 +167,7 @@ public class UnitCommandPanel : MonoBehaviour
         {
             rtsController.selectedUnits.RemoveAt(0);
             return;
-        }
-
-        SetBasicCommands();
-        CheckMerge();
+        }    
     }
 
     void SetBasicCommands()

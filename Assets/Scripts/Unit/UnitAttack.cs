@@ -5,9 +5,7 @@ public class UnitAttack : MonoBehaviour
 {
     private UnitStat stat;
     private float attackTimer = 0f;
-    private Animator anim;
-
-    // ★ 추가됨: 내 유닛의 이동 상태를 확인할 변수
+    private Animator anim;    
     private NavMeshAgent agent;
 
     [Header("상태")]
@@ -15,13 +13,14 @@ public class UnitAttack : MonoBehaviour
     public bool isAttackMoving = false;
     public bool isStopped = false;
 
+    private UnitSkillController skillController; // ★ 연결용 변수
+
     void Start()
     {
         stat = GetComponent<UnitStat>();
-        anim = GetComponentInChildren<Animator>();
-
-        // ★ 내 몸에 붙어있는 네비게이션(이동) 컴포넌트 가져오기
+        anim = GetComponentInChildren<Animator>();       
         agent = GetComponent<NavMeshAgent>();
+        skillController = GetComponent<UnitSkillController>();
     }
 
     void Update()
@@ -103,15 +102,12 @@ public class UnitAttack : MonoBehaviour
 
     void Attack()
     {
-        attackTimer = 0f; // 쿨타임 초기화
-
-        // 1. 애니메이션 재생
+        attackTimer = 0f;
         if (anim != null) anim.SetTrigger("Attack");
 
-        // 2. 투사체 발사
         if (target != null)
         {
-            // 데이터에 투사체가 등록되어 있는지 확인
+            // 1. 투사체(Projectile)를 쓰는 원거리 유닛
             if (stat.data.projectilePrefab != null)
             {
                 Vector3 spawnPos = transform.position + Vector3.up * 0.5f;
@@ -119,15 +115,24 @@ public class UnitAttack : MonoBehaviour
                 Projectile projectile = projGO.GetComponent<Projectile>();
 
                 if (projectile != null)
-                {
-                    projectile.Setup(target, stat.data.damage);
+                {                   
+                    projectile.Setup(target, stat.data.damage, skillController);                    
                 }
             }
+            // 2. 근접 공격 유닛 (즉발 데미지)
             else
             {
-                // 투사체가 없으면 근접 공격 (즉시 데미지)
                 EnemyHP enemyHP = target.GetComponent<EnemyHP>();
-                if (enemyHP != null) enemyHP.TakeDamage(stat.data.damage);
+                if (enemyHP != null)
+                {
+                    enemyHP.TakeDamage(stat.data.damage);
+
+                    // 근접 유닛은 바로 터뜨립니다. 
+                    if (skillController != null)
+                    {
+                        skillController.TryAttackProc(target.position);
+                    }
+                }
             }
         }
     }

@@ -20,8 +20,9 @@ MonoBehaviour:
   sellPrice: 0
   skills:
   - {fileID: 11400000, guid: d83b18694a081174ea6c6e843ddd106a, type: 2}
-  attackRange: 5
-  attackSpeed: 1
+  - {fileID: 11400000, guid: 7e9c1ef15d4833a419a631092b93fb68, type: 2}
+  attackRange: 1
+  attackSpeed: 2
   damage: 10
   projectilePrefab: {fileID: 0}
   description: "\uC5D0\uC288\uB974"

@@ -23,8 +23,16 @@ public class RTSController : MonoBehaviour
     [Header("커서 설정")]
     public Texture2D defaultCursor;
     public Texture2D attackCursor;
+    public Texture2D skillCursor;
     public Vector2 cursorHotspot = Vector2.zero;
 
+    [Header("스킬 범위 표시")]
+    public GameObject rangeIndicatorPrefab; // 아까 만든 원 프리팹 연결
+    private GameObject currentIndicator;    // 생성된 원 인스턴스
+
+    // 스킬 조준 관련 변수
+    private bool isSkillCommand = false;
+    private int pendingSkillIndex = -1; // 사용 대기 중인 스킬 번호
     public bool isAttackCommand = false;
 
     void Start()
@@ -56,6 +64,24 @@ public class RTSController : MonoBehaviour
             {
                 isAttackCommand = false;
                 SetCursor(defaultCursor);
+            }
+            return;
+        }
+
+        // 2. 스킬 명령 대기 
+        if (isSkillCommand)
+        {
+            UpdateSkillIndicator();
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                PerformSkillCommand(); // 클릭한 위치에 스킬 발사!
+                return;
+            }
+            else if (Input.GetMouseButtonDown(1)) // 우클릭 취소
+            {
+                CancelCommand();
+                return;
             }
             return;
         }
@@ -291,9 +317,10 @@ public class RTSController : MonoBehaviour
         if (UnitCommandPanel.Instance != null)
             UnitCommandPanel.Instance.UpdateCommandPanel();
     }
-
+        
     void PerformAttackCommand()
     {
+
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
@@ -335,5 +362,97 @@ public class RTSController : MonoBehaviour
         if (attackCursor != null)
             SetCursor(attackCursor);
     }
+
+    public void EnterSkillMode(int skillIndex)
+    {
+        isSkillCommand = true;
+        isAttackCommand = false;
+        pendingSkillIndex = skillIndex;
+
+        SetCursor(skillCursor != null ? skillCursor : attackCursor);
+
+        // --- 범위 표시기 켜기 ---
+        if (selectedUnits.Count > 0)
+        {
+            var unitStat = selectedUnits[0].GetComponent<UnitStat>();
+            if (unitStat != null && unitStat.data.skills.Count > skillIndex)
+            {
+                float radius = unitStat.data.skills[skillIndex].effectRadius;
+
+                // 반경이 0보다 클 때만 표시 (단일 타겟 스킬은 표시 안 함)
+                if (radius > 0)
+                {
+                    if (currentIndicator == null)
+                        currentIndicator = Instantiate(rangeIndicatorPrefab);
+
+                    currentIndicator.SetActive(true);
+                    // 원의 크기 조절 (지름 = 반지름 * 2)
+                    currentIndicator.transform.localScale = new Vector3(radius * 2, radius * 2, 1);
+                }
+            }
+        }
+    }
+
+    void PerformSkillCommand()
+    {
+        Debug.Log("스킬 발사 시도!"); // 1. 함수 진입 확인
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        // 레이캐스트 확인
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundLayer | unitLayer))
+        {
+            Debug.Log($"타겟 위치 감지: {hit.point}, 맞은 놈: {hit.collider.name}"); // 2. 레이캐스트 성공 확인
+            Debug.Log($" 현재 선택된 유닛 수: {selectedUnits.Count}명");
+
+            // 선택된 유닛들에게 "저기에 스킬 써!" 명령
+            foreach (var unit in selectedUnits)
+            {
+                if (unit == null)
+                {
+                    Debug.LogError(" 선택된 유닛 리스트에 '빈 껍데기(null)'가 들어있습니다!");
+                    continue;
+                }
+
+                // ... (스킬 발사 로직) ...
+                var skillController = unit.GetComponent<UnitSkillController>();
+                if (skillController != null)
+                {
+                    Debug.Log($" {unit.name}에게 스킬 발사 명령!"); // 이게 안 뜨고 있음
+                    skillController.UseSkill(pendingSkillIndex, hit.point);
+                }
+            }
+        }
+        else
+        {
+            Debug.LogError("레이캐스트 실패! 바닥(Ground) 레이어 설정을 확인하세요."); // 3. 실패 원인
+        }
+
+        CancelCommand();
+    }
+
+    void CancelCommand()
+    {
+        isAttackCommand = false;
+        isSkillCommand = false;
+        SetCursor(defaultCursor);
+
+        // 원 숨기기
+        if (currentIndicator != null) currentIndicator.SetActive(false);
+    }
+
+    //  마우스 위치로 원 이동
+    void UpdateSkillIndicator()
+    {
+        if (currentIndicator == null || !currentIndicator.activeSelf) return;
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundLayer))
+        {
+            // 바닥 위로 살짝 띄워서 위치시킴
+            currentIndicator.transform.position = hit.point + Vector3.up * 0.1f;
+        }
+    }
+
+
 }
 

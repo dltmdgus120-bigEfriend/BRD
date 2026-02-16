@@ -12,9 +12,19 @@ public abstract class SkillBase : ScriptableObject
     public bool isPassive; // 패시브 여부
     public float cooldown; // 쿨타임 (패시브면 0)
 
+    [Header("타겟팅 설정")]
+    public bool needTarget; // 체크하면 조준 모드로 진입 (메테오 등)
+    public float targetRange;     // 사거리 (커서 범위 제한용, 0이면 제한 없음)   
+    public float effectRadius = 0f;  // 스킬 범위 (폭발 반경) - 이걸로 원 크기를 조절함
+
+    [Header("일반공격 발동 설정")]
+    public bool isAttackProc;   // 체크하면 "공격 시 확률 발동" 스킬이 됨
+    [Range(0, 100)]
+    public float procChance;    // 발동 확률 (0 ~ 100%)
+
     // 스킬을 사용했을 때 일어날 일 (자식들이 내용을 채워야 함)
     // user: 스킬을 쓴 유닛
-    public abstract void Execute(UnitStat user);
+    public abstract void Execute(UnitStat user, Vector3 targetPos = default); // 위치 정보 추가
 
     // (옵션) 패시브라면 장착하자마자 발동할 효과
     public virtual void OnEquip(UnitStat user) { }

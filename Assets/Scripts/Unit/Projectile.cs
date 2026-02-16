@@ -2,16 +2,17 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    private UnitSkillController ownerSkill;
     public float speed = 15f; // 날아가는 속도
 
     private Transform target;
     private int damage;
 
-    // 대포(UnitAttack)가 발사할 때 목표물과 데미지를 전달해주는 함수
-    public void Setup(Transform _target, int _damage)
+    public void Setup(Transform _target, int _damage, UnitSkillController _owner)
     {
         target = _target;
         damage = _damage;
+        ownerSkill = _owner; // 주인 저장
     }
 
     void Update()
@@ -40,14 +41,19 @@ public class Projectile : MonoBehaviour
 
     void HitTarget()
     {
-        // 적에게 데미지를 주고 투사체는 파괴
         EnemyHP enemy = target.GetComponent<EnemyHP>();
         if (enemy != null)
         {
             enemy.TakeDamage(damage);
+
+            // ★ [핵심] 적을 맞춘 이 시점에 주인의 스킬 발동을 시도!
+            if (ownerSkill != null)
+            {
+                // 투사체 위치(transform.position)나 적 위치(target.position)를 넘겨줌
+                ownerSkill.TryAttackProc(transform.position);
+            }
         }
 
-        // (선택) 여기에 펑! 하는 파티클 효과를 넣어도 좋습니다.
         Destroy(gameObject);
     }
 }

@@ -16,4 +16,4 @@ MonoBehaviour:
     type: 3}
   count: 5
   spawnRate: 0.5
-  moveSpeed: 5
+  moveSpeed: 10

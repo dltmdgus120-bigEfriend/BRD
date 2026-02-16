@@ -112,6 +112,7 @@ GameObject:
   - component: {fileID: -630656082862130304}
   - component: {fileID: 2743097870539087881}
   - component: {fileID: 6994851463699689929}
+  - component: {fileID: 8115861573662744238}
   m_Layer: 6
   m_Name: Ashur
   m_TagString: Untagged
@@ -236,6 +237,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   modelRenderer: {fileID: 739923868608039451}
   isOriginalFacingRight: 0
+--- !u!114 &8115861573662744238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3539101861832537204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc44c3447f547db48bcd720e11dbcffd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3749630462424043282
 GameObject:
   m_ObjectHideFlags: 0

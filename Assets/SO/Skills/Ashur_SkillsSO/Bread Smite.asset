@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9017209c2fb5b74b9dc1b76f8f64b55, type: 3}
+  m_Name: Bread Smite
+  m_EditorClassIdentifier: 
+  skillName: Bread Smite
+  icon: {fileID: 21300000, guid: 79e80576c9f34ad489d221e9f999bd8f, type: 3}
+  description: "\uB531\uB531\uD55C \uD638\uC2E0\uC6A9 \uBC14\uAC8C\uD2B8"
+  isPassive: 0
+  cooldown: 0.5
+  needTarget: 0
+  targetRange: 0
+  effectRadius: 0
+  isAttackProc: 1
+  procChance: 20
+  bonusDamage: 50
+  hitVFX: {fileID: 0}

@@ -47,6 +47,8 @@ public class EnemyHP : MonoBehaviour
         if (DefenseManager.Instance != null)
         {
             DefenseManager.Instance.AddCurrency(dropGold, dropElif);
+            // ★ [핵심] 적 숫자 카운트 감소
+            DefenseManager.Instance.UnregisterEnemy();
         }
 
         // (추후 사망 이펙트 추가 가능)

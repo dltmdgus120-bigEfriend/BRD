@@ -3882,7 +3882,7 @@ GameObject:
   - component: {fileID: 1241594275}
   - component: {fileID: 1241594274}
   m_Layer: 5
-  m_Name: Player HP
+  m_Name: EnemyCount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3904,7 +3904,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 307, y: 201.6}
+  m_AnchoredPosition: {x: 307, y: 191.8}
   m_SizeDelta: {x: 160, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1241594274
@@ -3929,18 +3929,18 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 30
+    m_FontSize: 20
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 40
-    m_Alignment: 4
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Player HP
+  m_Text: EnemyCount
 --- !u!222 &1241594275
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5472,7 +5472,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.5849056, g: 0.5849056, b: 0.5849056, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -5922,7 +5922,10 @@ MonoBehaviour:
   selectedUnits: []
   defaultCursor: {fileID: 2800000, guid: 06089b93bcc836642a6614a982fec6b9, type: 3}
   attackCursor: {fileID: 2800000, guid: 8567873460249aa42883cd7ee6b1d3e9, type: 3}
+  skillCursor: {fileID: 2800000, guid: 8567873460249aa42883cd7ee6b1d3e9, type: 3}
   cursorHotspot: {x: 0, y: 0}
+  rangeIndicatorPrefab: {fileID: 4227225438688328442, guid: 1e969903708d35c479c0c5976351adeb,
+    type: 3}
   isAttackCommand: 0
 --- !u!114 &1752383330
 MonoBehaviour:
@@ -5974,13 +5977,14 @@ MonoBehaviour:
   bossPrefabs:
   - {fileID: 2461428311817073197, guid: 6a877d4c2ce0cee42b61f2bdaa830398, type: 3}
   bossTimeLimit: 120
-  playerHP: 1
+  maxEnemyCount: 70
+  currentEnemyCount: 0
   currentRound: 0
   roundTime: 5
   prepTime: 5
   isGameOver: 0
   timerText: {fileID: 1102886171}
-  hpText: {fileID: 1241594274}
+  countText: {fileID: 1241594274}
   roundText: {fileID: 1046992133}
   gameOverPanel: {fileID: 1277163039}
   gold: 0
@@ -7735,6 +7739,11 @@ PrefabInstance:
     - target: {fileID: 5500872206302447734, guid: ab79a29e1492af941b5e9ea911323d4e,
         type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5519112020586763698, guid: ab79a29e1492af941b5e9ea911323d4e,
+        type: 3}
+      propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7113918007196686215, guid: ab79a29e1492af941b5e9ea911323d4e,

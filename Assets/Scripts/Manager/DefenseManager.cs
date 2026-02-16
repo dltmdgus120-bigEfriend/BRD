@@ -18,19 +18,20 @@ public class DefenseManager : MonoBehaviour
     public List<GameObject> bossPrefabs; // 인스펙터에서 보스 프리팹들을 순서대로 넣으세요.
     public float bossTimeLimit = 120f;     //  보스 제한시간   
 
-    [Header("--- 게임 상태 ---")]
-    public int playerHP = 40;
+    [Header("--- 게임 상태 (카운트 방식) ---")]
+    public int maxEnemyCount = 50; // 최대 허용 적 숫자 (이거 넘으면 게임오버)
+    [HideInInspector] public int currentEnemyCount = 0; // 현재 적 숫자 (인스펙터에선 숨김)
+
     public int currentRound = 0;
-    public float roundTime = 40f;    
+    public float roundTime = 40f;
     public float prepTime = 30f;
     public bool isGameOver = false;
 
     private GameObject currentBossInstance;
-   
-   
+
     [Header("--- UI 연결 (꼭 확인하세요!) ---")]
-    public Text timerText; 
-    public Text hpText;
+    public Text timerText;
+    public Text countText; //  적 카운트 표시 (예: "25 / 50")
     public Text roundText;
     public GameObject gameOverPanel;
 
@@ -52,7 +53,6 @@ public class DefenseManager : MonoBehaviour
 
     void Start()
     {
-
         if (SoundManager.Instance != null && gameBGM != null)
         {
             SoundManager.Instance.PlayBGM(gameBGM);
@@ -67,7 +67,8 @@ public class DefenseManager : MonoBehaviour
             }
         }
 
-        UpdateUI();
+        UpdateCurrencyUI();
+        UpdateCountUI(); // 시작 시 카운트 UI 갱신
         StartCoroutine(GameLoop());
     }
 
@@ -76,13 +77,13 @@ public class DefenseManager : MonoBehaviour
         // 1. 초기 준비 시간
         yield return StartCoroutine(RunTimer("준비 시간", prepTime));
 
-        // 2. 라운드 무한 반복
-        while (playerHP > 0 && !isGameOver)
+        // 2. 라운드 무한 반복 (게임오버가 아닐 때까지)
+        while (!isGameOver)
         {
             currentRound++;
-            UpdateUI();
+            UpdateUI(); // 라운드 텍스트 갱신
 
-            // ★ 10라운드 단위 체크 (10, 20, 30...)
+            //  10라운드 단위 체크 (10, 20, 30...)
             if (currentRound % 10 == 0)
             {
                 yield return StartCoroutine(RunBossRound());
@@ -92,7 +93,7 @@ public class DefenseManager : MonoBehaviour
                 yield return StartCoroutine(RunNormalRound());
             }
 
-            // 라운드 사이 짧은 대기 (선택사항, 필요 없으면 삭제)
+            // 라운드 사이 짧은 대기
             yield return new WaitForSeconds(1f);
         }
     }
@@ -132,7 +133,7 @@ public class DefenseManager : MonoBehaviour
         float timer = bossTimeLimit;
         while (timer > 0)
         {
-            // 보스가 죽었는지 확인 (플레이어가 보스를 잡음 -> 라운드 클리어)
+            // 보스가 죽었는지 확인
             if (currentBossInstance == null)
             {
                 UpdateTimerUI("보스 처치!", 0);
@@ -143,7 +144,7 @@ public class DefenseManager : MonoBehaviour
             timer -= Time.deltaTime;
             UpdateTimerUI($"<color=red>BOSS!!</color>", timer);
 
-            if (playerHP <= 0) break;
+            if (isGameOver) break; // 게임오버 체크
             yield return null;
         }
 
@@ -159,7 +160,7 @@ public class DefenseManager : MonoBehaviour
 
     IEnumerator RunTimer(string label, float time)
     {
-        while (time > 0 && !isGameOver && playerHP > 0)
+        while (time > 0 && !isGameOver)
         {
             time -= Time.deltaTime;
             UpdateTimerUI(label, time);
@@ -167,8 +168,6 @@ public class DefenseManager : MonoBehaviour
         }
     }
 
-
-  
     void UpdateTimerUI(string label, float timeRemaining)
     {
         if (timerText != null)
@@ -178,14 +177,11 @@ public class DefenseManager : MonoBehaviour
         }
     }
 
-
-
-
     IEnumerator SpawnWave(WaveData data)
     {
         for (int i = 0; i < data.count; i++)
         {
-            if (playerHP <= 0) yield break;
+            if (isGameOver) yield break;
             SpawnEnemy(data.enemyPrefab, data.moveSpeed);
             yield return new WaitForSeconds(data.spawnRate);
         }
@@ -196,6 +192,10 @@ public class DefenseManager : MonoBehaviour
         if (pathPoints == null || pathPoints.Length == 0) return;
 
         GameObject enemy = Instantiate(prefab, pathPoints[0].position, Quaternion.identity);
+
+        //  소환되자마자 카운트 등록
+        RegisterEnemy();
+
         EnemyMovement movement = enemy.GetComponent<EnemyMovement>();
         if (movement != null)
         {
@@ -212,21 +212,40 @@ public class DefenseManager : MonoBehaviour
         // 보스 생성 및 변수에 저장 (추적용)
         currentBossInstance = Instantiate(prefab, pathPoints[0].position, Quaternion.identity);
 
+        // 보스도 카운트에 포함
+        RegisterEnemy();
+
         // 보스 이동 설정
         EnemyMovement movement = currentBossInstance.GetComponent<EnemyMovement>();
         if (movement != null)
         {
             // 보스 속도는 프리팹에 설정된 값을 따르거나, 필요시 여기서 수정
-            movement.isLooping = true; // ★ 보스는 순환하도록 강제 설정
-            movement.Setup(pathPoints);
+                      movement.Setup(pathPoints);
         }
     }
 
-    public void TakeDamage(int dmg)
+    //  적 소환 시 카운트 증가 + 게임오버 체크
+    public void RegisterEnemy()
     {
-        playerHP -= dmg;
-        UpdateUI();
-        if (playerHP <= 0) GameOver();
+        currentEnemyCount++;
+        UpdateCountUI();
+
+        // 적 숫자가 한계치를 넘었는지 확인
+        if (currentEnemyCount >= maxEnemyCount)
+        {
+            Debug.Log($"적군 숫자가 너무 많습니다! ({currentEnemyCount}/{maxEnemyCount}) 게임 오버!");
+            GameOver();
+        }
+    }
+
+    //  적이 죽을 때 호출 (카운트 감소)
+    public void UnregisterEnemy()
+    {
+        currentEnemyCount--;
+        // 0 밑으로 내려가는 버그 방지
+        if (currentEnemyCount < 0) currentEnemyCount = 0;
+
+        UpdateCountUI();
     }
 
     void GameOver()
@@ -246,8 +265,19 @@ public class DefenseManager : MonoBehaviour
 
     void UpdateUI()
     {
-        if (hpText != null) hpText.text = $"HP: {playerHP}";
         if (roundText != null) roundText.text = $"Round: {currentRound}";
+    }
+
+    // ★ 적 숫자 UI 갱신 함수 (기존 HP Text 활용)
+    void UpdateCountUI()
+    {
+        if (countText != null)
+        {
+            // 예: "12 / 50" (현재 / 최대)
+            // 위험하면(최대치에 가까워지면) 빨간색으로 표시
+            string color = currentEnemyCount >= maxEnemyCount - 10 ? "<color=red>" : "<color=white>";
+            countText.text = $"Enemy: {color}{currentEnemyCount}</color> / {maxEnemyCount}";
+        }
     }
 
     //돈을 버는 함수 (적이 죽을 때 호출)
@@ -277,5 +307,4 @@ public class DefenseManager : MonoBehaviour
         if (goldText != null) goldText.text = $"{gold:N0}";
         if (elifText != null) elifText.text = $"{elif:N0}";
     }
-
 }
