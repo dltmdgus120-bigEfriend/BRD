@@ -6,8 +6,12 @@ public class EnemyHP : MonoBehaviour
     public int maxHP = 100;
     private int currentHP;
 
+    [Header("보상 설정 (잡으면 주는 돈)")]
+    public int dropGold = 10;   // 일반 몹은 10원
+    public int dropElif = 0;    // 보스나 히든 몹만 값을 넣으세요
+
     [Header("UI 연결")]
-    public Image hpFillImage; // ★ 체력바(채워지는 부분) 이미지
+    public Image hpFillImage; // 체력바(채워지는 부분) 이미지
 
     void Start()
     {
@@ -39,7 +43,13 @@ public class EnemyHP : MonoBehaviour
 
     void Die()
     {
-        // (나중에 여기서 돈이나 점수를 올려주면 됩니다)
+        //  죽으면서 매니저에게 돈 입금
+        if (DefenseManager.Instance != null)
+        {
+            DefenseManager.Instance.AddCurrency(dropGold, dropElif);
+        }
+
+        // (추후 사망 이펙트 추가 가능)
         Destroy(gameObject);
     }
 }

@@ -1,13 +1,19 @@
 using UnityEngine;
 
+
 public class EnemyMovement : MonoBehaviour
 {
     [Header("설정")]
     public float speed = 5f; // 이동 속도
     public int damage = 1;   // 플레이어에게 입히는 데미지
 
+    [Header("보스 전용 설정")]
+    public bool isLooping = false; // ★ 체크하면 도착 지점에서 죽지 않고 순환함
+
     private Transform[] waypoints; // 가야 할 길 목록
     private int wavepointIndex = 0; // 현재 목표 지점 번호
+
+
 
     // 스포너(매니저)가 소환하자마자 길을 알려주는 함수
     public void Setup(Transform[] path)
@@ -36,15 +42,22 @@ public class EnemyMovement : MonoBehaviour
 
     void GetNextWaypoint()
     {
-        // 다음 지점으로 인덱스 증가
         wavepointIndex++;
 
-        // 3. 더 이상 갈 곳이 없다면? (한 바퀴 돔) -> 플레이어 피 깎고 사망
+        // 마지막 지점을 넘어섰을 때
         if (wavepointIndex >= waypoints.Length)
         {
-            DefenseManager.Instance.TakeDamage(damage); // 매니저에게 데미지 전달
-            Destroy(gameObject); // 자폭
-            return;
+            if (isLooping)
+            {
+                // ★ 보스: 인덱스를 0으로 초기화하여 다시 첫 번째 웨이포인트로 이동 (순환)
+                wavepointIndex = 0;
+            }
+            else
+            {
+                // ★ 일반 몹: 플레이어 데미지 입히고 자폭
+                DefenseManager.Instance.TakeDamage(damage);
+                Destroy(gameObject);
+            }
         }
     }
 }

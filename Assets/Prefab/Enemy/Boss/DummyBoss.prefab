@@ -207,7 +207,7 @@ GameObject:
   - component: {fileID: 8831766715697066465}
   - component: {fileID: 2426675593942265944}
   m_Layer: 0
-  m_Name: DummyMonster
+  m_Name: DummyBoss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -312,9 +312,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b654636edd8f8c646a892acd8fc3d65f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  speed: 10
   damage: 1
-  isLooping: 0
+  isLooping: 1
 --- !u!114 &8831766715697066465
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -339,9 +339,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cced75dc8a0c8b40a3551cfc9659196, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 20
-  dropGold: 2
-  dropElif: 0
+  maxHP: 200
+  dropGold: 100
+  dropElif: 100
   hpFillImage: {fileID: 3531142178409404172}
 --- !u!1 &4263485944999094010
 GameObject:
