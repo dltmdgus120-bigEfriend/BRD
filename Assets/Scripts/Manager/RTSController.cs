@@ -15,9 +15,11 @@ public class RTSController : MonoBehaviour
 
     // 내부 변수
     public List<NavMeshAgent> selectedUnits = new List<NavMeshAgent>();
+    // 부대 지정 저장소 (0~9번 키)
+    private List<NavMeshAgent>[] controlGroups = new List<NavMeshAgent>[10];
     private Vector2 startPos;
     private bool isDragging = false;
-
+        
     [Header("커서 설정")]
     public Texture2D defaultCursor;
     public Texture2D attackCursor;
@@ -28,10 +30,20 @@ public class RTSController : MonoBehaviour
     void Start()
     {
         SetCursor(defaultCursor);
+
+        //부대 지정 리스트 초기화 (이거 안 하면 에러 남!)
+        for (int i = 0; i < 10; i++)
+        {
+            controlGroups[i] = new List<NavMeshAgent>();
+        }
+
     }
 
     void Update()
     {
+        // 부대 지정 입력 감지 함수 호출
+        HandleControlGroups();
+
         // 1. 공격 명령 대기
         if (isAttackCommand)
         {
@@ -75,6 +87,74 @@ public class RTSController : MonoBehaviour
                 }
             }
         }
+    }
+
+
+    void HandleControlGroups()
+    {
+        // 알파벳 위 숫자키 0~9 감지 (Alpha0 ~ Alpha9)
+        for (int i = 0; i <= 9; i++)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha0 + i))
+            {
+                // LeftControl(왼쪽)을 확실하게 체크!
+                // (혹시 몰라 오른쪽도 되게는 해뒀습니다. 둘 중 편한 거 쓰세요)
+                bool isCtrl = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
+
+                if (isCtrl)
+                {
+                    // 저장 (Ctrl + 숫자)
+                    AssignControlGroup(i);
+                }
+                else
+                {
+                    // 불러오기 (그냥 숫자)
+                    SelectControlGroup(i);
+                }
+            }
+        }
+    }
+
+    // 부대 저장
+    void AssignControlGroup(int index)
+    {
+        // 아무것도 선택 안 된 상태에서 Ctrl+숫자 누르면 -> 해당 그룹 비우기
+        if (selectedUnits.Count == 0)
+        {
+            controlGroups[index].Clear();
+            Debug.Log($"부대 {index}번 초기화");
+            return;
+        }
+
+        // 현재 선택된 유닛들을 해당 번호 리스트에 복사
+        controlGroups[index].Clear();
+        controlGroups[index].AddRange(selectedUnits);
+
+        Debug.Log($"부대 {index}번 지정 완료! ({selectedUnits.Count}명)");
+    }
+
+    // 부대 불러오기
+    void SelectControlGroup(int index)
+    {
+        // 해당 그룹에 저장된 게 없으면 무시
+        if (controlGroups[index].Count == 0) return;
+
+        // 1. 죽은 유닛 청소 (null 제거)
+        controlGroups[index].RemoveAll(u => u == null);
+
+        // 2. 남은 게 없으면 종료
+        if (controlGroups[index].Count == 0) return;
+
+        // 3. 기존 선택 해제 후 그룹 유닛들 선택
+        DeselectAll();
+
+        foreach (var unit in controlGroups[index])
+        {
+            AddUnitToSelection(unit);
+        }
+
+        // UI 갱신
+        UpdateSelectionUI();
     }
 
     void SetCursor(Texture2D cursorTexture)
