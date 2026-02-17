@@ -9,6 +9,7 @@ public abstract class SkillBase : ScriptableObject
     [TextArea] public string description;
 
     [Header("설정")]
+    public AttackType attackType;
     public bool isPassive; // 패시브 여부
     public float cooldown; // 쿨타임 (패시브면 0)
 

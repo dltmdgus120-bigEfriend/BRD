@@ -17,16 +17,25 @@ public class UnitAttack : MonoBehaviour
 
     void Start()
     {
-        stat = GetComponent<UnitStat>();
+        stat = GetComponentInChildren<UnitStat>();
         anim = GetComponentInChildren<Animator>();       
         agent = GetComponent<NavMeshAgent>();
         skillController = GetComponent<UnitSkillController>();
+        UpdateAnimationSpeed();
     }
 
     void Update()
     {
         // 건물이면 공격 AI 작동 중지
         if (stat != null && stat.data != null && stat.data.isBuilding) return;
+
+        // ★ 이동 애니메이션 처리
+        if (anim != null && agent != null)
+        {
+            // NavMeshAgent가 이동 중인지 확인 (속도가 0.1보다 크면 걷는 중)
+            bool isMoving = agent.velocity.sqrMagnitude > 0.1f;
+            anim.SetBool("IsMoving", isMoving); 
+        }
 
         //완전 정지 상태면 아무것도 안 하고 함수 종료
         if (isStopped) return;
@@ -69,7 +78,13 @@ public class UnitAttack : MonoBehaviour
         // 타겟이 있으면 공격
         if (target != null)
         {
-            if (attackTimer >= stat.data.attackSpeed)
+            // ★ 쿨타임 계산 공식 변경: (1 / 공격속도)
+            // 예: 공속 2.0 -> 1/2 = 0.5초마다 공격
+            // 예: 공속 5.0 -> 1/5 = 0.2초마다 공격
+            // (0으로 나누기 방지를 위해 Mathf.Max 사용)
+            float cooldown = 1f / Mathf.Max(0.01f, stat.data.attackSpeed);
+
+            if (attackTimer >= cooldown)
             {
                 Attack();
             }
@@ -118,8 +133,9 @@ public class UnitAttack : MonoBehaviour
                 Projectile projectile = projGO.GetComponent<Projectile>();
 
                 if (projectile != null)
-                {                   
-                    projectile.Setup(target, stat.data.damage, skillController);                    
+                {
+                    // ★ [수정] Setup 함수에 공격 타입(attackType) 추가 전달
+                    projectile.Setup(target, stat.data.damage, stat.data.attackType, skillController);
                 }
             }
             // 2. 근접 공격 유닛 (즉발 데미지)
@@ -128,9 +144,9 @@ public class UnitAttack : MonoBehaviour
                 EnemyHP enemyHP = target.GetComponent<EnemyHP>();
                 if (enemyHP != null)
                 {
-                    enemyHP.TakeDamage(stat.data.damage);
+                    // ★ [수정] TakeDamage 함수에 공격 타입 추가 전달
+                    enemyHP.TakeDamage(stat.data.damage, stat.data.attackType);
 
-                    // 근접 유닛은 바로 터뜨립니다. 
                     if (skillController != null)
                     {
                         skillController.TryAttackProc(target.position);
@@ -185,5 +201,15 @@ public class UnitAttack : MonoBehaviour
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, GetComponent<UnitStat>().data.attackRange);
         }
+    }
+
+    // 공속이 바뀌거나(버프), 처음 시작할 때 호출
+    public void UpdateAnimationSpeed()
+    {
+        if (anim == null || stat == null || stat.data == null) return;
+
+        // 공속(APS) 자체가 곧 배속입니다.
+        // 공속 1.0 -> 1배속, 공속 2.0 -> 2배속
+        anim.SetFloat("AttackSpeedRatio", stat.data.attackSpeed);
     }
 }

@@ -6,28 +6,55 @@ using System.Linq;
 
 public class UnitInfoPanel : MonoBehaviour
 {
+    public static UnitInfoPanel Instance; // 싱글톤
+
     [Header("1. 단일 선택 UI")]
     public GameObject contentRoot; // 기존 단일 정보창
     public Image portraitImage;
+    public TMP_Text nameText;      
+    public TMP_Text rankText;    
     public TMP_Text damageText;
     public TMP_Text speedText;
     public TMP_Text rangeText;
 
+    [Header("   속성 & 종족 표시")]
+    public Image attributeIcon;    // 속성 아이콘
+    public TMP_Text attributeText; // 속성 이름
+    public Image raceIcon;         // 종족 아이콘
+    public TMP_Text raceText;      // 종족 이름
+
     [Header("2. 다중 선택 UI ")]
-    public GameObject multiSelectionRoot; // 다중 선택창 부모 (새로 만드세요!)
-    public Transform gridContainer;       // 슬롯들이 들어갈 Grid (새로 만드세요!)
-    public GameObject multiSlotPrefab;    // MultiSelectSlot 프리팹 연결
+    public GameObject multiSelectionRoot; 
+    public Transform gridContainer;       
+    public GameObject multiSlotPrefab;    
 
     [Header("아이콘 크기 설정")]
     public float maxIconSize = 80f; // 아이콘이 아무리 커져도 이 이상은 안 커짐 (1명일 때 너무 거대해짐 방지)
     public float spacing = 5f;      // 아이콘 사이 간격
+
+    private UnitStat currentSingleTarget; // 실시간 갱신용 타겟 저장
+
+
+    void Awake()
+    {
+        Instance = this;
+    }
 
     void Start()
     {
         CloseAllPanels();
     }
 
-    // ★ RTSController가 호출할 메인 함수 (리스트를 통째로 받음)
+    void Update()
+    {
+        // 단일 유닛 선택 중일 때, 공격력 같은 수치가 버프 등으로 변할 수 있으므로 실시간 갱신
+        if (contentRoot.activeSelf && currentSingleTarget != null)
+        {
+            UpdateLiveValues();
+        }
+    }
+
+    // RTSController가 호출할 메인 함수 (리스트를 통째로 받음)
     public void UpdateSelection(List<UnityEngine.AI.NavMeshAgent> selectedUnits)
     {
         // 1. 선택된 게 없으면 -> 다 끄기
@@ -57,7 +84,8 @@ public class UnitInfoPanel : MonoBehaviour
         }
     }
 
-    // 기존 단일 정보 갱신 함수 (이름 변경: UpdateInfo -> UpdateSingleInfo)
+    // 기존 단일 정보 갱신 함수 
+    // --- 단일 정보창 로직 ---
     void UpdateSingleInfo(UnitStat stat)
     {
         if (stat == null || stat.data == null)
@@ -66,15 +94,103 @@ public class UnitInfoPanel : MonoBehaviour
             return;
         }
 
+        currentSingleTarget = stat; // 저장 (Update에서 갱신용)
+
         // 패널 전환
         if (contentRoot != null) contentRoot.SetActive(true);
         if (multiSelectionRoot != null) multiSelectionRoot.SetActive(false);
 
-        // UI 갱신 (기존 코드 유지)
-        if (portraitImage != null) portraitImage.sprite = stat.data.icon;
-        if (damageText != null) damageText.text = $"공격력: {stat.data.damage}";
-        if (speedText != null) speedText.text = $"공격속도: {stat.data.attackSpeed:F2}";
-        if (rangeText != null) rangeText.text = $"사거리: {stat.data.attackRange}";
+        // 기본 정보 갱신
+        UnitData data = stat.data;
+        if (portraitImage != null) portraitImage.sprite = data.icon;
+        if (nameText != null) nameText.text = data.unitName;
+        if (rankText != null) rankText.text = $"{data.rank}성"; // 추후 별 이미지 반복으로 교체 가능
+
+        // 수치 정보 (UpdateLiveValues에서 계속 갱신됨)
+        UpdateLiveValues();
+
+        // 속성 정보 표시
+        if (data.attribute != null)
+        {
+            if (attributeIcon != null)
+            {
+                attributeIcon.gameObject.SetActive(true);
+                attributeIcon.sprite = data.attribute.icon;
+            }
+            if (attributeText != null)
+            {
+                attributeText.text = data.attribute.traitName;
+                attributeText.color = data.attribute.color;
+            }
+        }
+        else
+        {
+            if (attributeIcon != null) attributeIcon.gameObject.SetActive(false);
+            if (attributeText != null) attributeText.text = "-";
+        }
+
+        //  종족 정보 표시
+        if (data.race != null)
+        {
+            if (raceIcon != null)
+            {
+                raceIcon.gameObject.SetActive(true);
+                raceIcon.sprite = data.race.icon;
+            }
+            if (raceText != null)
+            {
+                raceText.text = data.race.traitName;
+                raceText.color = data.race.color;
+            }
+        }
+        else
+        {
+            if (raceIcon != null) raceIcon.gameObject.SetActive(false);
+            if (raceText != null) raceText.text = "-";
+        }
+    }
+
+    // 실시간으로 변하는 수치 (공격력 등) 갱신
+    void UpdateLiveValues()
+    {
+        if (currentSingleTarget == null) return;
+
+        // 데이터 원본(data.damage)이 아니라, 현재 스탯(stat.damage)을 가져와야 버프 반영됨
+        // (UnitStat에 현재 데미지 변수가 있다고 가정. 없다면 data.damage 사용)
+        int currentDmg = currentSingleTarget.data.damage;
+        AttackType type = currentSingleTarget.data.attackType;
+
+        // 공격 타입에 따른 텍스트 색상 설정
+        string typeColor = "white";
+        string typeName = "";
+
+        switch (type)
+        {
+            case AttackType.Physical:
+                typeColor = "#FF5555"; // 빨강 (물리)
+                typeName = "물리";
+                break;
+            case AttackType.Magic:
+                typeColor = "#5555FF"; // 파랑 (마법)
+                typeName = "마법";
+                break;
+            case AttackType.Fixed:
+                typeColor = "#FFFFFF"; // 흰색 (고정)
+                typeName = "고정";
+                break;
+        }
+
+        // 공격력 텍스트: "공격력: 50 (물리)"
+        if (damageText != null)
+        {
+            damageText.text = $"공격력: {currentDmg} <size=18><color={typeColor}>({typeName})</color></size>";
+        }
+        if (speedText != null)
+        {
+            // F2:소수점 둘째 자리까지 (예: 1.50 /초)
+            speedText.text = $"공격속도: {currentSingleTarget.data.attackSpeed:F2} /초";
+        }
+        if (rangeText != null) rangeText.text = $"사거리: {currentSingleTarget.data.attackRange}";
     }
 
 

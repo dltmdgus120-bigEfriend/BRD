@@ -12,11 +12,16 @@ public class UnitData : ScriptableObject
     public AudioClip summonVoice;
     public int sellPrice = 10;
 
+    [Header("태그 정보")]
+    public UnitAttribute attribute; // (예: 순수, 광기, 냉정...)
+    public UnitRace race;           // (예: 요정, 정령, 유령...)
+
     [Header("스킬 (Q, W, E, R 순서)")]
     // 건물의 기능(생산, 업그레이드 등)은 여기에 스킬로 등록하면 됩니다.
     public List<SkillBase> skills;
 
     [Header("전투 스펙")]
+    public AttackType attackType; // 공격 타입 
     public float attackRange = 0f;  // 건물은 공격 안 하니까 0
     public float attackSpeed = 1f;
     public int damage = 0;

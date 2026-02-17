@@ -7,12 +7,14 @@ public class Projectile : MonoBehaviour
 
     private Transform target;
     private int damage;
+    private AttackType attackType;
 
-    public void Setup(Transform _target, int _damage, UnitSkillController _owner)
+    public void Setup(Transform _target, int _damage, AttackType _type, UnitSkillController _owner)
     {
         target = _target;
         damage = _damage;
-        ownerSkill = _owner; // 주인 저장
+        attackType = _type; 
+        ownerSkill = _owner;
     }
 
     void Update()
@@ -44,12 +46,11 @@ public class Projectile : MonoBehaviour
         EnemyHP enemy = target.GetComponent<EnemyHP>();
         if (enemy != null)
         {
-            enemy.TakeDamage(damage);
+            // ★ 적에게 데미지와 함께 공격 타입(attackType) 전달
+            enemy.TakeDamage(damage, attackType);
 
-            // ★ [핵심] 적을 맞춘 이 시점에 주인의 스킬 발동을 시도!
             if (ownerSkill != null)
             {
-                // 투사체 위치(transform.position)나 적 위치(target.position)를 넘겨줌
                 ownerSkill.TryAttackProc(transform.position);
             }
         }

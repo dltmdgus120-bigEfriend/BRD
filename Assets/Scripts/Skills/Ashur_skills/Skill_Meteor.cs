@@ -4,23 +4,30 @@ using UnityEngine;
 public class Skill_Meteor : SkillBase
 {
     [Header("메테오 설정")]
-    public int damage = 100;      // 폭발 데미지
-    public float radius = 3.0f;   // 폭발 범위 (반경)
+    public int damage = 100;      // 폭발 데미지    
     public GameObject explosionVFX; // 폭발 이펙트 프리팹 (파티클)
 
     public override void Execute(UnitStat user, Vector3 targetPos)
     {
-        // 타겟팅 모드로 찍은 좌표(targetPos)를 바로 씁니다!
-       
-        // 1. 이펙트
-        if (explosionVFX != null) Instantiate(explosionVFX, targetPos, Quaternion.identity);
+        // 1. 이펙트 생성
+        if (explosionVFX != null)
+        {
+            Instantiate(explosionVFX, targetPos, Quaternion.identity);
+        }
 
-        // 2. 데미지
-        Collider[] hitColliders = Physics.OverlapSphere(targetPos, radius);
+        // 2. 범위 데미지 처리      
+        Collider[] hitColliders = Physics.OverlapSphere(targetPos, effectRadius);
+
         foreach (var hit in hitColliders)
         {
+            // 적 확인
             EnemyHP enemy = hit.GetComponent<EnemyHP>();
-            if (enemy != null) enemy.TakeDamage(damage);
+
+            if (enemy != null)
+            {
+                //스킬에 설정된 공격 타입(attackType)으로 데미지 전달
+                enemy.TakeDamage(damage, attackType);
+            }
         }
     }
 }

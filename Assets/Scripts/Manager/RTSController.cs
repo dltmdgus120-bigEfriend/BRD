@@ -6,17 +6,15 @@ using UnityEngine.EventSystems;
 public class RTSController : MonoBehaviour
 {
     [Header("UI 연결")]
-    public RectTransform selectionBox;
-    public UnitInfoPanel infoPanel;
+    public RectTransform selectionBox;  
 
     [Header("설정")]
     public LayerMask unitLayer;
     public LayerMask groundLayer;
 
     // 내부 변수
-    public List<NavMeshAgent> selectedUnits = new List<NavMeshAgent>();
-    // 부대 지정 저장소 (0~9번 키)
-    private List<NavMeshAgent>[] controlGroups = new List<NavMeshAgent>[10];
+    public List<NavMeshAgent> selectedUnits = new List<NavMeshAgent>();   
+    private List<NavMeshAgent>[] controlGroups = new List<NavMeshAgent>[10]; // 부대 지정 저장소 (0~9번 키)
     private Vector2 startPos;
     private bool isDragging = false;
         
@@ -27,7 +25,7 @@ public class RTSController : MonoBehaviour
     public Vector2 cursorHotspot = Vector2.zero;
 
     [Header("스킬 범위 표시")]
-    public GameObject rangeIndicatorPrefab; // 아까 만든 원 프리팹 연결
+    public GameObject rangeIndicatorPrefab; // 원 프리팹 연결
     private GameObject currentIndicator;    // 생성된 원 인스턴스
 
     // 스킬 조준 관련 변수
@@ -131,6 +129,7 @@ public class RTSController : MonoBehaviour
             {
                 // LeftControl(왼쪽)을 확실하게 체크!
                 // (혹시 몰라 오른쪽도 되게는 해뒀습니다. 둘 중 편한 거 쓰세요)
+                // 유니티 에디터에서는 단축키랑 겹쳐니 안겹치는 부대지정으로 테스트할것 (ex: ctrl+2)
                 bool isCtrl = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
 
                 if (isCtrl)
@@ -311,19 +310,22 @@ public class RTSController : MonoBehaviour
 
     void UpdateSelectionUI()
     {
-        if (infoPanel == null) return;
-
-        // null인 유닛 청소 (죽은 유닛 제거)
+        // 1. 죽은 유닛 청소
         selectedUnits.RemoveAll(u => u == null);
 
-        // 유닛 '하나'가 아니라 '리스트 전체'를 넘깁니다.
-        infoPanel.UpdateSelection(selectedUnits);
+        // 2. 정보창(InfoPanel) 갱신
+        if (UnitInfoPanel.Instance != null)
+        {
+            UnitInfoPanel.Instance.UpdateSelection(selectedUnits);
+        }
 
-        // 커맨드 패널 갱신
+        // 3. 커맨드 패널(CommandPanel) 갱신
         if (UnitCommandPanel.Instance != null)
+        {
             UnitCommandPanel.Instance.UpdateCommandPanel();
+        }
     }
-        
+
     void PerformAttackCommand()
     {
 
