@@ -15,4 +15,18 @@ MonoBehaviour:
   unitName: Amelia
   rank: 3
   prefab: {fileID: 8316526242042261379, guid: 69dde67d08bcf1b4e9f4f27dc1e0b0fc, type: 3}
+  icon: {fileID: 0}
+  summonVoice: {fileID: 0}
+  sellPrice: 10
+  sellElif: 3
+  attribute: {fileID: 0}
+  race: {fileID: 0}
+  skills: []
+  attackType: 0
+  attackRange: 0
+  attackSpeed: 1
+  damage: 0
+  projectilePrefab: {fileID: 0}
   description: "\uC544\uBA5C\uB9AC\uC544"
+  availableRecipes: []
+  isBuilding: 0

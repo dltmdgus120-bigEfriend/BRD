@@ -12,7 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3a30350584c4a74f9b7243f05323a05, type: 3}
   m_Name: Kyuri_1
   m_EditorClassIdentifier: 
-  unitName: Kyuri
+  unitName: "\uD050\uC774"
   rank: 1
-  prefab: {fileID: 8316526242042261379, guid: c8336a52eef76434686b9db0ddefa67a, type: 3}
-  description: "\uD050\uC774"
+  prefab: {fileID: 3539101861832537204, guid: ef4f9a6e7c7bd754e9d9041252f1774e, type: 3}
+  icon: {fileID: 21300000, guid: bec37b5a67dcc2141a951bacc66a0a07, type: 3}
+  summonVoice: {fileID: 0}
+  sellPrice: 10
+  attribute: {fileID: 11400000, guid: f6a7a3fe9ed57974b9b582c715d375d9, type: 2}
+  race: {fileID: 11400000, guid: 8638b00ba3d50fe4f8c17ad9e096c320, type: 2}
+  skills: []
+  attackType: 1
+  attackRange: 5
+  attackSpeed: 1
+  damage: 10
+  projectilePrefab: {fileID: 0}
+  description: "\uC624\uC774\uC624\uC774, \uAE30\uB2E4\uB838\uB358\uAC70\uB0D0\uAD6C?"
+  availableRecipes: []
+  isBuilding: 0

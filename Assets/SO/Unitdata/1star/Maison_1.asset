@@ -12,7 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3a30350584c4a74f9b7243f05323a05, type: 3}
   m_Name: Maison_1
   m_EditorClassIdentifier: 
-  unitName: Maison
+  unitName: "\uBA54\uC8F5"
   rank: 1
   prefab: {fileID: 8316526242042261379, guid: 6cd76056637a6ec45b6e6455089227b3, type: 3}
+  icon: {fileID: 0}
+  summonVoice: {fileID: 0}
+  sellPrice: 10
+  attribute: {fileID: 0}
+  race: {fileID: 0}
+  skills: []
+  attackType: 0
+  attackRange: 0
+  attackSpeed: 1
+  damage: 0
+  projectilePrefab: {fileID: 0}
   description: "\uBA54\uC8F5"
+  availableRecipes: []
+  isBuilding: 0

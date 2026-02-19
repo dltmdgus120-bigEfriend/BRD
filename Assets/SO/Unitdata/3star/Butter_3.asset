@@ -18,9 +18,15 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 3e1543c487f1c2844846af158a411954, type: 3}
   summonVoice: {fileID: 0}
   sellPrice: 10
+  sellElif: 3
+  attribute: {fileID: 0}
+  race: {fileID: 0}
+  skills: []
+  attackType: 0
   attackRange: 5
   attackSpeed: 1
   damage: 10
   projectilePrefab: {fileID: 0}
   description: "\uBC84\uD130"
   availableRecipes: []
+  isBuilding: 0

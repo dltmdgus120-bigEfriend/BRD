@@ -11,6 +11,7 @@ public class UnitData : ScriptableObject
     public Sprite icon;
     public AudioClip summonVoice;
     public int sellPrice = 10;
+    public int sellElif = 1;
 
     [Header("태그 정보")]
     public UnitAttribute attribute; // (예: 순수, 광기, 냉정...)

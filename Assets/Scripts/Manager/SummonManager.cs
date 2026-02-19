@@ -4,11 +4,13 @@ using System.Collections.Generic;
 
 public class SummonManager : MonoBehaviour
 {
+    public static SummonManager Instance;
+
     [Header("--- 유닛 데이터 리스트 ---")]
     public List<UnitData> rank1Units;   // 1성 (일반)
     public List<UnitData> rank2Units;   // 2성 (희귀)
     public List<UnitData> rank3Units;   // 3성 (전설)
-    public List<UnitData> hiddenUnits;  // ★ 히든 
+    public List<UnitData> hiddenUnits;  // 히든 
 
     [Header("--- 확률 설정 (단위: %, 합계 100 권장) ---")]
     // 소수점 확률을 위해 float로 변경했습니다. (예: 0.5%)
@@ -30,6 +32,11 @@ public class SummonManager : MonoBehaviour
     [Header("--- UI 연결 ---")]
     public Text ticketText;
 
+    void Awake()
+    {
+        Instance = this;
+    }
+
     void Update()
     {
         timer += Time.deltaTime;
@@ -50,12 +57,15 @@ public class SummonManager : MonoBehaviour
             UpdateUI();
         }
         else
-        {
-            Debug.Log("티켓이 부족합니다!");
+        {           
+            if (LogManager.Instance != null)
+                LogManager.Instance.ShowLog("티켓이 부족합니다!", LogType.System);
+            else
+                Debug.Log("티켓이 부족합니다!");
         }
     }
 
-    // ★ 핵심: 히든 포함 4단계 확률 로직
+    // 핵심: 히든 포함 4단계 확률 로직
     void SpawnRandomUnit()
     {
         // 1. 0.0 ~ 100.0 사이의 실수 랜덤 뽑기
@@ -105,11 +115,13 @@ public class SummonManager : MonoBehaviour
 
             CreateUnitObject(finalUnitData);
 
-            // 히든이면 로그를 좀 더 멋지게 띄움
-            if (selectedPool == hiddenUnits)
-                Debug.Log($"대박! {finalUnitData.unitName} 소환 성공!");
-            else
-                Debug.Log($"결과: {rankLog} - {finalUnitData.unitName}");
+            
+            if (LogManager.Instance != null)
+            {
+                if (selectedPool == hiddenUnits)
+                    LogManager.Instance.ShowLog($"대박! {finalUnitData.unitName} 소환 성공!", LogType.Mission); // 히든은 특별하게 하늘색(Mission)
+               
+            }
         }
         else
         {
@@ -151,14 +163,25 @@ public class SummonManager : MonoBehaviour
                     Debug.LogWarning("Warp 실패: 유닛이 바닥에 제대로 안착하지 못했습니다.");
                 }
             }
-
-            // 5. 데이터 주입
+            // 5, 데이터 주입
             UnitStat stat = newUnit.GetComponent<UnitStat>();
             if (stat != null)
             {
                 stat.data = data;
                 if (SoundManager.Instance != null)
                     SoundManager.Instance.PlayVoice(data.summonVoice);
+
+                
+                //  캐릭터 등장 대사 로그 띄우기
+               
+                if (LogManager.Instance != null && !string.IsNullOrEmpty(data.description))
+                {
+                    // 이름은 주황색(orange), 나머지는 LogMessage에서 설정된 기본색(노란색) 적용
+                    string dialogueText = $"<color=orange>[{data.unitName}]</color> {data.description}";
+
+                    // Dialogue 타입으로 넘겨서 출력!
+                    LogManager.Instance.ShowLog(dialogueText, LogType.Dialogue);
+                }
             }
         }
         else
@@ -173,5 +196,22 @@ public class SummonManager : MonoBehaviour
         {
             ticketText.text = $"티켓: {currentTickets}";
         }
+    }
+
+    // 3성 확정 뽑기 ( 억까 방지용)
+    public void SpawnGuaranteed3Star()
+    {
+        if (rank3Units == null || rank3Units.Count == 0)
+        {
+            Debug.LogError("3성 유닛 리스트가 비어있습니다!");
+            return;
+        }
+
+        // 3성 리스트에서 무작위로 하나 뽑기
+        int index = Random.Range(0, rank3Units.Count);
+        UnitData guaranteedUnit = rank3Units[index];
+
+        // 생성 (기존에 만들어둔 함수 재활용!)
+        CreateUnitObject(guaranteedUnit);
     }
 }

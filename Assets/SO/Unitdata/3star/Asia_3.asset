@@ -15,4 +15,18 @@ MonoBehaviour:
   unitName: Asia
   rank: 3
   prefab: {fileID: 8316526242042261379, guid: db4c788d3aff40f459919a76996e1827, type: 3}
+  icon: {fileID: 0}
+  summonVoice: {fileID: 0}
+  sellPrice: 10
+  sellElif: 3
+  attribute: {fileID: 0}
+  race: {fileID: 0}
+  skills: []
+  attackType: 0
+  attackRange: 0
+  attackSpeed: 1
+  damage: 0
+  projectilePrefab: {fileID: 0}
   description: "\uC544\uC774\uC2DC\uC544"
+  availableRecipes: []
+  isBuilding: 0

@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class UnitCommandPanel : MonoBehaviour
-{
-    // ★ [오류 해결] 다른 스크립트에서 접근할 수 있도록 Instance 변수 추가
+{   
     public static UnitCommandPanel Instance;
 
     [Header("슬롯 연결")]
@@ -20,8 +19,7 @@ public class UnitCommandPanel : MonoBehaviour
     private RTSController rtsController;
 
     void Awake()
-    {
-        // ★ [오류 해결] 시작할 때 "내가 Instance다"라고 등록
+    {       
         Instance = this;
     }
 
@@ -150,7 +148,7 @@ public class UnitCommandPanel : MonoBehaviour
         // 4. 조합 버튼 그리기
         CheckMerge();
 
-        // 5. ★ 스킬 버튼 그리기 (여기서 호출!)
+        // 5. 스킬 버튼 그리기 (여기서 호출!)
         CheckSkills();
     }
 
@@ -257,6 +255,7 @@ public class UnitCommandPanel : MonoBehaviour
         var unitsToSell = new List<UnityEngine.AI.NavMeshAgent>(rtsController.selectedUnits);
 
         int totalGain = 0;
+        int totalElifGain = 0;
         int soldCount = 0;
 
         foreach (var agent in unitsToSell)
@@ -268,6 +267,7 @@ public class UnitCommandPanel : MonoBehaviour
             if (stat != null && stat.data != null && stat.data.rank <= 3)
             {
                 totalGain += stat.data.sellPrice;
+                totalElifGain += stat.data.sellElif;
 
                 // 선택 해제 및 삭제
                 rtsController.selectedUnits.Remove(agent);
@@ -278,11 +278,16 @@ public class UnitCommandPanel : MonoBehaviour
 
         if (soldCount > 0)
         {
-            // ★ 여기에 재화 증가 로직 연결 (일단 로그로 대체)
-            // Example: GameManager.Instance.AddGold(totalGain);
-            Debug.Log($"유닛 {soldCount}명 판매 완료! (+{totalGain} 재화)");
+            if (DefenseManager.Instance != null)
+            {
+                DefenseManager.Instance.AddCurrency(totalGain, totalElifGain);
+            }
 
-            // 소리 재생 (돈 버는 소리?)
+            // 시스템 로그로 판매 결과 알려주기
+            if (LogManager.Instance != null)
+            {
+                LogManager.Instance.ShowLog($"유닛 {soldCount}명 판매! (+골드 {totalGain} / +엘리프 {totalElifGain})", LogType.System);
+            }
             // SoundManager.Instance.PlaySFX("SellCoin");
 
             rtsController.ClearSelection(); // 남은 게 있을 수 있으니 정리
@@ -316,14 +321,24 @@ public class UnitCommandPanel : MonoBehaviour
 
     string MakeRecipeDescription(CombinationRecipe recipe, UnitData myData)
     {
-        string desc = "<color=yellow>[조합식]</color>\n";
+        // 1. 재료 이름들을 리스트에 담기
+        List<string> ingredientNames = new List<string>();
         foreach (var ing in recipe.ingredients)
         {
-            if (ing == myData) desc += $"- {ing.unitName} (나)\n";
-            else desc += $"- {ing.unitName}\n";
+            // 내가 포함된 재료면 (나) 표시
+            if (ing == myData) ingredientNames.Add($"{ing.unitName}(나)");
+            else ingredientNames.Add(ing.unitName);
         }
-        desc += $"\n<color=cyan>결과: {recipe.resultUnit.unitName}</color>";
-        return desc;
+
+        // 2. string.Join을 써서 리스트 사이사이에 " + " 기호 넣기
+        string formula = string.Join(" <color=white>+</color> ", ingredientNames);
+
+        // 3. SO에 적어둔 설명(description) 가져오기
+        // 설명이 비어있지 않다면, 설명 뒤에 줄바꿈(\n\n)을 두 번 넣어서 띄워줍니다.
+        string descText = string.IsNullOrEmpty(recipe.description) ? "" : $"{recipe.description}\n\n";
+
+        // 4. 최종 조립: [설명] + [조합식] + [A + B + C]
+        return $"{descText}<color=yellow>[조합식]</color>\n{formula}";
     }
 
     void ExecuteMerge(CombinationRecipe recipe)
@@ -394,7 +409,7 @@ public class UnitCommandPanel : MonoBehaviour
 
         Debug.Log($"{recipe.resultUnit.unitName} 조합 성공!");
 
-        // ★ [오류 해결] RTSController에 SelectUnit 함수가 있어야 이게 작동함
+        
         if (agent != null) rtsController.SelectUnit(agent);
 
         ClearAllSlots();
