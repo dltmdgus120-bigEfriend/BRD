@@ -159,8 +159,8 @@ public class ChatSystem : MonoBehaviour
         }
     }
 
-   
-    // 맵 전체에서 재료를 찾아 조합하는 함수
+
+    // 맵 전체에서 재료를 찾아 조합하는 함수  
     void TryHiddenRecipe(CombinationRecipe recipe)
     {
         if (recipe == null) return;
@@ -176,13 +176,8 @@ public class ChatSystem : MonoBehaviour
             if (target != null)
             {
                 ingredientsToDestroy.Add(target);
-            }
-            else
-            {
-                AddChatMessage($"<color=red>[실패] '{recipe.resultUnit.unitName}' 소환 재료가 부족합니다.</color>");
-                return;
-            }
-        }
+            }          
+      }
 
         // 2. 소환 위치 잡기 (첫 번째 재료 위치)
         Vector3 spawnPos = ingredientsToDestroy[0].transform.position;
@@ -201,7 +196,7 @@ public class ChatSystem : MonoBehaviour
         // 선택 초기화 (찌꺼기 제거)
         if (rts != null) rts.ClearSelection();
 
-        // 4. ★ 핵심 수정: 5성 유닛 소환 및 Warp 적용 (에러 방지)
+        // 4. 핵심 수정: 5성 유닛 소환 및 Warp 적용 (에러 방지)
         GameObject newUnit = Instantiate(recipe.resultUnit.prefab, spawnPos, Quaternion.identity);
 
         var agent = newUnit.GetComponent<UnityEngine.AI.NavMeshAgent>();
@@ -233,8 +228,24 @@ public class ChatSystem : MonoBehaviour
         {
             SoundManager.Instance.PlayVoice(recipe.resultUnit.summonVoice);
         }
+       
 
-        AddChatMessage($"<color=cyan><b>[히든] {recipe.resultUnit.unitName} 소환 성공!</b></color>");
+     
+       //조합 성공 알림 및 캐릭터 등장 대사 로그 띄우기
+       
+        if (LogManager.Instance != null)
+        {
+            // 1. 히든 조합 성공 시스템 로그 (하늘색으로 강조)
+            LogManager.Instance.ShowLog($"<color=red>[히든 조합 성공]</color> {recipe.resultUnit.unitName} 등장!", LogType.Mission);
+
+            // 2. 캐릭터 대사 띄우기 (설명이 있을 때만)
+            if (!string.IsNullOrEmpty(recipe.resultUnit.description))
+            {
+                string dialogueText = $"<color=orange>[{recipe.resultUnit.unitName}]</color> {recipe.resultUnit.description}";
+                LogManager.Instance.ShowLog(dialogueText, LogType.Dialogue);
+            }
+        }
+        
 
         // 7. 편의성: 소환된 히든 유닛 바로 선택해주기
         if (rts != null && agent != null)

@@ -6852,10 +6852,12 @@ MonoBehaviour:
   rank2Units: []
   rank3Units:
   - {fileID: 11400000, guid: e6ac579121ed4d54fa166deaacde2fec, type: 2}
+  - {fileID: 11400000, guid: 88b1441afad011c4c96b2bb758df150b, type: 2}
+  - {fileID: 11400000, guid: 65a71b04a98a8e941bbb7968941eee89, type: 2}
   hiddenUnits: []
-  probRank1: 80
+  probRank1: 30
   probRank2: 0
-  probRank3: 20
+  probRank3: 70
   probHidden: 0
   spawnRadius: 3
   spawnPoint: {fileID: 1001479284}

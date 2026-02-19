@@ -194,7 +194,7 @@ public class UnitCommandPanel : MonoBehaviour
                     slots[3].Setup(
                         sellIcon,
                         "판매 (V)",
-                        $"유닛을 판매하여\n재화 {mainStat.data.sellPrice}를 얻습니다.",
+                        $"유닛을 판매하여\n골드 {mainStat.data.sellPrice}와 엘리프 {mainStat.data.sellElif}를 얻습니다.",
                         false, // 잠금 아님
                         OnClickSell
                     );
@@ -407,9 +407,25 @@ public class UnitCommandPanel : MonoBehaviour
         if (SoundManager.Instance != null)
             SoundManager.Instance.PlayVoice(recipe.resultUnit.summonVoice);
 
-        Debug.Log($"{recipe.resultUnit.unitName} 조합 성공!");
+        if (LogManager.Instance != null)
+        {
+            // 1. 조합 성공 시스템 로그 (하늘색으로 강조)
+            LogManager.Instance.ShowLog($"[조합 성공] {recipe.resultUnit.unitName} 등장!", LogType.System);
 
-        
+            // 2. 캐릭터 대사 띄우기 (설명이 있을 때만)
+            if (!string.IsNullOrEmpty(recipe.resultUnit.description))
+            {
+                string dialogueText = $"<color=orange>[{recipe.resultUnit.unitName}]</color> {recipe.resultUnit.description}";
+                LogManager.Instance.ShowLog(dialogueText, LogType.Dialogue);
+            }
+        }
+        else
+        {
+            // LogManager가 없을 때를 대비한 기본 콘솔 로그
+            Debug.Log($"{recipe.resultUnit.unitName} 조합 성공!");
+        }
+
+
         if (agent != null) rtsController.SelectUnit(agent);
 
         ClearAllSlots();
