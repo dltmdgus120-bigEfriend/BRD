@@ -34,7 +34,7 @@ public class MultiSelectSlot : MonoBehaviour, IPointerClickHandler
 
    
 
-    // ★ 클릭하면 나만 선택하기!
+    // 클릭하면 나만 선택하기!
     public void OnPointerClick(PointerEventData eventData)
     {
         if (rtsController != null && myAgent != null)
