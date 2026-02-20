@@ -1,25 +1,24 @@
 using UnityEngine;
 
 public class SoundManager : MonoBehaviour
-{
-    // 어디서든 SoundManager.Instance로 부를 수 있게 함
+{    
     public static SoundManager Instance;
 
     [Header("오디오 소스 연결")]
     public AudioSource voiceSource; // 목소리 전용 스피커
-    public AudioSource sfxSource;   // 효과음 전용 스피커 (나중에 필요할까봐)
+    public AudioSource sfxSource;   // 효과음 전용 스피커 
     public AudioSource bgmSource;  //배경 음악용 스피커
 
     [Header("배경음악 설정")]
-    public AudioClip defaultBGM;    // ★ 추가: 게임 시작하면 틀 음악
+    public AudioClip defaultBGM;    //게임 시작하면 틀 음악
 
     void Awake()
     {
-        // 싱글톤 패턴 (이미 있으면 나를 파괴, 없으면 나를 등록)
+        // 싱글톤 패턴 
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // ★ 씬이 넘어가도 파괴되지 않음!
+            DontDestroyOnLoad(gameObject); 
         }
         else
         {
@@ -29,7 +28,7 @@ public class SoundManager : MonoBehaviour
 
     void Start()
     {
-        // ★ 추가: 시작하자마자 BGM 재생
+        
         if (defaultBGM != null)
         {
             PlayBGM(defaultBGM);
@@ -54,6 +53,15 @@ public class SoundManager : MonoBehaviour
         bgmSource.clip = clip;
         bgmSource.loop = true;
         bgmSource.Play();
+    }
+
+    public void PlaySFX(AudioClip clip)
+    {
+        if (clip != null && sfxSource != null)
+        {
+            // 여러 유닛이 동시에 때려도 소리가 씹히지 않게 PlayOneShot 사용
+            sfxSource.PlayOneShot(clip);
+        }
     }
 
     // 옵션창 슬라이더에서 호출할 볼륨 조절 함수들

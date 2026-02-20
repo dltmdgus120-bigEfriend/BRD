@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.UI; // ★ UI를 다루기 위해 꼭 추가해야 합니다!
+using UnityEngine.UI; 
 
 public class EnemyHP : MonoBehaviour
 {
@@ -16,6 +16,10 @@ public class EnemyHP : MonoBehaviour
 
     [Header("UI 연결")]
     public Image hpFillImage; // 체력바(채워지는 부분) 이미지
+
+    [Header("사망 효과")]
+    public GameObject deathVFX;  // 파티클 프리팹
+    public AudioClip deathSound; // 몬스터 사망 효과음
 
     void Start()
     {
@@ -77,8 +81,23 @@ public class EnemyHP : MonoBehaviour
         if (DefenseManager.Instance != null)
         {
             DefenseManager.Instance.AddCurrency(dropGold, dropElif);
-            // ★ [핵심] 적 숫자 카운트 감소
+            // ★ 적 숫자 카운트 감소
             DefenseManager.Instance.UnregisterEnemy();
+        }
+
+        if (deathSound != null && SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(deathSound);
+        }
+
+        if (deathVFX != null)
+        {
+            // 이펙트를 몬스터가 죽은 그 위치(transform.position)에 생성합니다.
+            GameObject effect = Instantiate(deathVFX, transform.position, Quaternion.identity);
+
+            // ★ 파티클이 무한히 쌓이지 않도록 2초 뒤에 파괴합니다.
+            // (만약 파티클 재생 시간이 더 길다면 2f 숫자를 늘려주세요!)
+            Destroy(effect, 2f);
         }
 
         // (추후 사망 이펙트 추가 가능)

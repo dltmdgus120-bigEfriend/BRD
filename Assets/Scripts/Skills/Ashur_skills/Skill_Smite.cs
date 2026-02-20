@@ -9,6 +9,11 @@ public class Skill_Smite : SkillBase
 
     public override void Execute(UnitStat user, Vector3 targetPos)
     {
+        if (skillSound != null && SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(skillSound);
+        }
+
         // 1. 이펙트 생성
         if (hitVFX != null)
         {

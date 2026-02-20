@@ -10,6 +10,9 @@ public class UnitData : ScriptableObject
     public GameObject prefab;
     public Sprite icon;
     public AudioClip summonVoice;
+    public AudioClip attackSound;
+
+
     public int sellPrice = 10;
     public int sellElif = 1;
 

@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.AI; // ★ NavMeshAgent를 쓰기 위해 반드시 필요!
+using UnityEngine.AI; 
 
 public class UnitAttack : MonoBehaviour
 {
@@ -13,7 +13,7 @@ public class UnitAttack : MonoBehaviour
     public bool isAttackMoving = false;
     public bool isStopped = false;
 
-    private UnitSkillController skillController; // ★ 연결용 변수
+    private UnitSkillController skillController; 
 
     void Start()
     {
@@ -29,7 +29,7 @@ public class UnitAttack : MonoBehaviour
         // 건물이면 공격 AI 작동 중지
         if (stat != null && stat.data != null && stat.data.isBuilding) return;
 
-        // ★ 이동 애니메이션 처리
+        // 이동 애니메이션 처리
         if (anim != null && agent != null)
         {
             // NavMeshAgent가 이동 중인지 확인 (속도가 0.1보다 크면 걷는 중)
@@ -78,7 +78,7 @@ public class UnitAttack : MonoBehaviour
         // 타겟이 있으면 공격
         if (target != null)
         {
-            // ★ 쿨타임 계산 공식 변경: (1 / 공격속도)
+            // 쿨타임 계산 공식 변경: (1 / 공격속도)
             // 예: 공속 2.0 -> 1/2 = 0.5초마다 공격
             // 예: 공속 5.0 -> 1/5 = 0.2초마다 공격
             // (0으로 나누기 방지를 위해 Mathf.Max 사용)
@@ -122,6 +122,14 @@ public class UnitAttack : MonoBehaviour
     {
         attackTimer = 0f;
         if (anim != null) anim.SetTrigger("Attack");
+
+        if (stat != null && stat.data != null && stat.data.attackSound != null)
+        {
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlaySFX(stat.data.attackSound);
+            }
+        }
 
         if (target != null)
         {

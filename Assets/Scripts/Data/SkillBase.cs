@@ -8,10 +8,14 @@ public abstract class SkillBase : ScriptableObject
     public Sprite icon;
     [TextArea] public string description;
 
+    [Header("사운드")]
+    public AudioClip skillSound;
+
     [Header("설정")]
     public AttackType attackType;
     public bool isPassive; // 패시브 여부
     public float cooldown; // 쿨타임 (패시브면 0)
+
 
     [Header("타겟팅 설정")]
     public bool needTarget; // 체크하면 조준 모드로 진입 (메테오 등)
@@ -27,6 +31,6 @@ public abstract class SkillBase : ScriptableObject
     // user: 스킬을 쓴 유닛
     public abstract void Execute(UnitStat user, Vector3 targetPos = default); // 위치 정보 추가
 
-    // (옵션) 패시브라면 장착하자마자 발동할 효과
+    // 패시브라면 장착하자마자 발동할 효과
     public virtual void OnEquip(UnitStat user) { }
 }

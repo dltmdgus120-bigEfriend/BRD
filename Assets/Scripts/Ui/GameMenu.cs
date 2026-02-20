@@ -1,17 +1,26 @@
 using UnityEngine;
-using UnityEngine.SceneManagement; // 씬 이동(재시작)을 위해 필수
+using UnityEngine.SceneManagement; 
 
 public class GameMenu : MonoBehaviour
 {
     [Header("패널 연결")]
     public GameObject menuPanel;   // ESC 누르면 뜰 메뉴창
     public GameObject optionPanel; // 옵션 버튼 누르면 뜰 창
+    public GameObject blockerPanel;
 
     private bool isPaused = false; // 현재 멈췄는지 체크
 
+    void Start()
+    {
+        // 시작할 때 UI들이 켜져 있다면 깔끔하게 다 끄고 시작
+        if (blockerPanel != null) blockerPanel.SetActive(false);
+        if (menuPanel != null) menuPanel.SetActive(false);
+        if (optionPanel != null) optionPanel.SetActive(false);
+    }
+
     void Update()
     {
-        // ★ 추가: 게임 오버 상태라면 ESC 입력을 아예 무시하고 함수 종료!
+        //게임 오버 상태라면 ESC 입력을 아예 무시하고 함수 종료!
         if (DefenseManager.Instance != null && DefenseManager.Instance.isGameOver)
         {
             return;
@@ -35,17 +44,23 @@ public class GameMenu : MonoBehaviour
     public void PauseGame()
     {
         isPaused = true;
-        menuPanel.SetActive(true);
-        Time.timeScale = 0f; // ★ 시간 정지 (적도 멈추고 투사체도 멈춤)
+
+        if (blockerPanel != null) blockerPanel.SetActive(true); 
+        if (menuPanel != null) menuPanel.SetActive(true);
+
+        Time.timeScale = 0f; // 시간 정지
     }
 
     // 메뉴 닫기 (게임 재개)
     public void ResumeGame()
     {
         isPaused = false;
-        menuPanel.SetActive(false);
-        if (optionPanel != null) optionPanel.SetActive(false); // 옵션창도 같이 닫기
-        Time.timeScale = 1f; // ★ 시간 다시 흐름
+
+        if (blockerPanel != null) blockerPanel.SetActive(false); 
+        if (menuPanel != null) menuPanel.SetActive(false);
+        if (optionPanel != null) optionPanel.SetActive(false);
+
+        Time.timeScale = 1f; // 시간 다시 흐름
     }
 
     // 옵션 버튼 기능
