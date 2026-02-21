@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 417924759128816462}
   serializedVersion: 2
   m_LocalRotation: {x: 0.23911765, y: 0.3696438, z: -0.09904577, w: 0.89239913}
-  m_LocalPosition: {x: 0.01, y: 2.6, z: 0.69}
+  m_LocalPosition: {x: 1.08, y: 2.49, z: 1.12}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -74,12 +74,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: ee9a285c4c4b38a468d1a86f2a25ad76, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7046afe3fff96c241878e5f73175b3cb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 7, y: 6}
+  m_Size: {x: 6.826667, y: 6.826667}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -111,8 +111,9 @@ GameObject:
   - component: {fileID: 7346476843214718111}
   - component: {fileID: -630656082862130304}
   - component: {fileID: 2743097870539087881}
-  - component: {fileID: 8115861573662744238}
-  - component: {fileID: 6994851463699689929}
+  - component: {fileID: 2257258850757354650}
+  - component: {fileID: 1238393480356199465}
+  - component: {fileID: 7774737334253590278}
   m_Layer: 6
   m_Name: Ashur
   m_TagString: Untagged
@@ -156,10 +157,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 2.5
+  m_Radius: 2
   m_Height: 6
   m_Direction: 1
-  m_Center: {x: 0, y: 3, z: 0.5}
+  m_Center: {x: 1, y: 2.5, z: 1}
 --- !u!195 &7619934227128873993
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -223,19 +224,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectionCircle: {fileID: 3749630462424043282}
---- !u!114 &8115861573662744238
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3539101861832537204}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc44c3447f547db48bcd720e11dbcffd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &6994851463699689929
+--- !u!114 &2257258850757354650
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -249,6 +238,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   modelRenderer: {fileID: 739923868608039451}
   isOriginalFacingRight: 0
+--- !u!114 &1238393480356199465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3539101861832537204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc44c3447f547db48bcd720e11dbcffd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!95 &7774737334253590278
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3539101861832537204}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: 7621dba001e0eb84f9904cfe053f3d18, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3749630462424043282
 GameObject:
   m_ObjectHideFlags: 0
@@ -274,13 +296,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3749630462424043282}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.23, y: 0.65, z: -0.18}
-  m_LocalScale: {x: 20, y: 20, z: 1}
+  m_LocalRotation: {x: 0.24009907, y: 0.528029, z: -0.70167726, w: 0.4137473}
+  m_LocalPosition: {x: -0.45, y: 0.79, z: -0.95}
+  m_LocalScale: {x: 10, y: 30, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8610158479033224853}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 70, y: 17, z: -107}
 --- !u!212 &3411963393610112007
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -323,7 +345,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -10
   m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 0.58775365, g: 0.9811321, b: 0.58775365, a: 1}
+  m_Color: {r: 0.8443396, g: 1, b: 0.8443396, a: 0.19607843}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

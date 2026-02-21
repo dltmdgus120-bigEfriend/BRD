@@ -193,7 +193,7 @@ public class UnitCommandPanel : MonoBehaviour
                     // 조건이 맞을 때만 버튼 생성!
                     slots[3].Setup(
                         sellIcon,
-                        "판매 (V)",
+                        "판매",
                         $"유닛을 판매하여\n골드 {mainStat.data.sellPrice}와 엘리프 {mainStat.data.sellElif}를 얻습니다.",
                         false, // 잠금 아님
                         OnClickSell

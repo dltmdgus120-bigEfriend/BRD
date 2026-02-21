@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitName: "\uD074\uB85C\uC5D0"
   rank: 5
-  prefab: {fileID: 3539101861832537204, guid: 1d758104d9946dc439f8e12dbf56c7eb, type: 3}
+  prefab: {fileID: 3539101861832537204, guid: e8b3f1cb200860446b321950f65f2044, type: 3}
   icon: {fileID: 21300000, guid: d8333602e7decd94fb696706265754bd, type: 3}
   summonVoice: {fileID: 0}
+  attackSound: {fileID: 0}
   sellPrice: 0
   sellElif: 0
   attribute: {fileID: 11400000, guid: 848c245de135dcd45930b2d544fd416e, type: 2}
@@ -25,7 +26,7 @@ MonoBehaviour:
   attackType: 0
   attackRange: 5
   attackSpeed: 1
-  damage: 10
+  damage: 20
   projectilePrefab: {fileID: 0}
   description: "\uC655\uAD6D\uC758 \uC7AC\uB2E8\uC0AC!"
   availableRecipes: []

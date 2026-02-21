@@ -94,7 +94,7 @@ public class RTSController : MonoBehaviour
         if (Input.GetMouseButton(0) && isDragging) UpdateSelectionBox();
 
         // 4. 드래그 끝
-        if (Input.GetMouseButtonUp(0)) EndSelection();
+        if (Input.GetMouseButtonUp(0) && isDragging) EndSelection();
 
         // 5. 우클릭 (이동)
         if (Input.GetMouseButtonDown(1) && selectedUnits.Count > 0)
@@ -281,7 +281,7 @@ public class RTSController : MonoBehaviour
         UpdateSelectionUI();
     }
 
-    // ★ [오류 해결] UnitCommandPanel에서 호출할 수 있도록 새로 만든 함수
+    //  UnitCommandPanel에서 호출할 수 있도록 새로 만든 함수
     public void SelectUnit(NavMeshAgent unit)
     {
         DeselectAll(); // 기존 선택 다 해제
