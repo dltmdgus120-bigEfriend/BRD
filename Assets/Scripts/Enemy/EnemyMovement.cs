@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
-    [Header("¼³Á¤")]
-    public float speed = 5f;
+    [HideInInspector]
+    public float speed;
     private Transform[] waypoints;
     private int wavepointIndex = 0;
 

@@ -6,10 +6,13 @@ using UnityEngine.EventSystems;
 public class RTSController : MonoBehaviour
 {
     [Header("UI 연결")]
-    public RectTransform selectionBox;  
+    public RectTransform selectionBox;
+
+    
 
     [Header("설정")]
     public LayerMask unitLayer;
+    public LayerMask enemyLayer;
     public LayerMask groundLayer;
 
     // 내부 변수
@@ -228,14 +231,43 @@ public class RTSController : MonoBehaviour
     void SelectSingleUnit()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        // 1. 먼저 아군 유닛을 클릭했는지 검사
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, unitLayer))
         {
             NavMeshAgent agent = hit.collider.GetComponent<NavMeshAgent>();
             if (agent == null) agent = hit.collider.GetComponentInParent<NavMeshAgent>();
 
-            if (agent != null) AddUnitToSelection(agent);
+            if (agent != null)
+            {
+                AddUnitToSelection(agent);
+
+                // 아군을 눌렀으니 적 패널은 끄기
+                if (EnemyInfoPanel.Instance != null) EnemyInfoPanel.Instance.HidePanel();
+            }
         }
-        else if (!Input.GetKey(KeyCode.LeftShift)) DeselectAll();
+        // 2. 아군이 아니라면, 적군을 클릭했는지 검사
+        else if (Physics.Raycast(ray, out RaycastHit hitEnemy, Mathf.Infinity, enemyLayer))
+        {
+            EnemyHP enemy = hitEnemy.collider.GetComponent<EnemyHP>();
+            if (enemy == null) enemy = hitEnemy.collider.GetComponentInParent<EnemyHP>();
+
+            Debug.Log($"마우스 레이캐스트 적중! 찾은 놈: {(enemy != null ? enemy.gameObject.name : "컴포넌트 못찾음")}");
+
+            if (enemy != null)
+            {
+                if (!Input.GetKey(KeyCode.LeftShift)) DeselectAll(); // 아군 선택 싹 풀기
+
+                // 적 패널 띄우기
+                if (EnemyInfoPanel.Instance != null) EnemyInfoPanel.Instance.ShowEnemyInfo(enemy);
+            }
+        }
+        // 3. 아군도 적군도 아닌 맨땅을 클릭했을 때
+        else if (!Input.GetKey(KeyCode.LeftShift))
+        {
+            DeselectAll();
+            if (EnemyInfoPanel.Instance != null) EnemyInfoPanel.Instance.HidePanel(); // 적 패널 숨기기
+        }
     }
 
     void SelectUnitsInBox()
@@ -326,37 +358,54 @@ public class RTSController : MonoBehaviour
         }
     }
 
+    private EnemyHP currentFocusedEnemy;
+
     void PerformAttackCommand()
     {
-
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hit))
+
+        // 1순위: 적 점사
+        if (Physics.Raycast(ray, out RaycastHit hitUnit, Mathf.Infinity, enemyLayer | unitLayer))
         {
-            EnemyHP enemy = hit.collider.GetComponent<EnemyHP>();
-            if (enemy == null) enemy = hit.collider.GetComponentInParent<EnemyHP>();
+            EnemyHP enemy = hitUnit.collider.GetComponent<EnemyHP>();
+            if (enemy == null) enemy = hitUnit.collider.GetComponentInParent<EnemyHP>();
 
             if (enemy != null)
             {
+                // 기존에 마크 켜진 놈이 있으면 꺼주기
+                if (currentFocusedEnemy != null && currentFocusedEnemy != enemy)
+                {
+                    currentFocusedEnemy.SetFocusMark(false);
+                }
+
+                // 새로 찍힌 놈 마크 켜고 기억하기
+                currentFocusedEnemy = enemy;
+                enemy.SetFocusMark(true);
+
+                // 유닛들에게 공격 명령!
                 foreach (var agent in selectedUnits)
                 {
                     if (agent == null) continue;
                     var attack = agent.GetComponent<UnitAttack>();
-                    if (attack != null)
-                    {
-                        attack.isAttackMoving = false;
-                        attack.target = enemy.transform;
-                    }
-                    agent.SetDestination(enemy.transform.position);
+                    if (attack != null) attack.CommandFocusAttack(enemy.transform);
                 }
             }
-            else
+        }
+        // 2순위: 어택땅 (땅바닥 클릭)
+        else if (Physics.Raycast(ray, out RaycastHit hitGround, Mathf.Infinity, groundLayer))
+        {
+            // 땅바닥을 찍었으니 기존 점사 마크는 꺼버림
+            if (currentFocusedEnemy != null)
             {
-                foreach (var agent in selectedUnits)
-                {
-                    if (agent == null) continue;
-                    var attack = agent.GetComponent<UnitAttack>();
-                    if (attack != null) attack.OrderAttackMove(hit.point);
-                }
+                currentFocusedEnemy.SetFocusMark(false);
+                currentFocusedEnemy = null;
+            }
+
+            foreach (var agent in selectedUnits)
+            {
+                if (agent == null) continue;
+                var attack = agent.GetComponent<UnitAttack>();
+                if (attack != null) attack.OrderAttackMove(hitGround.point);
             }
         }
 

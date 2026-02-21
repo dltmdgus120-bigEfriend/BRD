@@ -8,8 +8,10 @@ public abstract class SkillBase : ScriptableObject
     public Sprite icon;
     [TextArea] public string description;
 
-    [Header("사운드")]
+    [Header("사운드 & 애니메이션")]
     public AudioClip skillSound;
+    public string animTriggerName = "Skill"; // 유니티 애니메이터에서 쓸 트리거 이름
+    public float castTime = 1.0f;            // 스킬 시전 시간 (이 시간 동안 다른 행동 불가!)
 
     [Header("설정")]
     public AttackType attackType;
@@ -27,9 +29,14 @@ public abstract class SkillBase : ScriptableObject
     [Range(0, 100)]
     public float procChance;    // 발동 확률 (0 ~ 100%)
 
-    // 스킬을 사용했을 때 일어날 일 (자식들이 내용을 채워야 함)
-    // user: 스킬을 쓴 유닛
-    public abstract void Execute(UnitStat user, Vector3 targetPos = default); // 위치 정보 추가
+
+    // 시전 시작 직후에 실행될 함수 (가상 함수라 안 써도 그만)
+    // 예: 메테오가 하늘에 생성됨, 투사체 발사 등
+    public virtual void OnCastStart(UnitStat user, Vector3 targetPos = default) { }
+
+    // 시간(castTime)이 다 지나고 최종적으로 실행될 함수
+    // 예: 메테오 폭발 및 데미지 적용
+    public abstract void Execute(UnitStat user, Vector3 targetPos = default);
 
     // 패시브라면 장착하자마자 발동할 효과
     public virtual void OnEquip(UnitStat user) { }

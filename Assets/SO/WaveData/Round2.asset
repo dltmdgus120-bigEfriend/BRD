@@ -12,8 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acbc799346c22f8418d61dae52fb7e9b, type: 3}
   m_Name: Round2
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 2461428311817073197, guid: d052ee077ea8ab947bbfee583d6f40c2,
-    type: 3}
+  enemyToSpawn: {fileID: 11400000, guid: 8f242f0c017531c438c466f630a8a909, type: 2}
   count: 10
   spawnRate: 1
-  moveSpeed: 20

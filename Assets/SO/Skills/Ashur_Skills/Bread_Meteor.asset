@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: Bread_Meteor
   m_EditorClassIdentifier: 
   skillName: Bread_Meteor
-  icon: {fileID: 21300000, guid: 79e80576c9f34ad489d221e9f999bd8f, type: 3}
+  icon: {fileID: 21300000, guid: 316f9d444709cb143bd7f5f3aa9423af, type: 3}
   description: "\uBE75\uD14C\uC624!"
   skillSound: {fileID: 8300000, guid: 415884183e8fd85458ed1e34ae53cb9c, type: 3}
+  animTriggerName: Skill
+  castTime: 2
   attackType: 1
   isPassive: 0
   cooldown: 10
@@ -25,5 +27,11 @@ MonoBehaviour:
   isAttackProc: 0
   procChance: 0
   damage: 100
-  explosionVFX: {fileID: 2433282508537954060, guid: 3ef3ae421f71c5c4e97fe12dc2fc6312,
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  fallingVFX: {fileID: 8695790041649874011, guid: 058ff50ed02a5634ea39cf93c6451ab6,
+    type: 3}
+  dropHeight: 20
+  explosionVFX: {fileID: 4593184484909914552, guid: 2e1e9506f5904a64b81744324fb7cd50,
     type: 3}

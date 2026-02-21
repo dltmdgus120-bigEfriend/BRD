@@ -4,33 +4,74 @@ using UnityEngine;
 public class Skill_Meteor : SkillBase
 {
     [Header("메테오 설정")]
-    public int damage = 100;      // 폭발 데미지    
-    public GameObject explosionVFX; // 폭발 이펙트 프리팹 (파티클)
+    public int damage = 100;        // 폭발 데미지    
+                                    
+    public LayerMask enemyLayer;  //아군이나 맨땅은 무시하고 '적'만 검사하게 만들어 렉을 줄입니다!
+
+    [Header("VFX 설정")]
+    public GameObject fallingVFX;   //  하늘에서 떨어지는 메테오 프리팹
+    public float dropHeight = 15f;  // 얼마나 높은 곳에서 떨어질지
+    public GameObject explosionVFX; // 기존 폭발 이펙트
+
+    // 내부적으로 떨어지는 VFX를 기억하기 위한 변수
+    private GameObject currentFallingInstance;
+
+    public override void OnCastStart(UnitStat user, Vector3 targetPos)
+    {
+        if (fallingVFX == null) return;
+
+        // 하늘 좌표 계산
+        Vector3 skyPos = targetPos + Vector3.up * dropHeight;
+        Quaternion lookDown = Quaternion.LookRotation(Vector3.down);
+
+        // 빵 소환
+        currentFallingInstance = Instantiate(fallingVFX, skyPos, lookDown);
+
+        // 빵에 달려있는 스크립트를 찾아서 이동 명령 내리기
+        FallingMeteor fallingScript = currentFallingInstance.GetComponent<FallingMeteor>();
+
+        if (fallingScript != null)
+        {
+            // 하늘(skyPos)에서 땅(targetPos)까지, 시전 시간(castTime) 동안 떨어져라!
+            fallingScript.Setup(skyPos, targetPos, castTime);
+        }
+        else
+        {
+            Debug.LogError("빵 프리팹에 FallingMeteor 스크립트가 안 붙어있습니다!");
+        }
+    }
 
     public override void Execute(UnitStat user, Vector3 targetPos)
     {
-        if (skillSound != null && SoundManager.Instance != null)
+        // (사운드 재생 로직 삭제: 액티브 스킬의 경우에는 애니메이션에 사운드 포함됨 )
+
+        // 아까 소환했던 떨어지는 메테오가 아직 있다면 삭제 (폭발로 교체)
+        if (currentFallingInstance != null)
         {
-            SoundManager.Instance.PlaySFX(skillSound);
+            Destroy(currentFallingInstance);
         }
 
         // 1. 이펙트 생성
         if (explosionVFX != null)
         {
+            // 이펙트 프리팹 안에 ParticleSystem(Stop Action: Destroy)이 설정되어 있거나,
+            // 스스로 파괴되는 스크립트가 붙어있어야 메모리에 쓰레기가 안 쌓입니다.
             Instantiate(explosionVFX, targetPos, Quaternion.identity);
         }
 
-        // 2. 범위 데미지 처리      
-        Collider[] hitColliders = Physics.OverlapSphere(targetPos, effectRadius);
+        // 2. 범위 데미지 처리
+        // 최적화: effectRadius 반경 안에 있는 오브젝트 중, 오직 enemyLayer를 가진 놈들만 솎아냅니다.
+        Collider[] hitColliders = Physics.OverlapSphere(targetPos, effectRadius, enemyLayer);
 
         foreach (var hit in hitColliders)
         {
-            // 적 확인
+            // 적 확인 (혹시 자식 오브젝트의 콜라이더를 맞췄을 경우를 대비해 InParent도 체크)
             EnemyHP enemy = hit.GetComponent<EnemyHP>();
+            if (enemy == null) enemy = hit.GetComponentInParent<EnemyHP>();
 
             if (enemy != null)
             {
-                //스킬에 설정된 공격 타입(attackType)으로 데미지 전달
+                // SkillBase에 미리 설정해둔 공격 타입(attackType)을 그대로 적용
                 enemy.TakeDamage(damage, attackType);
             }
         }

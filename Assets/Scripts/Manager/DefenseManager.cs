@@ -15,8 +15,8 @@ public class DefenseManager : MonoBehaviour
     public List<WaveData> waves;
 
     [Header("--- 보스 데이터 (10라운드마다 순서대로) ---")]
-    public List<GameObject> bossPrefabs; // 인스펙터에서 보스 프리팹들을 순서대로 넣으세요.
-    public float bossTimeLimit = 120f;     //  보스 제한시간   
+    public List<EnemyData> bossDataList;
+    public float bossTimeLimit = 120f;
 
     [Header("--- 게임 상태 (카운트 방식) ---")]
     public int maxEnemyCount = 50; // 최대 허용 적 숫자 (이거 넘으면 게임오버)
@@ -129,40 +129,36 @@ public class DefenseManager : MonoBehaviour
     // --- 보스 라운드 로직 ---
     IEnumerator RunBossRound()
     {
-        // 보스 인덱스 계산 (10라운드->0번 보스, 20라운드->1번 보스...)
         int bossIndex = (currentRound / 10) - 1;
 
-        // 보스 리스트 범위를 넘어가면 마지막 보스 반복
-        if (bossPrefabs.Count > 0)
+        //  bossDataList를 사용
+        if (bossDataList.Count > 0)
         {
-            bossIndex = Mathf.Clamp(bossIndex, 0, bossPrefabs.Count - 1);
-            SpawnBoss(bossPrefabs[bossIndex]);
+            bossIndex = Mathf.Clamp(bossIndex, 0, bossDataList.Count - 1);
+            SpawnBoss(bossDataList[bossIndex]);
         }
         else
         {
-            Debug.LogError("보스 프리팹이 설정되지 않았습니다!");
+            Debug.LogError("보스 데이터가 설정되지 않았습니다!");
         }
 
-        // ★ 보스 타이머 로직 (2분)
         float timer = bossTimeLimit;
         while (timer > 0)
         {
-            // 보스가 죽었는지 확인
             if (currentBossInstance == null)
             {
                 UpdateTimerUI("보스 처치!", 0);
-                yield return new WaitForSeconds(2f); // 승리 메시지 잠깐 보여줌
-                break; // 루프 탈출 (다음 라운드로)
+                yield return new WaitForSeconds(2f);
+                break;
             }
 
             timer -= Time.deltaTime;
             UpdateTimerUI($"<color=red>BOSS!!</color>", timer);
 
-            if (isGameOver) break; // 게임오버 체크
+            if (isGameOver) break;
             yield return null;
         }
 
-        // 시간이 다 됐는데 아직 보스가 살아있다면? -> 게임 오버
         if (currentBossInstance != null && timer <= 0)
         {
             Debug.Log("보스 타임오버!");
@@ -187,7 +183,7 @@ public class DefenseManager : MonoBehaviour
         if (timerText != null)
         {
             int intTime = Mathf.Max(0, Mathf.CeilToInt(timeRemaining));
-            timerText.text = $"{label}\n<size=30>{intTime}</size>";
+            timerText.text = $"{label}\n<size=60>{intTime}</size>";
         }
     }
 
@@ -195,46 +191,49 @@ public class DefenseManager : MonoBehaviour
     {
         for (int i = 0; i < data.count; i++)
         {
-            if (isGameOver || isVictory) yield break; // 승리했으면 스폰 중단
-            SpawnEnemy(data.enemyPrefab, data.moveSpeed);
+            if (isGameOver || isVictory) yield break;
+
+            
+            if (data.enemyToSpawn != null)
+            {
+                SpawnEnemy(data.enemyToSpawn);
+            }
             yield return new WaitForSeconds(data.spawnRate);
         }
     }
 
-    void SpawnEnemy(GameObject prefab, float speed)
+    void SpawnEnemy(EnemyData enemyData)
     {
         if (pathPoints == null || pathPoints.Length == 0) return;
 
-        GameObject enemy = Instantiate(prefab, pathPoints[0].position, Quaternion.identity);
+        // SO 안에 있는 프리팹 정보로 소환
+        GameObject enemy = Instantiate(enemyData.prefab, pathPoints[0].position, Quaternion.identity);
 
-        //  소환되자마자 카운트 등록
         RegisterEnemy();
 
         EnemyMovement movement = enemy.GetComponent<EnemyMovement>();
         if (movement != null)
         {
-            movement.speed = speed;
+            movement.speed = enemyData.moveSpeed; // SO 안에 있는 이동 속도 적용
             movement.Setup(pathPoints);
         }
     }
 
     //  보스 소환 함수
-    void SpawnBoss(GameObject prefab)
+    void SpawnBoss(EnemyData bossData)
     {
         if (pathPoints == null || pathPoints.Length == 0) return;
 
-        // 보스 생성 및 변수에 저장 (추적용)
-        currentBossInstance = Instantiate(prefab, pathPoints[0].position, Quaternion.identity);
+        // SO 안에 있는 프리팹 정보로 소환
+        currentBossInstance = Instantiate(bossData.prefab, pathPoints[0].position, Quaternion.identity);
 
-        // 보스도 카운트에 포함
         RegisterEnemy();
 
-        // 보스 이동 설정
         EnemyMovement movement = currentBossInstance.GetComponent<EnemyMovement>();
         if (movement != null)
         {
-            // 보스 속도는 프리팹에 설정된 값을 따르거나, 필요시 여기서 수정
-                      movement.Setup(pathPoints);
+            movement.speed = bossData.moveSpeed; // 보스 이동 속도도 SO에서 가져옴
+            movement.Setup(pathPoints);
         }
     }
 

@@ -3,19 +3,15 @@ using UnityEngine.UI;
 
 public class EnemyHP : MonoBehaviour
 {
-    public int maxHP = 100;
-    private int currentHP;
-
-    [Header("방어 스탯")]
-    public int armor = 0;       // 물리 방어력
-    public int magicResist = 0; // 마법 저항력
-
-    [Header("보상 설정 (잡으면 주는 돈)")]
-    public int dropGold = 10;   // 일반 몹은 10원
-    public int dropElif = 0;    // 보스나 히든 몹만 값을 넣으세요
+    [Header("적 데이터 (SO 연결)")]
+    public EnemyData data; // ★ 이제 모든 스탯은 여기서 가져옵니다!
+    public int currentHP { get; private set; } // 밖에서 읽을 수만 있게 설정
 
     [Header("UI 연결")]
     public Image hpFillImage; // 체력바(채워지는 부분) 이미지
+
+    [Header("타겟팅 마크")]
+    public GameObject focusIndicator;
 
     [Header("사망 효과")]
     public GameObject deathVFX;  // 파티클 프리팹
@@ -23,31 +19,29 @@ public class EnemyHP : MonoBehaviour
 
     void Start()
     {
-        currentHP = maxHP;
-        UpdateHPBar(); // 태어날 때 체력바 꽉 채우기
+        if (data != null)
+        {
+            currentHP = data.maxHP; // SO에서 최대 체력 가져오기
+        }
+        UpdateHPBar();
     }
 
-    // ★ 공격 타입을 인자로 받아서 데미지 계산
+    //공격 타입을 인자로 받아서 데미지 계산
     public void TakeDamage(int damage, AttackType type)
     {
+        if (data == null) return; 
+
         int finalDamage = damage;
 
-        // 공격 타입에 따른 방어력 적용 공식
         switch (type)
         {
             case AttackType.Physical:
-                // 물리: 데미지 - 방어력 (최소 1 데미지는 들어감)
-                finalDamage = Mathf.Max(1, damage - armor);
+                finalDamage = Mathf.Max(1, damage - data.armor);
                 break;
-
             case AttackType.Magic:
-                // 마법: 데미지 - 마법저항력 (최소 1)
-                // (나중에 % 감소 공식으로 바꿔도 됨)
-                finalDamage = Mathf.Max(1, damage - magicResist);
+                finalDamage = Mathf.Max(1, damage - data.magicResist);
                 break;
-
             case AttackType.Fixed:
-                // 고정: 방어력 무시 (그대로 들어감)
                 finalDamage = damage;
                 break;
         }
@@ -55,52 +49,49 @@ public class EnemyHP : MonoBehaviour
         currentHP -= finalDamage;
         UpdateHPBar();
 
-        // (선택) 데미지 텍스트 띄우기 (타입별 색상 적용 가능)
-        Debug.Log($"받은 피해: {finalDamage} ({type})");
-
-        if (currentHP <= 0)
+        // 실시간 UI 갱신 핵심 로직
+        // 만약 지금 정보창이 열려있고, 그 창에 떠있는 게 '나(this)'라면? 패널 새로고침!
+        if (EnemyInfoPanel.Instance != null && EnemyInfoPanel.Instance.currentSelectedEnemy == this)
         {
-            Die();
+            EnemyInfoPanel.Instance.RefreshPanel();
         }
+
+        if (currentHP <= 0) Die();
     }
 
     // 체력바 길이를 조절하는 함수
     void UpdateHPBar()
     {
-        if (hpFillImage != null)
+        if (hpFillImage != null && data != null)
         {
-            // fillAmount는 0.0(빈칸) ~ 1.0(꽉참) 사이의 값입니다.
-            // 현재 체력을 최대 체력으로 나누면 비율이 나옵니다. (소수점 계산을 위해 float 형변환)
-            hpFillImage.fillAmount = (float)currentHP / maxHP;
+            hpFillImage.fillAmount = (float)currentHP / data.maxHP;
         }
     }
 
     void Die()
     {
-        //  죽으면서 매니저에게 돈 입금
-        if (DefenseManager.Instance != null)
+        if (DefenseManager.Instance != null && data != null)
         {
-            DefenseManager.Instance.AddCurrency(dropGold, dropElif);
-            // ★ 적 숫자 카운트 감소
+            DefenseManager.Instance.AddCurrency(data.dropGold, data.dropElif); // SO에서 보상 가져오기
             DefenseManager.Instance.UnregisterEnemy();
         }
 
-        if (deathSound != null && SoundManager.Instance != null)
-        {
-            SoundManager.Instance.PlaySFX(deathSound);
-        }
+        if (deathSound != null && SoundManager.Instance != null) SoundManager.Instance.PlaySFX(deathSound);
 
         if (deathVFX != null)
         {
-            // 이펙트를 몬스터가 죽은 그 위치(transform.position)에 생성합니다.
             GameObject effect = Instantiate(deathVFX, transform.position, Quaternion.identity);
-
-            // ★ 파티클이 무한히 쌓이지 않도록 2초 뒤에 파괴합니다.
-            // (만약 파티클 재생 시간이 더 길다면 2f 숫자를 늘려주세요!)
             Destroy(effect, 2f);
         }
 
-        // (추후 사망 이펙트 추가 가능)
         Destroy(gameObject);
+    }
+
+    public void SetFocusMark(bool isOn)
+    {
+        if (focusIndicator != null)
+        {
+            focusIndicator.SetActive(isOn);
+        }
     }
 }

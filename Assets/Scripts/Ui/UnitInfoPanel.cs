@@ -64,6 +64,11 @@ public class UnitInfoPanel : MonoBehaviour
             return;
         }
 
+        if (EnemyInfoPanel.Instance != null)
+        {
+            EnemyInfoPanel.Instance.HidePanel();
+        }
+
         // 2. 한 명만 선택됨 -> 기존 단일 정보창 켜기
         if (selectedUnits.Count == 1)
         {
@@ -183,7 +188,7 @@ public class UnitInfoPanel : MonoBehaviour
         // 공격력 텍스트: "공격력: 50 (물리)"
         if (damageText != null)
         {
-            damageText.text = $"공격력: {currentDmg} <size=18><color={typeColor}>({typeName})</color></size>";
+            damageText.text = $"공격력: {currentDmg} <size=50><color={typeColor}>({typeName})</color></size>";
         }
         if (speedText != null)
         {

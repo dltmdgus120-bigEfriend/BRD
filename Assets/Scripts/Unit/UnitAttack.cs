@@ -13,6 +13,9 @@ public class UnitAttack : MonoBehaviour
     public bool isAttackMoving = false;
     public bool isStopped = false;
 
+    [Header("점사 타겟")]
+    public Transform forcedTarget; // 유저가 직접 마우스로 찍어준 점사 타겟
+
     private UnitSkillController skillController; 
 
     void Start()
@@ -29,61 +32,76 @@ public class UnitAttack : MonoBehaviour
         // 건물이면 공격 AI 작동 중지
         if (stat != null && stat.data != null && stat.data.isBuilding) return;
 
-        // 이동 애니메이션 처리
+        //  스킬 시전 중이면 이동/평타 싹 다 금지하고 바로 종료!
+        if (skillController != null && skillController.isCasting) return;
+
+        if (stat != null && stat.data != null && stat.data.isBuilding) return;
+
         if (anim != null && agent != null)
         {
-            // NavMeshAgent가 이동 중인지 확인 (속도가 0.1보다 크면 걷는 중)
             bool isMoving = agent.velocity.sqrMagnitude > 0.1f;
-            anim.SetBool("IsMoving", isMoving); 
+            anim.SetBool("IsMoving", isMoving);
         }
 
-        //완전 정지 상태면 아무것도 안 하고 함수 종료
         if (isStopped) return;
-       
 
-        // 쿨타임은 이동 중에도 흘러가게 둡니다. (도착하자마자 바로 쏠 수 있도록!)
         attackTimer += Time.deltaTime;
 
-
-        if (isAttackMoving)
+        // 1. 점사 타겟(보스 등)이 죽었거나 사라졌으면 강제 타겟 해제
+        if (forcedTarget != null && !forcedTarget.gameObject.activeInHierarchy)
         {
-            // 이동하면서 적을 계속 찾음
-            FindTarget();
+            forcedTarget = null;
+            target = null;
+        }
 
-            // 적을 찾았다면?
-            if (target != null)
+        // 2. 점사 타겟이 살아있을 때의 최우선 행동!
+        if (forcedTarget != null)
+        {
+            float distToForced = Vector3.Distance(transform.position, forcedTarget.position);
+
+            // 사거리 밖이면 다른 놈 무시하고 무조건 쫓아감
+            if (distToForced > stat.data.attackRange)
             {
-                // 이동 멈추고 공격 모드로 전환!
-                agent.ResetPath();
-                isAttackMoving = false;
+                if (agent != null) agent.SetDestination(forcedTarget.position);
+                return; // 쫓아가는 중에는 쏘지 않음
+            }
+            else
+            {
+                // 사거리 안에 들어오면 발을 멈추고 쏘기 시작!
+                if (agent != null)
+                {
+                    agent.ResetPath();
+                    agent.velocity = Vector3.zero;
+                }
+                target = forcedTarget; // 타겟을 점사 대상으로 꽉 고정!
+            }
+        }
+        else // 점사 타겟이 없을 때만 기존 자동 공격 모드 작동
+        {
+            if (isAttackMoving)
+            {
+                FindTarget();
+                if (target != null)
+                {
+                    if (agent != null) agent.ResetPath();
+                    isAttackMoving = false;
+                }
+            }
+
+            // 타겟이 없거나 사거리 밖이면 새 타겟 찾기
+            if (target == null || Vector3.Distance(transform.position, target.position) > stat.data.attackRange)
+            {
+                FindTarget();
             }
         }
 
-       
-        // velocity(현재 속도)가 조금이라도 있으면 걷고 있는 상태로 판단
-        if (agent != null && agent.velocity.sqrMagnitude > 0.1f)
-        {
-            // 걷는 중이면 타겟 찾기와 공격을 전부 건너뛰고 바로 함수 종료!
-            return;
-        }
+        // 걷는 중이면 공격 금지 (단, 위에서 사거리 내에 들어와 멈췄다면 여길 통과함)
+        if (agent != null && agent.velocity.sqrMagnitude > 0.1f) return;
 
-        // --- 여기서부터는 제자리에 서 있을 때만 실행됨 ---
-
-        // 타겟이 없거나, 타겟이 죽었거나, 사거리 밖으로 나갔으면 -> 새 타겟 찾기
-        if (target == null || Vector3.Distance(transform.position, target.position) > stat.data.attackRange)
-        {
-            FindTarget();
-        }
-
-        // 타겟이 있으면 공격
+        // 타겟이 있고 쿨타임이 찼으면 공격!
         if (target != null)
         {
-            // 쿨타임 계산 공식 변경: (1 / 공격속도)
-            // 예: 공속 2.0 -> 1/2 = 0.5초마다 공격
-            // 예: 공속 5.0 -> 1/5 = 0.2초마다 공격
-            // (0으로 나누기 방지를 위해 Mathf.Max 사용)
             float cooldown = 1f / Mathf.Max(0.01f, stat.data.attackSpeed);
-
             if (attackTimer >= cooldown)
             {
                 Attack();
@@ -166,32 +184,43 @@ public class UnitAttack : MonoBehaviour
 
     public void OrderAttackMove(Vector3 dest)
     {
-        isStopped = false;      
+        forcedTarget = null; // 점사 기억 리셋
+        isStopped = false;
         isAttackMoving = true;
         target = null;
         if (agent != null) agent.SetDestination(dest);
     }
 
+    public void CommandFocusAttack(Transform enemyTransform)
+    {
+        forcedTarget = enemyTransform;
+        target = enemyTransform;
+        isAttackMoving = false;
+        isStopped = false; // 혹시 홀드 상태였어도 풀고 때리러 감
+    }
+
     public void OrderStop()
     {
-        isStopped = true;       // 돌부처 모드 
-        isAttackMoving = false; // 어택땅 끄기
-        target = null;          // 타겟 잊기
-        if (agent != null) agent.ResetPath(); // 발 멈추기
+        forcedTarget = null; 
+        isStopped = true;
+        isAttackMoving = false;
+        target = null;
+        if (agent != null) agent.ResetPath();
     }
 
     public void OrderMove(Vector3 dest)
     {
-        isStopped = false;     
+        forcedTarget = null; 
+        isStopped = false;
         isAttackMoving = false;
         target = null;
         if (agent != null) agent.SetDestination(dest);
     }
 
-    // 홀드 명령 (H키) - 제자리 사수하지만 공격은 함
     public void OrderHold()
     {
-        isStopped = false;     
+        forcedTarget = null; 
+        isStopped = false;
         isAttackMoving = false;
         if (agent != null)
         {

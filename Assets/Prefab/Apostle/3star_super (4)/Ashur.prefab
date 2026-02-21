@@ -211,6 +211,7 @@ MonoBehaviour:
   target: {fileID: 0}
   isAttackMoving: 0
   isStopped: 0
+  forcedTarget: {fileID: 0}
 --- !u!114 &2743097870539087881
 MonoBehaviour:
   m_ObjectHideFlags: 0
