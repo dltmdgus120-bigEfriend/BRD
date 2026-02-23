@@ -109,7 +109,7 @@ public class UnitInfoPanel : MonoBehaviour
         UnitData data = stat.data;
         if (portraitImage != null) portraitImage.sprite = data.icon;
         if (nameText != null) nameText.text = data.unitName;
-        if (rankText != null) rankText.text = $"{data.rank}성"; // 추후 별 이미지 반복으로 교체 가능
+        if (rankText != null) rankText.text = $"{data.level}"; 
 
         // 수치 정보 (UpdateLiveValues에서 계속 갱신됨)
         UpdateLiveValues();

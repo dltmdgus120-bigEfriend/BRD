@@ -13,15 +13,16 @@ MonoBehaviour:
   m_Name: Dummy enemy
   m_EditorClassIdentifier: 
   enemyName: Dummy enemy
-  icon: {fileID: 21300000, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
-  prefab: {fileID: 2461428311817073197, guid: d052ee077ea8ab947bbfee583d6f40c2, type: 3}
-  isBoss: 1
-  attribute: {fileID: 0}
-  race: {fileID: 0}
+  icon: {fileID: 21300000, guid: c8bc71f45421b774ca458f0c431e72db, type: 3}
+  prefab: {fileID: 2461428311817073197, guid: 2d77df2b71901ad45aa9066df79e28af, type: 3}
+  isBoss: 0
+  attribute: {fileID: 11400000, guid: f6a7a3fe9ed57974b9b582c715d375d9, type: 2}
+  race: {fileID: 11400000, guid: 8638b00ba3d50fe4f8c17ad9e096c320, type: 2}
   maxHP: 20
   armor: 0
   magicResist: 0
   moveSpeed: 3
   description: "\uB354\uBBF8"
+  spawnQuote: 
   dropGold: 10
   dropElif: 0

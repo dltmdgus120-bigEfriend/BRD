@@ -6,7 +6,8 @@ public class UnitData : ScriptableObject
 {
     [Header("사도 정보")]
     public string unitName;
-    public int rank;              // 건물은 0으로 설정하면 됩니다.
+    public string level;
+    public int rank;
     public GameObject prefab;
     public Sprite icon;
     public AudioClip summonVoice;
@@ -38,7 +39,7 @@ public class UnitData : ScriptableObject
     [Header("조합 가능 목록")]  // 조합 메인에만
     public List<CombinationRecipe> availableRecipes;
 
-    // ★ [추가] 건물 설정
+    //  건물 설정
     [Header("건물 설정")]
     public bool isBuilding = false; // 체크하면 이동/공격/판매 불가
 }

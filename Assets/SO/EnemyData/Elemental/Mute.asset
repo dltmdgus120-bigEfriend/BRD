@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb524826878c7fb43a2e1ce875db51f4, type: 3}
+  m_Name: Mute
+  m_EditorClassIdentifier: 
+  enemyName: "\uBBA4\uD2B8"
+  icon: {fileID: 21300000, guid: 1f77859835fbea947962b038d2b7bea4, type: 3}
+  prefab: {fileID: 2461428311817073197, guid: 43fadd152f5c7c94e90dc5041a767147, type: 3}
+  isBoss: 0
+  attribute: {fileID: 11400000, guid: f6a7a3fe9ed57974b9b582c715d375d9, type: 2}
+  race: {fileID: 11400000, guid: 68dbebb4e61fd10468a91f358028416c, type: 2}
+  maxHP: 100
+  armor: 0
+  magicResist: 0
+  moveSpeed: 3
+  description: "\uBAA8\uB098\uD2F0\uC5C4\uC758 \uC804 \uCCA9\uBCF4\uBC18\uC7A5 \uCD9C\uC2E0\uC774\uC790
+    \uC815\uBCF4\uC758 \uC815\uB839. \uBAA9\uD45C\uB97C \uC704\uD574 \uC218\uB2E8\uACFC
+    \uBC29\uBC95\uC744 \uAC00\uB9AC\uC9C0 \uC54A\uB294\uB2E4."
+  spawnQuote: "\uC0DD\uBA85\uCCB4\uB4E4\uC740 \uD56D\uC0C1...\uB108\uBB34 \uC774\uAE30\uC801\uC774\uC57C."
+  dropGold: 10
+  dropElif: 0

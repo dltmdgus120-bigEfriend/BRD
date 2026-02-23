@@ -63,6 +63,14 @@ public class UnitSkillController : MonoBehaviour
         }
 
         SkillBase skill = stat.data.skills[index];
+
+        // 패시브거나, 평타 발동(프록) 스킬이면 수동 시전 절대 불가!!
+        if (skill.isPassive || skill.isAttackProc)
+        {
+            Debug.Log($"[거절] {skill.skillName}은(는) 자동 발동 스킬이라 수동으로 쓸 수 없습니다!");
+            return;
+        }
+
         Debug.Log($"[2] 스킬 데이터 확인: {skill.skillName}, NeedTarget: {skill.needTarget}"); // 2단계
 
         // 쿨타임 체크
@@ -116,22 +124,32 @@ public class UnitSkillController : MonoBehaviour
             anim.SetTrigger(skill.animTriggerName);
         }
 
-        // 3. 사운드 재생
+        // 시전 사운드 재생 (유닛의 기합이나 대사!)
+        if (skill.castVoice != null && SoundManager.Instance != null)
+        {
+            // 만약 캐릭터 목소리 전용 함수(PlayVoice 등)가 있다면 그걸 쓰셔도 좋습니다.
+            SoundManager.Instance.PlaySFX(skill.castVoice);
+        }
+
+        isCasting = false; // 발 묶기 해제
+
+        // 하늘에 빵 소환!
+        skill.OnCastStart(stat, targetPos);
+
+        // 빵이 떨어지는 시간 대기
+        if (skill.actionDelay > 0)
+        {
+            yield return new WaitForSeconds(skill.actionDelay);
+        }
+
+        // 임팩트 사운드 재생 (빵이 바닥에 닿아 쾅! 터지는 소리)
         if (skill.skillSound != null && SoundManager.Instance != null)
         {
             SoundManager.Instance.PlaySFX(skill.skillSound);
         }
 
-        // 시전 시작 효과 발동! (여기서 메테오가 하늘에 나타남)
-        skill.OnCastStart(stat, targetPos);
-
-        // 시전 시간(캐스팅 타임) 동안 대기 (메테오가 떨어지는 중...)
-        yield return new WaitForSeconds(skill.castTime);
-
-        // 기다린 후 최종 효과 발동! (여기서 쾅! 폭발하고 데미지 들어감)
+        // 폭발 및 데미지!
         skill.Execute(stat, targetPos);
-
-        isCasting = false; // 시전 종료 (속박 해제!)
     }
 
     // (UI 갱신용) 쿨타임 비율 반환

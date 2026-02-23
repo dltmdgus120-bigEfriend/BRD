@@ -31,9 +31,8 @@ public class Skill_Meteor : SkillBase
         FallingMeteor fallingScript = currentFallingInstance.GetComponent<FallingMeteor>();
 
         if (fallingScript != null)
-        {
-            // 하늘(skyPos)에서 땅(targetPos)까지, 시전 시간(castTime) 동안 떨어져라!
-            fallingScript.Setup(skyPos, targetPos, castTime);
+        {           
+            fallingScript.Setup(skyPos, targetPos, actionDelay);
         }
         else
         {

@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb524826878c7fb43a2e1ce875db51f4, type: 3}
+  m_Name: Sprite Mob 3
+  m_EditorClassIdentifier: 
+  enemyName: "\uC800\uD608\uB2F9\uC694\uC815"
+  icon: {fileID: 21300000, guid: 4d9473de8893559448931ea7ab982808, type: 3}
+  prefab: {fileID: 2461428311817073197, guid: 618f5ff318430d5418a1987ef6dc9101, type: 3}
+  isBoss: 0
+  attribute: {fileID: 11400000, guid: 0f32292e2942f66458a8ac13924b8d6b, type: 2}
+  race: {fileID: 11400000, guid: 8638b00ba3d50fe4f8c17ad9e096c320, type: 2}
+  maxHP: 20
+  armor: 0
+  magicResist: 0
+  moveSpeed: 3
+  description: "\uB2F9\uBD84\uC774 \uBD80\uC871\uD574 \uB208\uC774 \uB3CC\uC544\uAC04
+    \uC694\uC815. \uC624\uD788\uB824 \uAC74\uAC15\uD574\uC84C\uB2E4.\n"
+  spawnQuote: "\uC591\uAC31\uC774\uB77C\uB3C4 \uB2EC\uB77C!"
+  dropGold: 10
+  dropElif: 0

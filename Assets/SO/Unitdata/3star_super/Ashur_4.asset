@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Ashur_4
   m_EditorClassIdentifier: 
   unitName: "\uC5D0\uC288\uB974"
+  level: "\uD2B9\uBCC43\uC131"
   rank: 4
   prefab: {fileID: 3539101861832537204, guid: 6647d1dee2eb14444a77dc4557c671d2, type: 3}
   icon: {fileID: 21300000, guid: 79e80576c9f34ad489d221e9f999bd8f, type: 3}

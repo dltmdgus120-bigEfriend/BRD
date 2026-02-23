@@ -79,12 +79,20 @@ public class UnitCommandPanel : MonoBehaviour
                 // Debug.Log($"[UI 그리기] 스킬 {i}: {skill.skillName}");
 
                 int skillIndex = i;
+
+                // ★ [핵심 수정] 패시브인지, 평타 발동(프록)인지 검사해서 글자와 클릭 여부 결정!
+                bool isAutoSkill = skill.isPassive || skill.isAttackProc;
+
+                string skillTypeTag = skill.isPassive ? "\n<color=yellow>[패시브]</color>" :
+                                     (skill.isAttackProc ? "\n<color=orange>[자동 발동]</color>" :
+                                     $"\n<color=cyan>[쿨타임: {skill.cooldown}초]</color>");
+
                 slots[slotIdx].Setup(
                     skill.icon,
                     skill.skillName,
-                    skill.description + (skill.isPassive ? "\n<color=yellow>[패시브]</color>" : $"\n<color=cyan>[쿨타임: {skill.cooldown}초]</color>"),
+                    skill.description + skillTypeTag,
                     false,
-                    skill.isPassive ? null : () => OnClickSkill(skillIndex),
+                    isAutoSkill ? null : () => OnClickSkill(skillIndex), // 자동 발동이면 클릭 시 아무 일도 안 일어남(null)
                     ""
                 );
             }

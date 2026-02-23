@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb524826878c7fb43a2e1ce875db51f4, type: 3}
+  m_Name: Joanne(Dreamy)
+  m_EditorClassIdentifier: 
+  enemyName: "\uC8E0\uC548(\uAFC8\uACB0)"
+  icon: {fileID: 21300000, guid: d31f8f7c3fbf4c64d8e791cd19bd9e62, type: 3}
+  prefab: {fileID: 2461428311817073197, guid: 8acedf2b3bb69484eac2dc41d83ed1fc, type: 3}
+  isBoss: 1
+  attribute: {fileID: 11400000, guid: d6d5c2902564423499fd2512a37038da, type: 2}
+  race: {fileID: 11400000, guid: 8638b00ba3d50fe4f8c17ad9e096c320, type: 2}
+  maxHP: 100
+  armor: 0
+  magicResist: 0
+  moveSpeed: 3
+  description: "\uBD84\uB178\uB85C \uAC01\uC131\uD55C \uC0C1\uD0DC. \uC5C4\uCCAD\uB09C
+    \uD798\uC774 \uB290\uAEF4\uC9C4\uB2E4."
+  spawnQuote: "\uB0B4\uAC00 \uBC14\uB85C \uADF8 \uBD84\uC758 \uB73B\uC774\uB780 \uB9D0\uC774\uB2E4!"
+  dropGold: 10
+  dropElif: 0

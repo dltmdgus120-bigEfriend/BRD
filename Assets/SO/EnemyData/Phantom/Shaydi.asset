@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb524826878c7fb43a2e1ce875db51f4, type: 3}
+  m_Name: Shaydi
+  m_EditorClassIdentifier: 
+  enemyName: "\uC170\uC774\uB514"
+  icon: {fileID: 21300000, guid: 37b5252b6d3960e4cb22d18d21c58cb8, type: 3}
+  prefab: {fileID: 2461428311817073197, guid: 2eba0370faa491f4cb3a82f8000db922, type: 3}
+  isBoss: 0
+  attribute: {fileID: 11400000, guid: 848c245de135dcd45930b2d544fd416e, type: 2}
+  race: {fileID: 11400000, guid: 886449cf91ef41c4aa6f90a80c9ba45b, type: 2}
+  maxHP: 100
+  armor: 0
+  magicResist: 0
+  moveSpeed: 3
+  description: "\uC7A5\uB09C\uC744 \uC88B\uC544\uD558\uB294 \uC790\uCE6D '\uCD5C\uACE0
+    \uC7A5\uB09C\uAFBC' \uC720\uB839. \uC720\uB839\uC871\uC758 \uB300\uD45C\uC774\uAE30\uB3C4
+    \uD558\uB2E4."
+  spawnQuote: "\uC5B4\uB5BB\uAC8C \uAC16\uACE0 \uB180\uC544\uC904\uAE4C? \uD788\uD788"
+  dropGold: 10
+  dropElif: 0

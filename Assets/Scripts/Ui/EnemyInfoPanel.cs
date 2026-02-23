@@ -18,10 +18,14 @@ public class EnemyInfoPanel : MonoBehaviour
     public Image raceIcon;         
     public TMP_Text raceText;
 
-    [Header("스탯 표시")]
+    [Header("스탯 아이콘 (이미지)")]
+    public Image hpIcon;
+    public Image armorIcon;
+    public Image magicResistIcon;
+
+    [Header("스탯 텍스트")]
     public TMP_Text hpText;
-    public TMP_Text armorText;
-    public TMP_Text magicResistText;
+    public TMP_Text defenseText;
 
     public EnemyHP currentSelectedEnemy { get; private set; }
 
@@ -95,10 +99,19 @@ public class EnemyInfoPanel : MonoBehaviour
             if (raceText != null) raceText.text = "-";
         }
 
-        // 4. 전투 스탯 갱신
-        if (hpText != null) hpText.text = $"HP: {currentSelectedEnemy.currentHP} / {data.maxHP}";
-        if (armorText != null) armorText.text = $"물리 방어력: {data.armor}";
-        if (magicResistText != null) magicResistText.text = $"마법 저항력: {data.magicResist}";
+        // 4. 전투 스탯 갱신 (순수 숫자만!)
+        if (hpText != null)
+        {
+            // 예: "1500 / 1500"
+            hpText.text = $"{currentSelectedEnemy.currentHP} / {data.maxHP}";
+        }
+
+        if (defenseText != null)
+        {
+            // 방어력과 마저를 한 줄로 예쁘게 표시 (예: "50 / 30")
+            
+            defenseText.text = $"{data.armor}                {data.magicResist}";
+        }
     }
 
     public void HidePanel()

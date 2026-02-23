@@ -9,9 +9,11 @@ public abstract class SkillBase : ScriptableObject
     [TextArea] public string description;
 
     [Header("사운드 & 애니메이션")]
+    public AudioClip castVoice;
     public AudioClip skillSound;
     public string animTriggerName = "Skill"; // 유니티 애니메이터에서 쓸 트리거 이름
-    public float castTime = 1.0f;            // 스킬 시전 시간 (이 시간 동안 다른 행동 불가!)
+    public float castTime = 0.5f;     // 1. 유닛이 멈춰서 주문을 외우는 시간 (애니메이션 길이)
+    public float actionDelay = 1.0f;  // 2. 주문이 끝난 후, 스킬이 하늘에서 떨어지는 데 걸리는 시간
 
     [Header("설정")]
     public AttackType attackType;

@@ -13,11 +13,13 @@ MonoBehaviour:
   m_Name: Bread Smite
   m_EditorClassIdentifier: 
   skillName: Bread Smite
-  icon: {fileID: 21300000, guid: 7b851f822cc96c04f879d66464d0ba03, type: 3}
+  icon: {fileID: 21300000, guid: be603655aa13be146b4658ce656a0514, type: 3}
   description: "\uB531\uB531\uD55C \uD638\uC2E0\uC6A9 \uBC14\uAC8C\uD2B8"
+  castVoice: {fileID: 0}
   skillSound: {fileID: 0}
-  animTriggerName: Skill
+  animTriggerName: Skill2
   castTime: 1
+  actionDelay: 1
   attackType: 0
   isPassive: 0
   cooldown: 0.5
@@ -28,3 +30,6 @@ MonoBehaviour:
   procChance: 20
   bonusDamage: 50
   hitVFX: {fileID: 0}
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 128

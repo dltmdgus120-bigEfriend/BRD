@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb524826878c7fb43a2e1ce875db51f4, type: 3}
+  m_Name: Barie
+  m_EditorClassIdentifier: 
+  enemyName: "\uBC14\uB9AC\uC5D0"
+  icon: {fileID: 21300000, guid: 628ce187ae763a44e971a77b8a43842b, type: 3}
+  prefab: {fileID: 2461428311817073197, guid: 695145c94220dfa489d4330ed93f672d, type: 3}
+  isBoss: 0
+  attribute: {fileID: 11400000, guid: d6d5c2902564423499fd2512a37038da, type: 2}
+  race: {fileID: 11400000, guid: 151223dfa58b0d64b90defed54aeaaa7, type: 2}
+  maxHP: 100
+  armor: 0
+  magicResist: 0
+  moveSpeed: 3
+  description: "\uB9C8\uB140 \uB3C4\uC11C\uAD00\uC758 \uC0AC\uC11C. \uCC45\uC744
+    \uC18C\uC911\uD788 \uC5EC\uAE34\uB2E4. \uBC29\uD654\uB9C8\uB140(?)\uB85C \uC624\uD574\uBC1B\uB294\uC911."
+  spawnQuote: "\uADF8\uB7EC\uB2C8\uAE4C!! \uC81C\uAC00 \uC9C0\uB974\uB294\uAC8C \uC544\uB2C8\uB77C\uB2C8\uAE50\uC694!"
+  dropGold: 10
+  dropElif: 0

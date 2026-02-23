@@ -22,6 +22,9 @@ public class EnemyData : ScriptableObject
     [Header("설명")]
     [TextArea]
     public string description;      //  적 설명 (보스몹 플레이버 텍스트용)
+    [Header("대사")]
+    [TextArea]
+    public string spawnQuote;
 
     [Header("보상 설정")]
     public int dropGold = 10;

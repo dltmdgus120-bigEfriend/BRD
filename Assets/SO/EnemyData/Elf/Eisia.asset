@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb524826878c7fb43a2e1ce875db51f4, type: 3}
+  m_Name: Eisia
+  m_EditorClassIdentifier: 
+  enemyName: "\uC544\uC774\uC2DC\uC544"
+  icon: {fileID: 21300000, guid: 2089a7686329d0843a5754faf0ddae10, type: 3}
+  prefab: {fileID: 2461428311817073197, guid: 4d30c05fd3894ea45bd25bfedb07b140, type: 3}
+  isBoss: 0
+  attribute: {fileID: 11400000, guid: 13484aa5e45943c45a25b5d6bfcc7134, type: 2}
+  race: {fileID: 11400000, guid: c65bf47d12a6cc34189d44b469629c2a, type: 2}
+  maxHP: 20
+  armor: 0
+  magicResist: 0
+  moveSpeed: 3
+  description: "\uBAA8\uB098\uD2F0\uC5C4\uC758 2\uC778\uC790 \uAE30\uC5C5 '\uD504\uB85C\uC2A4\uD2B8
+    \uB178\uBC14'\uC758 \uD68C\uC7A5. \uBA5C\uB8E8\uB098\uC5D0\uAC8C \uC5F4\uB4F1\uAC10\uC744
+    \uAC00\uC9C0\uACE0 \uC788\uB2E4."
+  spawnQuote: "\uB10C \uD574\uACE0\uC57C!!"
+  dropGold: 10
+  dropElif: 0

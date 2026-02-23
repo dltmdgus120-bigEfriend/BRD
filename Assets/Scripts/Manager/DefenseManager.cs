@@ -115,14 +115,23 @@ public class DefenseManager : MonoBehaviour
     // --- 일반 라운드 로직 ---
     IEnumerator RunNormalRound()
     {
-        // 웨이브 데이터 가져오기 (데이터가 부족하면 마지막 데이터 반복)
         int waveIndex = Mathf.Clamp(currentRound - 1, 0, waves.Count - 1);
         if (waves.Count > 0)
         {
-            StartCoroutine(SpawnWave(waves[waveIndex]));
+            WaveData currentWave = waves[waveIndex];
+
+            // 일반 웨이브 시작 시 대표 몬스터가 한 마디 합니다
+            if (currentWave.enemyToSpawn != null && !string.IsNullOrEmpty(currentWave.enemyToSpawn.spawnQuote))
+            {
+                // 이름은 주황색으로 강조해서 표시합니다.
+                string logMessage = $"<color=red>[{currentWave.enemyToSpawn.enemyName}]</color> {currentWave.enemyToSpawn.spawnQuote}";
+                if (LogManager.Instance != null) LogManager.Instance.ShowLog(logMessage);
+            }
+
+            StartCoroutine(SpawnWave(currentWave));
         }
 
-        // 40초 버티기 타이머
+        // 버티기 타이머
         yield return StartCoroutine(RunTimer($"{currentRound} 라운드", roundTime));
     }
 
@@ -131,10 +140,17 @@ public class DefenseManager : MonoBehaviour
     {
         int bossIndex = (currentRound / 10) - 1;
 
-        //  bossDataList를 사용
+        
         if (bossDataList.Count > 0)
         {
             bossIndex = Mathf.Clamp(bossIndex, 0, bossDataList.Count - 1);
+            EnemyData bossData = bossDataList[bossIndex];
+            // 보스 등장 시 위압감 있게 붉은색으로 한 마디 합니다!
+            if (!string.IsNullOrEmpty(bossData.spawnQuote))
+            {
+                string logMessage = $"<color=red>[BOSS {bossData.enemyName}]</color> {bossData.spawnQuote}";
+                if (LogManager.Instance != null) LogManager.Instance.ShowLog(logMessage);
+            }
             SpawnBoss(bossDataList[bossIndex]);
         }
         else

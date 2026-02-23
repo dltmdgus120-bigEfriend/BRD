@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb524826878c7fb43a2e1ce875db51f4, type: 3}
+  m_Name: M.E.O.W & Elena
+  m_EditorClassIdentifier: 
+  enemyName: "M.E.O.W & \uC5D8\uB808\uB098"
+  icon: {fileID: 21300000, guid: 882d38cdb23943e44a8d2291598161ab, type: 3}
+  prefab: {fileID: 2461428311817073197, guid: f102350b800ab1a4f8871e372744ba55, type: 3}
+  isBoss: 1
+  attribute: {fileID: 11400000, guid: 13484aa5e45943c45a25b5d6bfcc7134, type: 2}
+  race: {fileID: 11400000, guid: c65bf47d12a6cc34189d44b469629c2a, type: 2}
+  maxHP: 100
+  armor: 0
+  magicResist: 0
+  moveSpeed: 3
+  description: "\uC790\uC2E0\uC774 \uBC1C\uBA85\uD55C \uACE0\uC591\uC774 \uB85C\uBD07\uC5D0
+    \uD0C4 \uC5D8\uB808\uB098. \uAE50\uD504\uD589\uB3D9\uC744 \uD558\uACE0 \uC788\uB2E4."
+  spawnQuote: GOODBYE_WORLD!
+  dropGold: 10
+  dropElif: 0
