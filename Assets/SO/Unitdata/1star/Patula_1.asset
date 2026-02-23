@@ -13,20 +13,24 @@ MonoBehaviour:
   m_Name: Patula_1
   m_EditorClassIdentifier: 
   unitName: "\uD30C\uD2B8\uB77C"
+  level: "1\uC131"
   rank: 1
   prefab: {fileID: 8316526242042261379, guid: 439881c731429514b94b745cec0bfa39, type: 3}
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 20c56bedff6ba5144b2f64d51a8cf702, type: 3}
   summonVoice: {fileID: 0}
+  attackSound: {fileID: 8300000, guid: 415884183e8fd85458ed1e34ae53cb9c, type: 3}
   sellPrice: 10
-  attribute: {fileID: 0}
-  race: {fileID: 0}
+  sellElif: 1
+  attribute: {fileID: 11400000, guid: 13484aa5e45943c45a25b5d6bfcc7134, type: 2}
+  race: {fileID: 11400000, guid: 8638b00ba3d50fe4f8c17ad9e096c320, type: 2}
   skills: []
   attackType: 0
   attackRange: 5
   attackSpeed: 1
   damage: 10
-  projectilePrefab: {fileID: 2241447580800282697, guid: 8443bf39dcf99014fa75ac29c46c1231,
-    type: 3}
-  description: "\uD30C\uD2B8\uB77C"
+  projectilePrefab: {fileID: 0}
+  description: "\uC5D0\uC288\uB974\uC758 \uBE75\uC9D1\uC5D0\uC11C \uC54C\uBC14\uD558\uB294
+    \uC54C\uBC14\uC0DD\uC774\uC790 \uBBFC\uCD08 \uC560\uD638\uAC00"
+  summonQuote: "\uC8FC\uBC29\uC5D0\uC11C\uB294 \uC9C4\uC9C0\uD558\uAC8C!"
   availableRecipes: []
   isBuilding: 0

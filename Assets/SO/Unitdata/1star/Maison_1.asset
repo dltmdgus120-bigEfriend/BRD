@@ -13,19 +13,24 @@ MonoBehaviour:
   m_Name: Maison_1
   m_EditorClassIdentifier: 
   unitName: "\uBA54\uC8F5"
+  level: "1\uC131"
   rank: 1
   prefab: {fileID: 8316526242042261379, guid: 6cd76056637a6ec45b6e6455089227b3, type: 3}
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: cca4048038c7dd44ca824ad48a1b25bb, type: 3}
   summonVoice: {fileID: 0}
+  attackSound: {fileID: 8300000, guid: bf12e37115c8f32488a969218461444c, type: 3}
   sellPrice: 10
-  attribute: {fileID: 0}
-  race: {fileID: 0}
+  sellElif: 1
+  attribute: {fileID: 11400000, guid: 848c245de135dcd45930b2d544fd416e, type: 2}
+  race: {fileID: 11400000, guid: 886449cf91ef41c4aa6f90a80c9ba45b, type: 2}
   skills: []
   attackType: 0
-  attackRange: 0
+  attackRange: 10
   attackSpeed: 1
-  damage: 0
-  projectilePrefab: {fileID: 0}
-  description: "\uBA54\uC8F5"
+  damage: 10
+  projectilePrefab: {fileID: 8993644921441620398, guid: 0a6a829c230b90c43bb6406af3932913,
+    type: 3}
+  description: "\uC548\uC2DD\uC758 \uC720\uB839"
+  summonQuote: "\uC5EC\uAE30\uAC00 \uC0C8 \uC9D1\uC778\uAC00?"
   availableRecipes: []
   isBuilding: 0

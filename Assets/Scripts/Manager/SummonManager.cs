@@ -174,10 +174,10 @@ public class SummonManager : MonoBehaviour
                 
                 //  캐릭터 등장 대사 로그 띄우기
                
-                if (LogManager.Instance != null && !string.IsNullOrEmpty(data.description))
+                if (LogManager.Instance != null && !string.IsNullOrEmpty(data.summonQuote))
                 {
                     // 이름은 주황색(orange), 나머지는 LogMessage에서 설정된 기본색(노란색) 적용
-                    string dialogueText = $"<color=orange>[{data.unitName}]</color> {data.description}";
+                    string dialogueText = $"<color=orange>[{data.unitName}]</color> {data.summonQuote}";
 
                     // Dialogue 타입으로 넘겨서 출력!
                     LogManager.Instance.ShowLog(dialogueText, LogType.Dialogue);

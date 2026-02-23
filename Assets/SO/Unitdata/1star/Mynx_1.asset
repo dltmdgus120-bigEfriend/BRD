@@ -13,19 +13,23 @@ MonoBehaviour:
   m_Name: Mynx_1
   m_EditorClassIdentifier: 
   unitName: "\uBC0D\uC2A4"
+  level: "1\uC131"
   rank: 1
   prefab: {fileID: 8316526242042261379, guid: 9ee8f742d711b4946b6a5f463906dcee, type: 3}
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: aeb63025cbdb6734fa8e2f62a3fa9199, type: 3}
   summonVoice: {fileID: 0}
+  attackSound: {fileID: 8300000, guid: 415884183e8fd85458ed1e34ae53cb9c, type: 3}
   sellPrice: 10
-  attribute: {fileID: 0}
-  race: {fileID: 0}
+  sellElif: 1
+  attribute: {fileID: 11400000, guid: 0f32292e2942f66458a8ac13924b8d6b, type: 2}
+  race: {fileID: 11400000, guid: 4caff94156db8024ca66be9a41361916, type: 2}
   skills: []
   attackType: 0
-  attackRange: 0
+  attackRange: 5
   attackSpeed: 1
-  damage: 0
+  damage: 10
   projectilePrefab: {fileID: 0}
-  description: "\uBC0D\uC2A4"
+  description: "\uD5C8\uB2F9 \uC120\uC0DD\uB2D8"
+  summonQuote: "\uADF8\uB807\uAC8C \uD558\uB294 \uAC70 \uC544\uB2C8\uB77C\uB2C8\uAE4C!"
   availableRecipes: []
   isBuilding: 0

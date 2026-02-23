@@ -32,9 +32,11 @@ public class UnitData : ScriptableObject
     public int damage = 0;
     public GameObject projectilePrefab;
 
-    [Header("설명")]
+    [Header("설명 및 대사")]
     [TextArea]
-    public string description;
+    public string description; 
+    [TextArea]
+    public string summonQuote;
 
     [Header("조합 가능 목록")]  // 조합 메인에만
     public List<CombinationRecipe> availableRecipes;

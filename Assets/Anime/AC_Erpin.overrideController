@@ -9,9 +9,9 @@ AnimatorOverrideController:
   m_Name: AC_Erpin
   m_Controller: {fileID: 9100000, guid: 9a107fa58a97e824aa35548591edcf8b, type: 2}
   m_Clips:
-  - m_OriginalClip: {fileID: 7400000, guid: 6a5586bc58bd305488a773a1ad214f67, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 109cfc7edb4f41d4599e288e7c3798d1, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: 8e0c5bd1d0265af4089c54cd40b2544f, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: 1bfea44be159bed4bb3c6a43aa8d84fe, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: 11004ad73d13cb34aaeb0fc41d32dc14, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: 8dbe40528310a3b40bd603d071d2b495, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 6a5586bc58bd305488a773a1ad214f67, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 109cfc7edb4f41d4599e288e7c3798d1, type: 2}

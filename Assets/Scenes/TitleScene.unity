@@ -997,7 +997,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.51
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -2659,6 +2659,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameSceneName: GameScene
   titleBGM: {fileID: 8300000, guid: 4abf48a1660a3ad4284b6c56a1199613, type: 3}
+  clickSound: {fileID: 8300000, guid: be185699eaff38447a62fe26406632a0, type: 3}
+  startVoice: {fileID: 8300000, guid: 43decadefff0df44dbc5a98eb0b10a82, type: 3}
+  optionVoice: {fileID: 8300000, guid: 4e48e14592a8ce6458e587f18073a6ec, type: 3}
+  creditVoice: {fileID: 8300000, guid: e2224ead48445ca4183754220d4ace21, type: 3}
   minLoadingTime: 6
   optionPanel: {fileID: 1803921781}
   creditPanel: {fileID: 1457786227}

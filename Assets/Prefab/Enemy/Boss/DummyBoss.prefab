@@ -342,7 +342,7 @@ MonoBehaviour:
   hpFillImage: {fileID: 3531142178409404172}
   focusIndicator: {fileID: 5608258047963753077}
   deathVFX: {fileID: 0}
-  deathSound: {fileID: 0}
+  deathSound: {fileID: 8300000, guid: d34f520a7dcf70348b92e19f1659c126, type: 3}
 --- !u!1 &4263485944999094010
 GameObject:
   m_ObjectHideFlags: 0

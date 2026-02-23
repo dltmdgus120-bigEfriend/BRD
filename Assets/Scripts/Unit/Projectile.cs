@@ -9,35 +9,49 @@ public class Projectile : MonoBehaviour
     private int damage;
     private AttackType attackType;
 
+    private Camera mainCam;
+
     public void Setup(Transform _target, int _damage, AttackType _type, UnitSkillController _owner)
     {
         target = _target;
         damage = _damage;
         attackType = _type; 
         ownerSkill = _owner;
+
+        mainCam = Camera.main;
     }
 
     void Update()
     {
-        // 1. 날아가는 도중에 적이 이미 죽어서 없어졌다면? -> 나도 파괴
         if (target == null)
         {
             Destroy(gameObject);
             return;
         }
 
-        // 2. 적을 향한 방향과 이번 프레임에 이동할 거리 계산
         Vector3 dir = target.position - transform.position;
         float distanceThisFrame = speed * Time.deltaTime;
 
-        // 3. 목표물에 닿았는지 확인 (남은 거리가 이번 이동 거리보다 짧으면 닿은 것)
+        // 2D 스프라이트 전용: 빌보드 + 시계바늘 회전 로직!
+        if (dir != Vector3.zero && mainCam != null)
+        {
+            // 1. 유닛(종이)이 카메라를 정면으로 쳐다보게 똑바로 세웁니다. (빌보드)
+            transform.forward = mainCam.transform.forward;
+
+            // 2. 카메라 시점을 기준으로, 타겟이 내 상하좌우 어디에 있는지 계산합니다.
+            Vector3 localDir = transform.InverseTransformDirection(dir);
+
+            // 3. 그 방향을 향해 시계바늘처럼 Z축만 돌려줍니다!
+            float angle = Mathf.Atan2(localDir.y, localDir.x) * Mathf.Rad2Deg;
+            transform.Rotate(0, 0, angle);
+        }
+
         if (dir.magnitude <= distanceThisFrame)
         {
             HitTarget();
             return;
         }
 
-        // 4. 목표물을 향해 이동
         transform.Translate(dir.normalized * distanceThisFrame, Space.World);
     }
 
@@ -46,7 +60,7 @@ public class Projectile : MonoBehaviour
         EnemyHP enemy = target.GetComponent<EnemyHP>();
         if (enemy != null)
         {
-            // ★ 적에게 데미지와 함께 공격 타입(attackType) 전달
+            // 적에게 데미지와 함께 공격 타입(attackType) 전달
             enemy.TakeDamage(damage, attackType);
 
             if (ownerSkill != null)

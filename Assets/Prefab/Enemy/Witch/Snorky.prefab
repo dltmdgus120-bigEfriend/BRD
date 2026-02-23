@@ -271,7 +271,7 @@ MonoBehaviour:
   focusIndicator: {fileID: 1777071560424879180}
   deathVFX: {fileID: 5985634496115995773, guid: 463cf9f7af4680240898f6aeba3fe3e6,
     type: 3}
-  deathSound: {fileID: 8300000, guid: 6564b908ddf6d2441927b6e301a6fa70, type: 3}
+  deathSound: {fileID: 8300000, guid: d34f520a7dcf70348b92e19f1659c126, type: 3}
 --- !u!136 &7210333848437780291
 CapsuleCollider:
   m_ObjectHideFlags: 0

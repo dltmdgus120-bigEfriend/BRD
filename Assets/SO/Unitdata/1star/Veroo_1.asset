@@ -13,19 +13,24 @@ MonoBehaviour:
   m_Name: Veroo_1
   m_EditorClassIdentifier: 
   unitName: "\uBCA0\uB8E8"
+  level: "1\uC131"
   rank: 1
   prefab: {fileID: 8316526242042261379, guid: 4f30b8841eaf093419f5c81d914b66f8, type: 3}
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 85eb47e84aed2414fafc1c90849ffb17, type: 3}
   summonVoice: {fileID: 0}
+  attackSound: {fileID: 8300000, guid: bf12e37115c8f32488a969218461444c, type: 3}
   sellPrice: 10
-  attribute: {fileID: 0}
-  race: {fileID: 0}
+  sellElif: 1
+  attribute: {fileID: 11400000, guid: d6d5c2902564423499fd2512a37038da, type: 2}
+  race: {fileID: 11400000, guid: 886449cf91ef41c4aa6f90a80c9ba45b, type: 2}
   skills: []
   attackType: 0
-  attackRange: 0
+  attackRange: 10
   attackSpeed: 1
-  damage: 0
-  projectilePrefab: {fileID: 0}
-  description: "\uBCA0\uB8E8"
+  damage: 10
+  projectilePrefab: {fileID: 1091953076341052365, guid: bd4afdff5877ac845b218845dc6563b2,
+    type: 3}
+  description: "\uACB0\uC810\uC758 \uC720\uB839"
+  summonQuote: "\uB108 \uC57D\uC810\uD22C\uC131\uC774\uAD6C\uB098?"
   availableRecipes: []
   isBuilding: 0

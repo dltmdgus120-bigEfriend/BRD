@@ -13,11 +13,14 @@ MonoBehaviour:
   m_Name: Kyuri_1
   m_EditorClassIdentifier: 
   unitName: "\uD050\uC774"
+  level: "1\uC131"
   rank: 1
   prefab: {fileID: 3539101861832537204, guid: ef4f9a6e7c7bd754e9d9041252f1774e, type: 3}
   icon: {fileID: 21300000, guid: bec37b5a67dcc2141a951bacc66a0a07, type: 3}
   summonVoice: {fileID: 0}
+  attackSound: {fileID: 8300000, guid: 415884183e8fd85458ed1e34ae53cb9c, type: 3}
   sellPrice: 10
+  sellElif: 1
   attribute: {fileID: 11400000, guid: f6a7a3fe9ed57974b9b582c715d375d9, type: 2}
   race: {fileID: 11400000, guid: 8638b00ba3d50fe4f8c17ad9e096c320, type: 2}
   skills: []
@@ -26,6 +29,8 @@ MonoBehaviour:
   attackSpeed: 1
   damage: 10
   projectilePrefab: {fileID: 0}
-  description: "\uC624\uC774\uC624\uC774, \uAE30\uB2E4\uB838\uB358\uAC70\uB0D0\uAD6C?"
+  description: "\uC74C\uC2DD\uC5D0 \uC624\uC774\uB97C \uC11E\uC5B4\uBA39\uB294 '\uC624\uC774\uD30C'
+    \uC694\uC815"
+  summonQuote: "\uC624\uC774\uC624\uC774, \uAE30\uB2E4\uB838\uB358\uAC70\uB0D0\uAD6C?"
   availableRecipes: []
   isBuilding: 0

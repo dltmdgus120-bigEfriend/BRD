@@ -16,12 +16,13 @@ public class UnitInfoPanel : MonoBehaviour
     public TMP_Text damageText;
     public TMP_Text speedText;
     public TMP_Text rangeText;
+    public TMP_Text descriptionText;
 
     [Header("   속성 & 종족 표시")]
-    public Image attributeIcon;    // 속성 아이콘
-    public TMP_Text attributeText; // 속성 이름
-    public Image raceIcon;         // 종족 아이콘
-    public TMP_Text raceText;      // 종족 이름
+    public Image attributeIcon;    
+    public TMP_Text attributeText;
+    public Image raceIcon;         
+    public TMP_Text raceText;      
 
     [Header("2. 다중 선택 UI ")]
     public GameObject multiSelectionRoot; 
@@ -109,8 +110,10 @@ public class UnitInfoPanel : MonoBehaviour
         UnitData data = stat.data;
         if (portraitImage != null) portraitImage.sprite = data.icon;
         if (nameText != null) nameText.text = data.unitName;
-        if (rankText != null) rankText.text = $"{data.level}"; 
+        if (rankText != null) rankText.text = $"{data.level}";
 
+        if (descriptionText != null) descriptionText.text = data.description;
+       
         // 수치 정보 (UpdateLiveValues에서 계속 갱신됨)
         UpdateLiveValues();
 
@@ -188,7 +191,7 @@ public class UnitInfoPanel : MonoBehaviour
         // 공격력 텍스트: "공격력: 50 (물리)"
         if (damageText != null)
         {
-            damageText.text = $"공격력: {currentDmg} <size=50><color={typeColor}>({typeName})</color></size>";
+            damageText.text = $"공격력: {currentDmg} <size=30><color={typeColor}>({typeName})</color></size>";
         }
         if (speedText != null)
         {
