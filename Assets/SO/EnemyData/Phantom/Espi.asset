@@ -21,7 +21,7 @@ MonoBehaviour:
   maxHP: 100
   armor: 0
   magicResist: 0
-  moveSpeed: 3
+  moveSpeed: 6
   description: "\uB0A8\uC758 \uAFC8\uC744 \uB4E4\uC5EC\uB2E4\uBCF4\uBA70 \uC545\uBABD\uC744
     \uC990\uACA8 \uBCF4\uB294 \uCDE8\uBBF8\uB97C \uAC00\uC9C4 \uAFC8\uC758 \uC720\uB839."
   spawnQuote: "\uB108 \uB9D0\uC774\uC57C. \uC7AC\uBBF8\uC788\uAC8C \uC0DD\uACBC\uB2E4."

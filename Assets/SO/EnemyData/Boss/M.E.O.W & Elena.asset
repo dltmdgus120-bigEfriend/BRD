@@ -21,7 +21,7 @@ MonoBehaviour:
   maxHP: 100
   armor: 0
   magicResist: 0
-  moveSpeed: 3
+  moveSpeed: 6
   description: "\uC790\uC2E0\uC774 \uBC1C\uBA85\uD55C \uACE0\uC591\uC774 \uB85C\uBD07\uC5D0
     \uD0C4 \uC5D8\uB808\uB098. \uAE50\uD504\uD589\uB3D9\uC744 \uD558\uACE0 \uC788\uB2E4."
   spawnQuote: GOODBYE_WORLD!

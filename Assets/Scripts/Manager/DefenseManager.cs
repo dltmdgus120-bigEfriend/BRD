@@ -148,7 +148,7 @@ public class DefenseManager : MonoBehaviour
             // 보스 등장 시 위압감 있게 붉은색으로 한 마디 합니다!
             if (!string.IsNullOrEmpty(bossData.spawnQuote))
             {
-                string logMessage = $"<color=red>[BOSS {bossData.enemyName}]</color> {bossData.spawnQuote}";
+                string logMessage = $"<color=red>[{bossData.enemyName}]</color> {bossData.spawnQuote}";
                 if (LogManager.Instance != null) LogManager.Instance.ShowLog(logMessage);
             }
             SpawnBoss(bossDataList[bossIndex]);
