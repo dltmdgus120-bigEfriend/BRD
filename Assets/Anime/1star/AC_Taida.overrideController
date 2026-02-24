@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: AC_Taida
+  m_Controller: {fileID: 9100000, guid: 9a107fa58a97e824aa35548591edcf8b, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: ae58536d9e18d8f4b8f99245b063ef09, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 254e75f7f8861e84fb1b4a731a8975c5, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 8e0c5bd1d0265af4089c54cd40b2544f, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 346afcbaf394e454dacc23abadbf8b75, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 11004ad73d13cb34aaeb0fc41d32dc14, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 1403cd5e727bf44438b7aada81bf4981, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 0bb49658079e51e4fba0238cc2ddf3a5, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 3bdebdb48d2a03c4b8305954b54f7645, type: 2}

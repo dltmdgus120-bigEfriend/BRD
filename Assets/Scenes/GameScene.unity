@@ -3381,7 +3381,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.5882353}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -7819,7 +7819,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: a78ad9f275a946d4fbed0d0d9c3eaf9e, type: 3}
-    m_FontSize: 40
+    m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1
@@ -7920,14 +7920,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rank1Units:
   - {fileID: 11400000, guid: 35514f882c5d41d498bc3fcf77e642f2, type: 2}
-  - {fileID: 11400000, guid: 83e3d3c32ed0ca04f94741a9e3823286, type: 2}
+  - {fileID: 11400000, guid: 98caedf6f88047944836632a1a27f1e5, type: 2}
   rank2Units: []
   rank3Units:
   - {fileID: 11400000, guid: e6ac579121ed4d54fa166deaacde2fec, type: 2}
   hiddenUnits: []
-  probRank1: 70
+  probRank1: 100
   probRank2: 0
-  probRank3: 30
+  probRank3: 0
   probHidden: 0
   spawnRadius: 3
   spawnPoint: {fileID: 1001479284}

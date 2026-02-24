@@ -1,5 +1,6 @@
 using UnityEngine;
-using UnityEngine.AI; 
+using UnityEngine.AI;
+using System.Collections;
 
 public class UnitAttack : MonoBehaviour
 {
@@ -12,11 +13,16 @@ public class UnitAttack : MonoBehaviour
     public Transform target;
     public bool isAttackMoving = false;
     public bool isStopped = false;
+    public bool isAttacking = false;
 
     [Header("점사 타겟")]
     public Transform forcedTarget; // 유저가 직접 마우스로 찍어준 점사 타겟
+    
+    [Header("발사 설정")]
+    public Transform firePoint;  //] 투사체가 진짜로 발사될 위치 (지팡이 끝, 가슴팍 등)
 
-    private UnitSkillController skillController; 
+    private UnitSkillController skillController;
+    private Coroutine attackCoroutine;  //  캔슬을 위해 코루틴을 기억해둘 변수
 
     void Start()
     {
@@ -29,54 +35,50 @@ public class UnitAttack : MonoBehaviour
 
     void Update()
     {
-        // 건물이면 공격 AI 작동 중지
         if (stat != null && stat.data != null && stat.data.isBuilding) return;
-
-        //  스킬 시전 중이면 이동/평타 싹 다 금지하고 바로 종료!
         if (skillController != null && skillController.isCasting) return;
-
-        if (stat != null && stat.data != null && stat.data.isBuilding) return;
 
         if (anim != null && agent != null)
         {
+            // 속도가 0.1보다 크면 걷는 애니메이션 켜기
             bool isMoving = agent.velocity.sqrMagnitude > 0.1f;
             anim.SetBool("IsMoving", isMoving);
         }
 
-        if (isStopped) return;
-
+        // 쿨타임 타이머는 언제나 최우선으로 돌아가게 맨 위로 올립니다.
         attackTimer += Time.deltaTime;
 
-        // 1. 점사 타겟(보스 등)이 죽었거나 사라졌으면 강제 타겟 해제
+        // [핵심] 공격 모션(후딜레이) 중에는 AI가 스스로 이동하거나 타겟을 찾지 못하게 뇌를 끕니다!
+        if (isAttacking) return;
+
+        // 1. 점사 타겟이 죽었거나 사라졌으면 강제 타겟 해제
         if (forcedTarget != null && !forcedTarget.gameObject.activeInHierarchy)
         {
             forcedTarget = null;
             target = null;
         }
 
-        // 2. 점사 타겟이 살아있을 때의 최우선 행동!
+        // 2. 점사 타겟이 살아있을 때의 최우선 행동
         if (forcedTarget != null)
         {
             float distToForced = Vector3.Distance(transform.position, forcedTarget.position);
 
-            // 사거리 밖이면 다른 놈 무시하고 무조건 쫓아감
             if (distToForced > stat.data.attackRange)
             {
                 if (agent != null) agent.SetDestination(forcedTarget.position);
-                return; // 쫓아가는 중에는 쏘지 않음
+                return;
             }
             else
             {
-                // 사거리 안에 들어오면 발을 멈추고 쏘기 시작!
                 if (agent != null)
                 {
                     agent.ResetPath();
                     agent.velocity = Vector3.zero;
                 }
-                target = forcedTarget; // 타겟을 점사 대상으로 꽉 고정!
+                target = forcedTarget;
             }
         }
-        else // 점사 타겟이 없을 때만 기존 자동 공격 모드 작동
+        else
         {
             if (isAttackMoving)
             {
@@ -88,14 +90,12 @@ public class UnitAttack : MonoBehaviour
                 }
             }
 
-            // 타겟이 없거나 사거리 밖이면 새 타겟 찾기
             if (target == null || Vector3.Distance(transform.position, target.position) > stat.data.attackRange)
             {
                 FindTarget();
             }
         }
 
-        // 걷는 중이면 공격 금지 (단, 위에서 사거리 내에 들어와 멈췄다면 여길 통과함)
         if (agent != null && agent.velocity.sqrMagnitude > 0.1f) return;
 
         // 타겟이 있고 쿨타임이 찼으면 공격!
@@ -139,52 +139,85 @@ public class UnitAttack : MonoBehaviour
     void Attack()
     {
         attackTimer = 0f;
+        if (attackCoroutine != null) StopCoroutine(attackCoroutine);
+        attackCoroutine = StartCoroutine(AttackRoutine());
+    }
+
+    //  공격 모션 동안 발을 묶어두는 코루틴  
+    private IEnumerator AttackRoutine()
+    {
+        isAttacking = true;
+
+        if (agent != null)
+        {
+            agent.ResetPath();
+            agent.velocity = Vector3.zero;
+        }
+
         if (anim != null) anim.SetTrigger("Attack");
 
+        // 전체 공격 사이클 시간 계산 (예: 공속 1이면 1초, 2면 0.5초)
+        float totalAttackTime = 1f / Mathf.Max(0.01f, stat.data.attackSpeed);
+
+        // UnitData에 설정된 개별 비율을 가져와서 계산합니다!
+        float windUpTime = totalAttackTime * stat.data.attackWindUpRatio;
+
+        float backswingTime = totalAttackTime * (1f - stat.data.attackWindUpRatio);
+
+        // 1. 칼을 들어올리는 시간 대기 (이때 CancelAttack이 들어오면 데미지 안 나감!)
+        yield return new WaitForSeconds(windUpTime);
+
+        // 2. ----------------- 실제 타격 발생 지점 -----------------
         if (stat != null && stat.data != null && stat.data.attackSound != null)
         {
-            if (SoundManager.Instance != null)
-            {
-                SoundManager.Instance.PlaySFX(stat.data.attackSound);
-            }
+            if (SoundManager.Instance != null) SoundManager.Instance.PlaySFX(stat.data.attackSound);
         }
 
         if (target != null)
         {
-            // 1. 투사체(Projectile)를 쓰는 원거리 유닛
             if (stat.data.projectilePrefab != null)
             {
-                Vector3 spawnPos = transform.position + Vector3.up * 0.5f;
+                //  발사구가 지정되어 있으면 거기서 쏘고, 안 까먹고 안 넣었으면 원래대로 약간 위에서 쏩니다!
+                Vector3 spawnPos = firePoint != null ? firePoint.position : transform.position + Vector3.up * 0.5f;
                 GameObject projGO = Instantiate(stat.data.projectilePrefab, spawnPos, Quaternion.identity);
                 Projectile projectile = projGO.GetComponent<Projectile>();
 
                 if (projectile != null)
                 {
-                    // ★ [수정] Setup 함수에 공격 타입(attackType) 추가 전달
                     projectile.Setup(target, stat.data.damage, stat.data.attackType, skillController);
                 }
             }
-            // 2. 근접 공격 유닛 (즉발 데미지)
             else
             {
                 EnemyHP enemyHP = target.GetComponent<EnemyHP>();
                 if (enemyHP != null)
                 {
-                    // ★ [수정] TakeDamage 함수에 공격 타입 추가 전달
                     enemyHP.TakeDamage(stat.data.damage, stat.data.attackType);
-
-                    if (skillController != null)
-                    {
-                        skillController.TryAttackProc(target.position);
-                    }
+                    if (skillController != null) skillController.TryAttackProc(target.position);
                 }
             }
+        }
+
+        // 3. 자세를 거두는 시간 대기 (이때 명령을 내리면 후딜을 씹고 이동 가능!)
+        yield return new WaitForSeconds(backswingTime);
+
+        isAttacking = false;
+    }
+
+    // 유저가 무빙샷(평타 캔슬)을 할 수 있도록 도와주는 함수
+    private void CancelAttack()
+    {
+        if (isAttacking)
+        {
+            isAttacking = false;
+            if (attackCoroutine != null) StopCoroutine(attackCoroutine);
         }
     }
 
     public void OrderAttackMove(Vector3 dest)
     {
-        forcedTarget = null; // 점사 기억 리셋
+        CancelAttack();
+        forcedTarget = null;
         isStopped = false;
         isAttackMoving = true;
         target = null;
@@ -193,15 +226,17 @@ public class UnitAttack : MonoBehaviour
 
     public void CommandFocusAttack(Transform enemyTransform)
     {
+        CancelAttack();
         forcedTarget = enemyTransform;
         target = enemyTransform;
         isAttackMoving = false;
-        isStopped = false; // 혹시 홀드 상태였어도 풀고 때리러 감
+        isStopped = false;
     }
 
     public void OrderStop()
     {
-        forcedTarget = null; 
+        CancelAttack();
+        forcedTarget = null;
         isStopped = true;
         isAttackMoving = false;
         target = null;
@@ -210,7 +245,8 @@ public class UnitAttack : MonoBehaviour
 
     public void OrderMove(Vector3 dest)
     {
-        forcedTarget = null; 
+        CancelAttack();
+        forcedTarget = null;
         isStopped = false;
         isAttackMoving = false;
         target = null;
@@ -219,7 +255,8 @@ public class UnitAttack : MonoBehaviour
 
     public void OrderHold()
     {
-        forcedTarget = null; 
+        CancelAttack();
+        forcedTarget = null;
         isStopped = false;
         isAttackMoving = false;
         if (agent != null)

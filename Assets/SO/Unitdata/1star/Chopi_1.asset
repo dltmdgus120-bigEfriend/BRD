@@ -15,7 +15,7 @@ MonoBehaviour:
   unitName: "\uCD78\uD53C"
   level: "1\uC131"
   rank: 1
-  prefab: {fileID: 8316526242042261379, guid: 90e1662472b08ac45878acdc6810fb70, type: 3}
+  prefab: {fileID: 3539101861832537204, guid: a856a50dcc0948847aea3915c4da900f, type: 3}
   icon: {fileID: 21300000, guid: 9fb2f6fedaa1d5942ae8a2e5fd6098b9, type: 3}
   summonVoice: {fileID: 0}
   attackSound: {fileID: 8300000, guid: 415884183e8fd85458ed1e34ae53cb9c, type: 3}
@@ -23,14 +23,16 @@ MonoBehaviour:
   sellElif: 1
   attribute: {fileID: 11400000, guid: d6d5c2902564423499fd2512a37038da, type: 2}
   race: {fileID: 11400000, guid: 4caff94156db8024ca66be9a41361916, type: 2}
-  skills: []
+  skills:
+  - {fileID: 11400000, guid: d99d614e285137046a4671d4ad663b0e, type: 2}
   attackType: 0
   attackRange: 5
   attackSpeed: 1
   damage: 10
   projectilePrefab: {fileID: 0}
   description: "\uC774\uC81C \uB9C9 \uC218\uB828 \uC218\uD589\uC744 \uC2DC\uC791\uD55C
-    \uC5B4\uB9B0 \uC218\uC778"
+    \uC5B4\uB9B0 \uC218\uC778\n\uAC78\uC5B4\uB2E4\uB2C8\uB294 \uACE0\uAD6C\uB9C8\uB85C
+    \uC790\uC8FC \uCC29\uAC01\uB2F9\uD55C\uB2E4\uACE0 \uD55C\uB2E4."
   summonQuote: "\uC5B4\uB5BB\uAC8C\uB4E0 \uAC15\uD574\uC838\uC11C \uC778\uC815\uBC1B\uC744
     \uAC70\uC57C!"
   availableRecipes: []

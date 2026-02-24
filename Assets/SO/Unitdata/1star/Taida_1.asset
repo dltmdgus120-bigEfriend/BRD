@@ -15,7 +15,7 @@ MonoBehaviour:
   unitName: "\uD0C0\uC774\uB2E4"
   level: "1\uC131"
   rank: 1
-  prefab: {fileID: 0}
+  prefab: {fileID: 3539101861832537204, guid: 038d313dec7830a4bbfa9a8b23bd2181, type: 3}
   icon: {fileID: 21300000, guid: 9e2d7c90ba4cf304a9631be70237fc11, type: 3}
   summonVoice: {fileID: 0}
   attackSound: {fileID: 8300000, guid: f35e23067ce186646af17f326bacfa32, type: 3}
@@ -23,7 +23,8 @@ MonoBehaviour:
   sellElif: 1
   attribute: {fileID: 11400000, guid: 0f32292e2942f66458a8ac13924b8d6b, type: 2}
   race: {fileID: 11400000, guid: c65bf47d12a6cc34189d44b469629c2a, type: 2}
-  skills: []
+  skills:
+  - {fileID: 11400000, guid: dfba1d0bfee955c488618c35e833303f, type: 2}
   attackType: 0
   attackRange: 10
   attackSpeed: 1

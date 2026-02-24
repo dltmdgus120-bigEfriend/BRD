@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe5775daa6d721d4d92f9027473f32ed, type: 3}
+  m_Name: Maison_HouseDocument
+  m_EditorClassIdentifier: 
+  skillName: "\uC9D1\uBB38\uC11C"
+  icon: {fileID: 21300000, guid: da084d18fcaea034bbf049a0e32d7c2d, type: 3}
+  description: "\uBCA0\uB8E8\uC5D0\uAC8C \uBE7C\uC557\uAE34 \uC9D1\uBB38\uC11C\uB97C
+    \uADF8\uB9AC\uC6CC\uD558\uACE0 \uC788\uB2E4."
+  castVoice: {fileID: 0}
+  skillSound: {fileID: 0}
+  animTriggerName: Skill
+  castTime: 0.5
+  actionDelay: 0
+  attackType: 2
+  isPassive: 1
+  cooldown: 0
+  needTarget: 0
+  targetRange: 0
+  effectRadius: 0
+  isAttackProc: 0
+  procChance: 0
+  bonusDamage: 0
+  bonusAttackSpeed: 0

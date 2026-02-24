@@ -22,14 +22,20 @@ public class UnitSkillController : MonoBehaviour
         {
             foreach (var skill in stat.data.skills)
             {
-                if (skill.isPassive) skill.Execute(stat, transform.position);
+                if (skill == null) continue;
+
+                if (skill.isPassive)
+                {
+                    skill.OnEquip(stat);                     // 1. 장착 효과 발동 (있는 경우)
+                    skill.Execute(stat, transform.position); // 2. 패시브 효과 적용
+                }
             }
         }
     }
 
     void Update()
     {
-        // 쿨타임 감소
+        // 쿨타임 
         if (cooldowns.Count > 0)
         {
             List<SkillBase> keys = new List<SkillBase>(cooldowns.Keys);
@@ -131,6 +137,11 @@ public class UnitSkillController : MonoBehaviour
             SoundManager.Instance.PlaySFX(skill.castVoice);
         }
 
+        if (skill.castTime > 0)
+        {
+            yield return new WaitForSeconds(skill.castTime);
+        }
+
         isCasting = false; // 발 묶기 해제
 
         // 하늘에 빵 소환!
@@ -150,6 +161,9 @@ public class UnitSkillController : MonoBehaviour
 
         // 폭발 및 데미지!
         skill.Execute(stat, targetPos);
+
+        // 스킬이 끝났으니 뇌를 다시 켜고 자동 공격(Hold) 상태로 복귀
+        if (unitAttack != null) unitAttack.OrderHold();
     }
 
     // (UI 갱신용) 쿨타임 비율 반환

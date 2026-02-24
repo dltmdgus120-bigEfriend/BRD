@@ -15,7 +15,7 @@ MonoBehaviour:
   unitName: "\uD30C\uD2B8\uB77C"
   level: "1\uC131"
   rank: 1
-  prefab: {fileID: 8316526242042261379, guid: 439881c731429514b94b745cec0bfa39, type: 3}
+  prefab: {fileID: 3539101861832537204, guid: 7a5f8bb1bc5207d45ae63d8720825188, type: 3}
   icon: {fileID: 21300000, guid: 20c56bedff6ba5144b2f64d51a8cf702, type: 3}
   summonVoice: {fileID: 0}
   attackSound: {fileID: 8300000, guid: 415884183e8fd85458ed1e34ae53cb9c, type: 3}

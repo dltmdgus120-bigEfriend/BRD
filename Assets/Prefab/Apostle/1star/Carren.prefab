@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 739923868608039451}
   - component: {fileID: 2512956298962021414}
   m_Layer: 6
-  m_Name: Carren_sprite
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -97,6 +97,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4617142d56534054981d83b0f9bf506c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2668406026515356795
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4486590604486776508}
+  m_Layer: 6
+  m_Name: FirePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4486590604486776508
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2668406026515356795}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.308, y: 3.14, z: 1.17}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8610158479033224853}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3539101861832537204
 GameObject:
   m_ObjectHideFlags: 0
@@ -136,6 +167,7 @@ Transform:
   m_Children:
   - {fileID: 1665419988657855393}
   - {fileID: 1124304750910000270}
+  - {fileID: 4486590604486776508}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &231912768736601497
@@ -196,6 +228,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 35514f882c5d41d498bc3fcf77e642f2, type: 2}
+  currentDamage: 0
+  currentAttackSpeed: 0
 --- !u!114 &-630656082862130304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -211,7 +245,9 @@ MonoBehaviour:
   target: {fileID: 0}
   isAttackMoving: 0
   isStopped: 0
+  isAttacking: 0
   forcedTarget: {fileID: 0}
+  firePoint: {fileID: 4486590604486776508}
 --- !u!114 &2743097870539087881
 MonoBehaviour:
   m_ObjectHideFlags: 0

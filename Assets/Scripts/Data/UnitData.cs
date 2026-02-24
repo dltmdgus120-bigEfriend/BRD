@@ -10,10 +10,12 @@ public class UnitData : ScriptableObject
     public int rank;
     public GameObject prefab;
     public Sprite icon;
-    public AudioClip summonVoice;
+
+    [Header("사운드")]
+    public AudioClip summonVoice; 
     public AudioClip attackSound;
 
-
+    [Header("경제")]
     public int sellPrice = 10;
     public int sellElif = 1;
 
@@ -31,6 +33,9 @@ public class UnitData : ScriptableObject
     public float attackSpeed = 1f;
     public int damage = 0;
     public GameObject projectilePrefab;
+    
+    [Range(0f, 1f)]
+    public float attackWindUpRatio = 0.3f; // 0.3이면 전체 공격 모션의 30% 지점에서 타격/발사 판정이 들어갑니다.
 
     [Header("설명 및 대사")]
     [TextArea]

@@ -46,6 +46,8 @@ public class Projectile : MonoBehaviour
             transform.Rotate(0, 0, angle);
         }
 
+        // 2D 투사체는 꼭 우측을 향하게 프리펩을 설정해줄것! 그래야 이쁘게 나감.
+
         if (dir.magnitude <= distanceThisFrame)
         {
             HitTarget();

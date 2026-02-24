@@ -13,6 +13,8 @@ public class UnitVisual : MonoBehaviour
     private NavMeshAgent agent;
     private UnitAttack attack;
 
+    private Camera mainCam;  // 매 프레임 카메라를 찾으면 렉이 걸리니 저장해 둘 변수
+
     void Start()
     {
         // 부모(Root)에 있는 컴포넌트들을 자동으로 찾아옵니다.
@@ -22,6 +24,8 @@ public class UnitVisual : MonoBehaviour
         // 만약 인스펙터에 연결 안 했으면 자식에서 찾기
         if (modelRenderer == null)
             modelRenderer = GetComponentInChildren<SpriteRenderer>();
+
+        mainCam = Camera.main;
     }
 
     void LateUpdate()
@@ -46,13 +50,19 @@ public class UnitVisual : MonoBehaviour
 
     void LookAt(Vector3 targetPos)
     {
-        // 깜빡임 방지 데드존: 나와 타겟의 X 좌표 차이를 계산
-        float diffX = targetPos.x - transform.position.x;
+        // 나와 타겟 사이의 방향 벡터
+        Vector3 dir = targetPos - transform.position;
 
-        // 타겟과의 거리가 쥐똥만 할 때(0.05 이하)는 방향을 바꾸지 않고 무시합니다!
-        if (Mathf.Abs(diffX) < 0.05f) return;
+        // 카메라의 '오른쪽(right)' 방향과 타겟 방향을 비교(Dot)합니다!
+        // 결과가 양수(+)면 타겟이 카메라 화면상 내 오른쪽에 있는 것이고,
+        // 결과가 음수(-)면 타겟이 카메라 화면상 내 왼쪽에 있는 것입니다!
+        float rightDot = Vector3.Dot(dir, mainCam.transform.right);
 
-        bool isRightSide = diffX > 0;
+        // 깜빡임 방지 데드존: 타겟이 내 몸통 한가운데랑 거의 겹쳐있을 때는 무시 (0.05 기준)
+        if (Mathf.Abs(rightDot) < 0.05f) return;
+
+        // 양수면 오른쪽!
+        bool isRightSide = rightDot > 0;
 
         if (isOriginalFacingRight)
         {

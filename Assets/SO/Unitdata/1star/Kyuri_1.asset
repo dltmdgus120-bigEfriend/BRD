@@ -23,7 +23,8 @@ MonoBehaviour:
   sellElif: 1
   attribute: {fileID: 11400000, guid: f6a7a3fe9ed57974b9b582c715d375d9, type: 2}
   race: {fileID: 11400000, guid: 8638b00ba3d50fe4f8c17ad9e096c320, type: 2}
-  skills: []
+  skills:
+  - {fileID: 11400000, guid: 6c1483e20d8a0614b9200d276ea56fbd, type: 2}
   attackType: 1
   attackRange: 5
   attackSpeed: 1

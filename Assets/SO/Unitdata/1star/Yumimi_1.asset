@@ -15,7 +15,7 @@ MonoBehaviour:
   unitName: Yumimi
   level: "1\uC131"
   rank: 1
-  prefab: {fileID: 8316526242042261379, guid: bdab5265507a6524ca39016fb29308aa, type: 3}
+  prefab: {fileID: 3539101861832537204, guid: dc16a58090b6cc7449a2507d3ae04d79, type: 3}
   icon: {fileID: 21300000, guid: dd56622c91a0f594cb8dcc34c7dcbc67, type: 3}
   summonVoice: {fileID: 0}
   attackSound: {fileID: 8300000, guid: bf12e37115c8f32488a969218461444c, type: 3}
@@ -23,7 +23,8 @@ MonoBehaviour:
   sellElif: 1
   attribute: {fileID: 11400000, guid: 848c245de135dcd45930b2d544fd416e, type: 2}
   race: {fileID: 11400000, guid: 4caff94156db8024ca66be9a41361916, type: 2}
-  skills: []
+  skills:
+  - {fileID: 11400000, guid: 71088e16b2d01a9448f8af3a59b27c54, type: 2}
   attackType: 0
   attackRange: 10
   attackSpeed: 1

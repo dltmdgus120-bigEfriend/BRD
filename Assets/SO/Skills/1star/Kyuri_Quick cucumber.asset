@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2415b54243b8c3b4a86c23ff9f90e312, type: 3}
+  m_Name: Kyuri_Quick cucumber
+  m_EditorClassIdentifier: 
+  skillName: "\uC624\uC774\uC758 \uC624\uC758"
+  icon: {fileID: 21300000, guid: 3cefffcbb142dd441ab633dd86ced03a, type: 3}
+  description: "\uC5D8\uB9AC\uC544\uC2A4 \uCC9C\uD558\uC5D0 \uC624\uC774 \uC5F4\uD48D\uC744
+    \n\uC77C\uC73C\uD0A4\uAE30 \uC704\uD574 \uB178\uB825\uD558\uACE0 \uC788\uB2E4.\n\uBA4B\uC9C4
+    \uC790\uC138\uB97C \uCDE8\uD55C\uB2E4"
+  castVoice: {fileID: 0}
+  skillSound: {fileID: 0}
+  animTriggerName: Skill
+  castTime: 0.5
+  actionDelay: 0
+  attackType: 2
+  isPassive: 0
+  cooldown: 0
+  needTarget: 0
+  targetRange: 0
+  effectRadius: 0
+  isAttackProc: 0
+  procChance: 0
