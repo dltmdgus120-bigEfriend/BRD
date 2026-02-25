@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: Tig
   m_EditorClassIdentifier: 
   enemyName: "\uD2F0\uADF8"
-  icon: {fileID: 21300000, guid: 11bf0e88119877b4b99eca63fe41da6b, type: 3}
-  prefab: {fileID: 2461428311817073197, guid: 57cd4ffd77ff1074fbc0d8192aa69fe1, type: 3}
+  icon: {fileID: 21300000, guid: 5680bb46b44e9e74abe3d6dd8837558d, type: 3}
+  inGameSprite: {fileID: 21300000, guid: 5680bb46b44e9e74abe3d6dd8837558d, type: 3}
+  unitSize: 1
+  prefab: {fileID: 2461428311817073197, guid: 2d77df2b71901ad45aa9066df79e28af, type: 3}
   isBoss: 0
   attribute: {fileID: 11400000, guid: 0f32292e2942f66458a8ac13924b8d6b, type: 2}
   race: {fileID: 11400000, guid: 4caff94156db8024ca66be9a41361916, type: 2}

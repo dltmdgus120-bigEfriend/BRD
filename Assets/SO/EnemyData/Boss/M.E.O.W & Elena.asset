@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: M.E.O.W & Elena
   m_EditorClassIdentifier: 
   enemyName: "M.E.O.W & \uC5D8\uB808\uB098"
-  icon: {fileID: 21300000, guid: 882d38cdb23943e44a8d2291598161ab, type: 3}
+  icon: {fileID: 21300000, guid: fa918b8f5784d964badf3d82ee90a02b, type: 3}
+  inGameSprite: {fileID: 21300000, guid: fa918b8f5784d964badf3d82ee90a02b, type: 3}
+  unitSize: 1
   prefab: {fileID: 2461428311817073197, guid: f102350b800ab1a4f8871e372744ba55, type: 3}
   isBoss: 1
   attribute: {fileID: 11400000, guid: 13484aa5e45943c45a25b5d6bfcc7134, type: 2}

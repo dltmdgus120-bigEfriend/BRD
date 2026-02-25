@@ -23,9 +23,9 @@ public class Projectile : MonoBehaviour
 
     void Update()
     {
-        if (target == null)
+        if (target == null || !target.gameObject.activeInHierarchy)
         {
-            Destroy(gameObject);
+            Destroy(gameObject); // (투사체 자체는 여전히 Destroy를 써도 무방합니다. 수가 적으니까요)
             return;
         }
 

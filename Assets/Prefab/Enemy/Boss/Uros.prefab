@@ -267,7 +267,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 338bd0e8d5db15a4aa33ffd6432ab703, type: 2}
-  hpFillImage: {fileID: 3531142178409404172}
+  mainSpriteRenderer: {fileID: 0}
+  hpFillTransform: {fileID: 0}
   focusIndicator: {fileID: 1777071560424879180}
   deathVFX: {fileID: 5985634496115995773, guid: 463cf9f7af4680240898f6aeba3fe3e6,
     type: 3}
@@ -449,7 +450,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.63, y: 2.66}
+  m_Size: {x: 10.24, y: 10.24}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

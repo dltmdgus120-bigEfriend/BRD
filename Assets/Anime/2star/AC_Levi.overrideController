@@ -1,0 +1,13 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: AC_Levi
+  m_Controller: {fileID: 9100000, guid: 67b9d841716ab3544a63a6818b9c7457, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: e63a0c4d0fb6acf499615a2818f6bc68, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 506a97bfb56bd1a458450df3585a2534, type: 2}

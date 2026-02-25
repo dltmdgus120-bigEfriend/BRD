@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: Sprite Mob 2
   m_EditorClassIdentifier: 
   enemyName: "\uC800\uD608\uB2F9\uC694\uC815"
-  icon: {fileID: 21300000, guid: 3b3948204ff2da3429a73cb4b691b295, type: 3}
-  prefab: {fileID: 2461428311817073197, guid: 6027aad2d44ef534aa24f014ea8d1901, type: 3}
+  icon: {fileID: 21300000, guid: cc2cb34f4df67bf47a865567e1f33860, type: 3}
+  inGameSprite: {fileID: 21300000, guid: 3b3948204ff2da3429a73cb4b691b295, type: 3}
+  unitSize: 1
+  prefab: {fileID: 2461428311817073197, guid: 2d77df2b71901ad45aa9066df79e28af, type: 3}
   isBoss: 0
   attribute: {fileID: 11400000, guid: d6d5c2902564423499fd2512a37038da, type: 2}
   race: {fileID: 11400000, guid: 8638b00ba3d50fe4f8c17ad9e096c320, type: 2}

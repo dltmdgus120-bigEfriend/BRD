@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: Picture Master
   m_EditorClassIdentifier: 
   enemyName: "\uADF8\uB9BC\uAD50\uC8FC"
-  icon: {fileID: 21300000, guid: f5552b8ee4b1bd243b333c57df06da0c, type: 3}
-  prefab: {fileID: 2461428311817073197, guid: 001bfbed9a392c94a865b1274fa1551a, type: 3}
+  icon: {fileID: 21300000, guid: 7ea696822cb96c647ab8c3f813266aa7, type: 3}
+  inGameSprite: {fileID: 21300000, guid: 7ea696822cb96c647ab8c3f813266aa7, type: 3}
+  unitSize: 1
+  prefab: {fileID: 2461428311817073197, guid: 2d77df2b71901ad45aa9066df79e28af, type: 3}
   isBoss: 0
   attribute: {fileID: 0}
   race: {fileID: 0}

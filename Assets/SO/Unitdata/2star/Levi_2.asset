@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3a30350584c4a74f9b7243f05323a05, type: 3}
+  m_Name: Levi_2
+  m_EditorClassIdentifier: 
+  unitName: "\uB808\uBE44"
+  level: "2\uC131"
+  rank: 2
+  prefab: {fileID: 3539101861832537204, guid: 6c0f10928efcc9a4191bedd5e167fa6c, type: 3}
+  icon: {fileID: 21300000, guid: 13af9f66ace00424a88ff5b15bcad713, type: 3}
+  summonVoice: {fileID: 0}
+  attackSound: {fileID: 0}
+  sellPrice: 20
+  sellElif: 2
+  attribute: {fileID: 11400000, guid: d6d5c2902564423499fd2512a37038da, type: 2}
+  race: {fileID: 11400000, guid: 151223dfa58b0d64b90defed54aeaaa7, type: 2}
+  skills: []
+  attackType: 0
+  attackRange: 5
+  attackSpeed: 1
+  damage: 30
+  projectilePrefab: {fileID: 0}
+  attackWindUpRatio: 0.5
+  description: "\uC9E0\uB0B4 \uB098\uB294 \uC54C\uBC14"
+  summonQuote: "\uB124,\uB124\uB124?"
+  availableRecipes: []
+  isBuilding: 0

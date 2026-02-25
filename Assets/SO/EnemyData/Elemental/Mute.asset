@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: "\uBBA4\uD2B8"
   icon: {fileID: 21300000, guid: 1f77859835fbea947962b038d2b7bea4, type: 3}
-  prefab: {fileID: 2461428311817073197, guid: 43fadd152f5c7c94e90dc5041a767147, type: 3}
+  inGameSprite: {fileID: 21300000, guid: 1f77859835fbea947962b038d2b7bea4, type: 3}
+  unitSize: 1
+  prefab: {fileID: 2461428311817073197, guid: 2d77df2b71901ad45aa9066df79e28af, type: 3}
   isBoss: 0
   attribute: {fileID: 11400000, guid: f6a7a3fe9ed57974b9b582c715d375d9, type: 2}
   race: {fileID: 11400000, guid: 68dbebb4e61fd10468a91f358028416c, type: 2}

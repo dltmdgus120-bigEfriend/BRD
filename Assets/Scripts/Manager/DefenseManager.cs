@@ -222,15 +222,22 @@ public class DefenseManager : MonoBehaviour
     {
         if (pathPoints == null || pathPoints.Length == 0) return;
 
-        // SO 안에 있는 프리팹 정보로 소환
-        GameObject enemy = Instantiate(enemyData.prefab, pathPoints[0].position, Quaternion.identity);
+        // Instantiate 대신 풀매니저에서 꺼내오기!
+        GameObject enemy = PoolManager.Instance.GetEnemy(pathPoints[0].position);
+
+        // 꺼내온 껍데기(프리팹)에 이번 라운드 적의 데이터(SO) 덮어씌우기
+        EnemyHP hpScript = enemy.GetComponent<EnemyHP>();
+        if (hpScript != null)
+        {
+            hpScript.InitEnemy(enemyData);
+        }
 
         RegisterEnemy();
 
         EnemyMovement movement = enemy.GetComponent<EnemyMovement>();
         if (movement != null)
         {
-            movement.speed = enemyData.moveSpeed; // SO 안에 있는 이동 속도 적용
+            movement.speed = enemyData.moveSpeed;
             movement.Setup(pathPoints);
         }
     }
