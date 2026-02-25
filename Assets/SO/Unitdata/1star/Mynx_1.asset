@@ -18,7 +18,7 @@ MonoBehaviour:
   prefab: {fileID: 3539101861832537204, guid: 469fc1b86cee96643b5fd82c011398d7, type: 3}
   icon: {fileID: 21300000, guid: aeb63025cbdb6734fa8e2f62a3fa9199, type: 3}
   summonVoice: {fileID: 0}
-  attackSound: {fileID: 8300000, guid: 415884183e8fd85458ed1e34ae53cb9c, type: 3}
+  attackSound: {fileID: 8300000, guid: 14c51788c6b8dda4c9027f8df4d1d10a, type: 3}
   sellPrice: 10
   sellElif: 1
   attribute: {fileID: 11400000, guid: 0f32292e2942f66458a8ac13924b8d6b, type: 2}
@@ -30,6 +30,7 @@ MonoBehaviour:
   attackSpeed: 1
   damage: 10
   projectilePrefab: {fileID: 0}
+  attackWindUpRatio: 0.3
   description: "\uD5C8\uB2F9 \uC120\uC0DD\uB2D8"
   summonQuote: "\uADF8\uB807\uAC8C \uD558\uB294 \uAC70 \uC544\uB2C8\uB77C\uB2C8\uAE4C!"
   availableRecipes: []

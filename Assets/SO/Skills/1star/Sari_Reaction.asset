@@ -20,7 +20,7 @@ MonoBehaviour:
   castVoice: {fileID: 0}
   skillSound: {fileID: 0}
   animTriggerName: Skill
-  castTime: 0.5
+  castTime: 0.3
   actionDelay: 0
   attackType: 2
   isPassive: 0

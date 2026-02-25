@@ -9,7 +9,7 @@ public class TitleManager : MonoBehaviour
     [Header("설정")]
     public string gameSceneName = "GameScene"; 
     public AudioClip titleBGM;
-    public AudioClip clickSound;
+    
 
     [Header("캐릭터 음성 (보이스)")]
     public AudioClip startVoice;   
@@ -50,13 +50,7 @@ public class TitleManager : MonoBehaviour
         if (loadingPanel != null) loadingPanel.SetActive(false);
     }
 
-    private void PlayClickSound()
-    {
-        if (clickSound != null && SoundManager.Instance != null)
-        {
-            SoundManager.Instance.PlaySFX(clickSound);
-        }
-    }
+   
 
     private void PlayVoice(AudioClip voiceClip)
     {
@@ -68,7 +62,7 @@ public class TitleManager : MonoBehaviour
 
     public void OnClickStart()
     {
-        PlayClickSound();
+       
         PlayVoice(startVoice);
         //  백그라운드 비동기 로딩 코루틴을 실행합니다!
         StartCoroutine(LoadGameSceneAsync());
@@ -76,21 +70,21 @@ public class TitleManager : MonoBehaviour
 
     public void OnClickOption()
     {
-        PlayClickSound();
+        
         PlayVoice(optionVoice);
         optionPanel.SetActive(true);
     }
 
     public void OnClickCredit()
     {
-        PlayClickSound();
+        
         PlayVoice(creditVoice);
         creditPanel.SetActive(true);
     }
 
     public void OnClickExit()
     {
-        PlayClickSound();
+        
         Debug.Log("게임 종료");
         Application.Quit(); // 에디터에선 안 꺼지고 실제 빌드된 게임에서만 꺼짐
     }

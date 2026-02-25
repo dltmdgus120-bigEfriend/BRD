@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3a30350584c4a74f9b7243f05323a05, type: 3}
   m_Name: Upgrade_House
   m_EditorClassIdentifier: 
-  unitName: Upgrade_House
+  unitName: "\uC5C5\uAE00"
   level: "\uAC74\uBB3C"
   rank: 0
   prefab: {fileID: 0}
@@ -30,6 +30,8 @@ MonoBehaviour:
   attackSpeed: 1
   damage: 0
   projectilePrefab: {fileID: 0}
+  attackWindUpRatio: 0.3
   description: "\uAE30\uB2A5\uC131 \uAC74\uBB3C"
+  summonQuote: 
   availableRecipes: []
   isBuilding: 1

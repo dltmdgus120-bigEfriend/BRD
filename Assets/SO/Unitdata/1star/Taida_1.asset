@@ -30,6 +30,7 @@ MonoBehaviour:
   attackSpeed: 1
   damage: 10
   projectilePrefab: {fileID: 0}
+  attackWindUpRatio: 0.5
   description: "\uC0C1\uAD00\uC744 \uD53C\uD574 \uB18D\uB561\uC774\uB97C \uD53C\uC6B0\uB294
     \uAC83\uC5D0 \uB3C4\uAC00 \uD2BC \uC5D8\uD504"
   summonQuote: "\uC557? \uB178, \uB180\uB358 \uAC70 \uC544\uB2C8\uC5D0\uC694!"

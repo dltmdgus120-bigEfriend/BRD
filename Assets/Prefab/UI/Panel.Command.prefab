@@ -167,6 +167,7 @@ GameObject:
   - component: {fileID: 3886975622714294891}
   - component: {fileID: 3745711866484953443}
   - component: {fileID: 8069932016371634599}
+  - component: {fileID: 8441588974923353786}
   m_Layer: 5
   m_Name: Slot (4)
   m_TagString: Untagged
@@ -292,6 +293,22 @@ MonoBehaviour:
   button: {fileID: 3745711866484953443}
   iconImage: {fileID: 7852050014496934665}
   lockIcon: {fileID: 0}
+--- !u!114 &8441588974923353786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 875516765067515243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eadb4bc1cbbf69247b25b5d9176a24af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSound: {fileID: 0}
+  clickSound: {fileID: 8300000, guid: be185699eaff38447a62fe26406632a0, type: 3}
+  hoverScaleMultiplier: 1.1
+  animationSpeed: 0.1
 --- !u!1 &1058482237236754704
 GameObject:
   m_ObjectHideFlags: 0
@@ -380,6 +397,7 @@ GameObject:
   - component: {fileID: 2918824415942771585}
   - component: {fileID: 6288466361091783639}
   - component: {fileID: 6305050319385236774}
+  - component: {fileID: 398099725028551447}
   m_Layer: 5
   m_Name: Slot (5)
   m_TagString: Untagged
@@ -505,6 +523,22 @@ MonoBehaviour:
   button: {fileID: 6288466361091783639}
   iconImage: {fileID: 6647767243039455171}
   lockIcon: {fileID: 0}
+--- !u!114 &398099725028551447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1410765550172433534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eadb4bc1cbbf69247b25b5d9176a24af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSound: {fileID: 0}
+  clickSound: {fileID: 8300000, guid: be185699eaff38447a62fe26406632a0, type: 3}
+  hoverScaleMultiplier: 1.1
+  animationSpeed: 0.1
 --- !u!1 &1416470793345156832
 GameObject:
   m_ObjectHideFlags: 0
@@ -676,6 +710,7 @@ GameObject:
   - component: {fileID: 4912239549354055513}
   - component: {fileID: 4467469025727281883}
   - component: {fileID: 6451389377255887171}
+  - component: {fileID: 8607213807260099568}
   m_Layer: 5
   m_Name: Slot (7)
   m_TagString: Untagged
@@ -801,6 +836,22 @@ MonoBehaviour:
   button: {fileID: 4467469025727281883}
   iconImage: {fileID: 2132255013986180795}
   lockIcon: {fileID: 0}
+--- !u!114 &8607213807260099568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013381780177053684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eadb4bc1cbbf69247b25b5d9176a24af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSound: {fileID: 0}
+  clickSound: {fileID: 8300000, guid: be185699eaff38447a62fe26406632a0, type: 3}
+  hoverScaleMultiplier: 1.1
+  animationSpeed: 0.1
 --- !u!1 &2420665435218354459
 GameObject:
   m_ObjectHideFlags: 0
@@ -814,6 +865,7 @@ GameObject:
   - component: {fileID: 6753837235050895676}
   - component: {fileID: 1423074823843837976}
   - component: {fileID: 4228421232550787813}
+  - component: {fileID: 8540430769970952253}
   m_Layer: 5
   m_Name: Slot (6)
   m_TagString: Untagged
@@ -939,6 +991,22 @@ MonoBehaviour:
   button: {fileID: 1423074823843837976}
   iconImage: {fileID: 8413322516615340739}
   lockIcon: {fileID: 0}
+--- !u!114 &8540430769970952253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2420665435218354459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eadb4bc1cbbf69247b25b5d9176a24af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSound: {fileID: 0}
+  clickSound: {fileID: 8300000, guid: be185699eaff38447a62fe26406632a0, type: 3}
+  hoverScaleMultiplier: 1.1
+  animationSpeed: 0.1
 --- !u!1 &3057712627139474374
 GameObject:
   m_ObjectHideFlags: 0
@@ -952,6 +1020,7 @@ GameObject:
   - component: {fileID: 3977747183329189593}
   - component: {fileID: 6815185670532458615}
   - component: {fileID: 7182721255910227735}
+  - component: {fileID: 8609275783590160612}
   m_Layer: 5
   m_Name: Slot (2)
   m_TagString: Untagged
@@ -1077,6 +1146,22 @@ MonoBehaviour:
   button: {fileID: 6815185670532458615}
   iconImage: {fileID: 3205461217657493}
   lockIcon: {fileID: 0}
+--- !u!114 &8609275783590160612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3057712627139474374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eadb4bc1cbbf69247b25b5d9176a24af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSound: {fileID: 0}
+  clickSound: {fileID: 8300000, guid: be185699eaff38447a62fe26406632a0, type: 3}
+  hoverScaleMultiplier: 1.1
+  animationSpeed: 0.1
 --- !u!1 &3158197513470379404
 GameObject:
   m_ObjectHideFlags: 0
@@ -1240,6 +1325,7 @@ GameObject:
   - component: {fileID: 3257733740191384228}
   - component: {fileID: 8316162718227240136}
   - component: {fileID: 7611685083120296051}
+  - component: {fileID: 7013020413423534891}
   m_Layer: 5
   m_Name: Slot (3)
   m_TagString: Untagged
@@ -1365,6 +1451,22 @@ MonoBehaviour:
   button: {fileID: 8316162718227240136}
   iconImage: {fileID: 8632622520966939807}
   lockIcon: {fileID: 0}
+--- !u!114 &7013020413423534891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3390740418027429468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eadb4bc1cbbf69247b25b5d9176a24af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSound: {fileID: 0}
+  clickSound: {fileID: 8300000, guid: a30203b3e8e4d7647ae641cae4992c2c, type: 3}
+  hoverScaleMultiplier: 1.1
+  animationSpeed: 0.1
 --- !u!1 &3878221903945784998
 GameObject:
   m_ObjectHideFlags: 0
@@ -1378,6 +1480,7 @@ GameObject:
   - component: {fileID: 9104934137653287679}
   - component: {fileID: 8728085413923267217}
   - component: {fileID: 7862241989216539920}
+  - component: {fileID: 5572837051160512380}
   m_Layer: 5
   m_Name: Slot (9)
   m_TagString: Untagged
@@ -1503,6 +1606,22 @@ MonoBehaviour:
   button: {fileID: 8728085413923267217}
   iconImage: {fileID: 5991054226338400827}
   lockIcon: {fileID: 0}
+--- !u!114 &5572837051160512380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3878221903945784998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eadb4bc1cbbf69247b25b5d9176a24af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSound: {fileID: 0}
+  clickSound: {fileID: 8300000, guid: be185699eaff38447a62fe26406632a0, type: 3}
+  hoverScaleMultiplier: 1.1
+  animationSpeed: 0.1
 --- !u!1 &4666526245947794976
 GameObject:
   m_ObjectHideFlags: 0
@@ -1516,6 +1635,7 @@ GameObject:
   - component: {fileID: 5037343017662063402}
   - component: {fileID: 1125745569143465176}
   - component: {fileID: 8092494560318668349}
+  - component: {fileID: 1823330344317944232}
   m_Layer: 5
   m_Name: Slot (1)
   m_TagString: Untagged
@@ -1641,6 +1761,22 @@ MonoBehaviour:
   button: {fileID: 1125745569143465176}
   iconImage: {fileID: 2806368276131878351}
   lockIcon: {fileID: 0}
+--- !u!114 &1823330344317944232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4666526245947794976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eadb4bc1cbbf69247b25b5d9176a24af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSound: {fileID: 0}
+  clickSound: {fileID: 8300000, guid: be185699eaff38447a62fe26406632a0, type: 3}
+  hoverScaleMultiplier: 1.1
+  animationSpeed: 0.1
 --- !u!1 &4846762439188500042
 GameObject:
   m_ObjectHideFlags: 0
@@ -2120,6 +2256,7 @@ GameObject:
   - component: {fileID: 2333006531717571545}
   - component: {fileID: 1222824325416183091}
   - component: {fileID: 7489262303060458669}
+  - component: {fileID: 4649149837562659905}
   m_Layer: 5
   m_Name: Slot (10)
   m_TagString: Untagged
@@ -2245,6 +2382,22 @@ MonoBehaviour:
   button: {fileID: 1222824325416183091}
   iconImage: {fileID: 3596642967607806272}
   lockIcon: {fileID: 0}
+--- !u!114 &4649149837562659905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6423844549923787665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eadb4bc1cbbf69247b25b5d9176a24af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSound: {fileID: 0}
+  clickSound: {fileID: 8300000, guid: be185699eaff38447a62fe26406632a0, type: 3}
+  hoverScaleMultiplier: 1.1
+  animationSpeed: 0.1
 --- !u!1 &6468060117674514727
 GameObject:
   m_ObjectHideFlags: 0
@@ -2986,6 +3139,7 @@ GameObject:
   - component: {fileID: 7538199597747514064}
   - component: {fileID: 2226529178501850180}
   - component: {fileID: 4520763932513217269}
+  - component: {fileID: 7484005057013618770}
   m_Layer: 5
   m_Name: Slot (11)
   m_TagString: Untagged
@@ -3111,6 +3265,22 @@ MonoBehaviour:
   button: {fileID: 2226529178501850180}
   iconImage: {fileID: 1119641033569772333}
   lockIcon: {fileID: 0}
+--- !u!114 &7484005057013618770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7942441661347021586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eadb4bc1cbbf69247b25b5d9176a24af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSound: {fileID: 0}
+  clickSound: {fileID: 8300000, guid: be185699eaff38447a62fe26406632a0, type: 3}
+  hoverScaleMultiplier: 1.1
+  animationSpeed: 0.1
 --- !u!1 &8195110293003255264
 GameObject:
   m_ObjectHideFlags: 0
@@ -3199,6 +3369,7 @@ GameObject:
   - component: {fileID: 2986430043045039460}
   - component: {fileID: 1071061898386227555}
   - component: {fileID: 1684841662454814517}
+  - component: {fileID: 1506919682794212103}
   m_Layer: 5
   m_Name: Slot (8)
   m_TagString: Untagged
@@ -3324,6 +3495,22 @@ MonoBehaviour:
   button: {fileID: 1071061898386227555}
   iconImage: {fileID: 5519112020586763698}
   lockIcon: {fileID: 0}
+--- !u!114 &1506919682794212103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8232042478175694108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eadb4bc1cbbf69247b25b5d9176a24af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSound: {fileID: 0}
+  clickSound: {fileID: 8300000, guid: be185699eaff38447a62fe26406632a0, type: 3}
+  hoverScaleMultiplier: 1.1
+  animationSpeed: 0.1
 --- !u!1 &8234049093275154960
 GameObject:
   m_ObjectHideFlags: 0
@@ -3491,6 +3678,7 @@ GameObject:
   - component: {fileID: 589877281038886700}
   - component: {fileID: 520980021568792829}
   - component: {fileID: 3829817910190432918}
+  - component: {fileID: 66359442248629257}
   m_Layer: 5
   m_Name: Slot (0)
   m_TagString: Untagged
@@ -3616,3 +3804,19 @@ MonoBehaviour:
   button: {fileID: 520980021568792829}
   iconImage: {fileID: 2630741823757432071}
   lockIcon: {fileID: 0}
+--- !u!114 &66359442248629257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9074183206561762069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eadb4bc1cbbf69247b25b5d9176a24af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSound: {fileID: 0}
+  clickSound: {fileID: 8300000, guid: be185699eaff38447a62fe26406632a0, type: 3}
+  hoverScaleMultiplier: 1.1
+  animationSpeed: 0.1

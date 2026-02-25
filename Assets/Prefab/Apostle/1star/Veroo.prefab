@@ -136,6 +136,7 @@ Transform:
   m_Children:
   - {fileID: 1665419988657855393}
   - {fileID: 1124304750910000270}
+  - {fileID: 5065575235059370863}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &231912768736601497
@@ -213,7 +214,9 @@ MonoBehaviour:
   target: {fileID: 0}
   isAttackMoving: 0
   isStopped: 0
+  isAttacking: 0
   forcedTarget: {fileID: 0}
+  firePoint: {fileID: 5065575235059370863}
 --- !u!114 &2743097870539087881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -358,3 +361,34 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &7879681782334540566
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5065575235059370863}
+  m_Layer: 0
+  m_Name: Fire Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5065575235059370863
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7879681782334540566}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.058730695, y: 0.76223636, z: -0.070404, w: 0.6407728}
+  m_LocalPosition: {x: -0.02, y: 2.65, z: 1.12}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8610158479033224853}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

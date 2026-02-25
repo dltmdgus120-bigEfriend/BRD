@@ -8,6 +8,11 @@ public class GameMenu : MonoBehaviour
     public GameObject optionPanel; // 옵션 버튼 누르면 뜰 창
     public GameObject blockerPanel;
 
+    [Header("가이드 패널 설정")]
+    public GameObject guidePanel;  // 가이드 패널 전체 (배경 포함)
+    public GameObject[] guidePages; // 가이드 내용이 들어갈 페이지(이미지)들
+    private int currentPageIndex = 0;
+
     private bool isPaused = false; // 현재 멈췄는지 체크
 
     void Start()
@@ -16,6 +21,7 @@ public class GameMenu : MonoBehaviour
         if (blockerPanel != null) blockerPanel.SetActive(false);
         if (menuPanel != null) menuPanel.SetActive(false);
         if (optionPanel != null) optionPanel.SetActive(false);
+        if (guidePanel != null) guidePanel.SetActive(false);
     }
 
     void Update()
@@ -59,6 +65,7 @@ public class GameMenu : MonoBehaviour
         if (blockerPanel != null) blockerPanel.SetActive(false); 
         if (menuPanel != null) menuPanel.SetActive(false);
         if (optionPanel != null) optionPanel.SetActive(false);
+        if (guidePanel != null) guidePanel.SetActive(false);
 
         Time.timeScale = 1f; // 시간 다시 흐름
     }
@@ -69,11 +76,57 @@ public class GameMenu : MonoBehaviour
         if (optionPanel != null) optionPanel.SetActive(true);
     }
 
-    // 재시작 버튼 기능
-    public void OnClickRestart()
+    // 가이드 버튼
+    public void OnClickGuide()
     {
-        Time.timeScale = 1f; // (중요) 시간 다시 흐르게 하고 리셋해야 함
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name); // 현재 씬 다시 로드
+        if (guidePanel != null)
+        {
+            guidePanel.SetActive(true);
+            currentPageIndex = 0; // 항상 1페이지부터 보여주기
+            UpdatePageVisibility();
+        }
+    }
+
+    public void OnClickNextPage()
+    {
+        if (guidePages == null || guidePages.Length == 0) return;
+
+        // 마지막 페이지가 아닐 때만 넘어감
+        if (currentPageIndex < guidePages.Length - 1)
+        {
+            currentPageIndex++;
+            UpdatePageVisibility();
+        }
+    }
+
+    public void OnClickPreviousPage()
+    {
+        if (guidePages == null || guidePages.Length == 0) return;
+
+        // 첫 페이지가 아닐 때만 넘어감
+        if (currentPageIndex > 0)
+        {
+            currentPageIndex--;
+            UpdatePageVisibility();
+        }
+    }
+
+    //  현재 인덱스에 맞춰 페이지들 켜고 끄기
+    private void UpdatePageVisibility()
+    {
+        for (int i = 0; i < guidePages.Length; i++)
+        {
+            if (guidePages[i] != null)
+            {
+                // 현재 내 번호(i)가 currentPageIndex와 같으면 켜고(true), 다르면 끕니다(false).
+                guidePages[i].SetActive(i == currentPageIndex);
+            }
+        }
+    }
+
+    public void OnClickCloseGuide()
+    {
+        if (guidePanel != null) guidePanel.SetActive(false);
     }
 
     // 타이틀로 가기 버튼 기능
