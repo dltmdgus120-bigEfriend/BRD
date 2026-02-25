@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Beni
   m_EditorClassIdentifier: 
   enemyName: "\uBCA0\uB2C8"
-  icon: {fileID: 21300000, guid: d056350a9a537a34889990e4833e324a, type: 3}
+  icon: {fileID: 21300000, guid: 73cb75c02c0b2fb4993dca47497d0297, type: 3}
   inGameSprite: {fileID: 21300000, guid: 73cb75c02c0b2fb4993dca47497d0297, type: 3}
   unitSize: 1
   prefab: {fileID: 2461428311817073197, guid: 2d77df2b71901ad45aa9066df79e28af, type: 3}

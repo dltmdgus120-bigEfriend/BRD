@@ -130,8 +130,7 @@ public class SummonManager : MonoBehaviour
     }
 
     void CreateUnitObject(UnitData data)
-    {
-        if (data.prefab == null) return;
+    {      
 
         // 1. 기준 위치 및 랜덤 위치 계산
         Vector3 center = (spawnPoint != null) ? spawnPoint.position : Vector3.zero;
@@ -145,7 +144,7 @@ public class SummonManager : MonoBehaviour
         if (UnityEngine.AI.NavMesh.SamplePosition(randomPos, out hit, 10.0f, UnityEngine.AI.NavMesh.AllAreas))
         {
             // 3. 유닛 생성 (프리팹에서 Agent를 꺼놨으므로 에러 안 남!)
-            GameObject newUnit = Instantiate(data.prefab, hit.position, Quaternion.identity);
+            GameObject newUnit = PoolManager.Instance.GetAlly(hit.position);
 
             // 4. NavMesh Agent 활성화 및 위치 고정 (Warp 사용)
             var agent = newUnit.GetComponent<UnityEngine.AI.NavMeshAgent>();
@@ -167,19 +166,14 @@ public class SummonManager : MonoBehaviour
             UnitStat stat = newUnit.GetComponent<UnitStat>();
             if (stat != null)
             {
-                stat.data = data;
+                stat.InitAlly(data); // <- 여기서 애니메이션, 스탯, 크기까지 싹 다 덮어씌워짐!
+
                 if (SoundManager.Instance != null)
                     SoundManager.Instance.PlayVoice(data.summonVoice);
 
-                
-                //  캐릭터 등장 대사 로그 띄우기
-               
                 if (LogManager.Instance != null && !string.IsNullOrEmpty(data.summonQuote))
                 {
-                    // 이름은 주황색(orange), 나머지는 LogMessage에서 설정된 기본색(노란색) 적용
                     string dialogueText = $"<color=orange>[{data.unitName}]</color> {data.summonQuote}";
-
-                    // Dialogue 타입으로 넘겨서 출력!
                     LogManager.Instance.ShowLog(dialogueText, LogType.Dialogue);
                 }
             }

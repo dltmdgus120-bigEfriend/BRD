@@ -8,8 +8,13 @@ public class UnitData : ScriptableObject
     public string unitName;
     public string level;
     public int rank;
-    public GameObject prefab;
+    public GameObject prefab;  // 일단은 내비둔다. 
+    
+
+    [Header("시각 요소")]
     public Sprite icon;
+    public RuntimeAnimatorController animController;
+    public float unitSize = 1f; //  유닛 덩치 (기본 1)
 
     [Header("사운드")]
     public AudioClip summonVoice; 

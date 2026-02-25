@@ -12,13 +12,34 @@ public class UnitStat : MonoBehaviour
     public int currentDamage;
     public float currentAttackSpeed;
 
-    void Awake()
+    [Header("시각 요소 연결")]
+    public Animator anim; // 껍데기 프리팹의 애니메이터 연결용
+
+
+
+    // 풀에서 꺼낼 때(또는 조합될 때) 매니저가 호출해 줄 초기화 함수
+    public void InitAlly(UnitData newData)
     {
-        // 맵에 스폰되는 순간, 원본(data)에 적힌 기본 스탯을 내 개인 스탯으로 복사해옵니다!
-        if (data != null)
+        data = newData;
+        currentDamage = data.damage;
+        currentAttackSpeed = data.attackSpeed;
+
+        // ★ AC 덮어씌우기
+        if (anim != null && data.animController != null)
         {
-            currentDamage = data.damage;
-            currentAttackSpeed = data.attackSpeed;
+            anim.runtimeAnimatorController = data.animController;
+
+            // 덮어씌운 직후 애니메이터를 강제로 새로고침(Rebind) 시켜서 즉시 작동하게 만듭니다!
+            anim.Rebind();
+            anim.Update(0f);
+        }
+
+        transform.localScale = new Vector3(data.unitSize, data.unitSize, 1f);
+
+        UnitAttack attackScript = GetComponent<UnitAttack>();
+        if (attackScript != null)
+        {
+            attackScript.UpdateAnimationSpeed();
         }
     }
 }

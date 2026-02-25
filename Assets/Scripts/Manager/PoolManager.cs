@@ -11,6 +11,14 @@ public class PoolManager : MonoBehaviour
     public GameObject enemyPrefab; // 아까 만든 완벽한 껍데기 적 프리팹
     public int enemyPoolSize = 80; // 70마리 제한이므로 80개면 아주 넉넉함
 
+    [Header("아군 풀링 설정")]
+    public GameObject allyPrefab; // 아군 공용 껍데기 프리팹
+    public int allyPoolSize = 100; // 넉넉하게 100개
+
+    [Header("--- 투사체 풀 (자동 관리) ---")]
+    // 프리팹 이름을 Key로 사용하는 스마트 풀 (사전 형태)
+    private Dictionary<string, Queue<GameObject>> projectilePools = new Dictionary<string, Queue<GameObject>>();
+
     [Header("이펙트(VFX) 풀링 설정")]
     public GameObject vfxPrefab;   // 사망 파티클/이펙트 프리팹
     public int vfxPoolSize = 20;   // 2초면 사라지므로 20개면 충분함
@@ -18,6 +26,7 @@ public class PoolManager : MonoBehaviour
     // 대기실 역할을 할 큐(Queue) 자료구조
     private Queue<GameObject> enemyPool = new Queue<GameObject>();
     private Queue<GameObject> vfxPool = new Queue<GameObject>();
+    private Queue<GameObject> allyPool = new Queue<GameObject>();
 
     void Awake()
     {
@@ -28,7 +37,7 @@ public class PoolManager : MonoBehaviour
     // 게임 시작 시 미리 정해진 개수만큼 만들어서 큐에 집어넣습니다.
     void InitializePools()
     {
-        // 1. 적 풀 생성
+        //  적 풀 생성
         for (int i = 0; i < enemyPoolSize; i++)
         {
             GameObject enemy = Instantiate(enemyPrefab, transform);
@@ -36,13 +45,39 @@ public class PoolManager : MonoBehaviour
             enemyPool.Enqueue(enemy);
         }
 
-        // 2. VFX 풀 생성
+        //  VFX 풀 생성
         for (int i = 0; i < vfxPoolSize; i++)
         {
             GameObject vfx = Instantiate(vfxPrefab, transform);
             vfx.SetActive(false);
             vfxPool.Enqueue(vfx);
         }
+
+        // 아군 풀 생성
+        for (int i = 0; i < allyPoolSize; i++)
+        {
+            GameObject ally = Instantiate(allyPrefab, transform);
+            ally.SetActive(false);
+            allyPool.Enqueue(ally);
+        }
+    }
+
+    public GameObject GetAlly(Vector3 position)
+    {
+        if (allyPool.Count > 0)
+        {
+            GameObject ally = allyPool.Dequeue();
+            ally.transform.position = position;
+            ally.SetActive(true);
+            return ally;
+        }
+        return Instantiate(allyPrefab, position, Quaternion.identity);
+    }
+
+    public void ReturnAlly(GameObject ally)
+    {
+        ally.SetActive(false);
+        allyPool.Enqueue(ally);
     }
 
     // 스포너가 적을 소환할 때 부를 함수
@@ -88,5 +123,44 @@ public class PoolManager : MonoBehaviour
         yield return new WaitForSeconds(delay);
         vfx.SetActive(false);
         vfxPool.Enqueue(vfx);
+    }
+
+    //  투사체 꺼내기 (종류 불문 다 받아줌!)
+    public GameObject GetProjectile(GameObject prefab, Vector3 position)
+    {
+        string key = prefab.name; // 예: "Arrow_Prefab"
+
+        // 처음 보는 투사체면 대기실을 새로 하나 파줍니다.
+        if (!projectilePools.ContainsKey(key))
+        {
+            projectilePools[key] = new Queue<GameObject>();
+        }
+
+        // 대기실에 남은 투사체가 있으면 꺼내줍니다.
+        if (projectilePools[key].Count > 0)
+        {
+            GameObject proj = projectilePools[key].Dequeue();
+            proj.transform.position = position;
+            proj.SetActive(true);
+            return proj;
+        }
+
+        // 대기실이 비었으면 새로 만들어서 줍니다!
+        GameObject newProj = Instantiate(prefab, position, Quaternion.identity);
+        newProj.name = prefab.name; //  "(Clone)" 글자가 붙지 않게 원본 이름 유지 (아주 중요!)
+        return newProj;
+    }
+
+    //  투사체 집어넣기
+    public void ReturnProjectile(GameObject proj)
+    {
+        proj.SetActive(false);
+
+        // 혹시나 대기실이 없으면 만들어줍니다. (안전장치)
+        if (!projectilePools.ContainsKey(proj.name))
+        {
+            projectilePools[proj.name] = new Queue<GameObject>();
+        }
+        projectilePools[proj.name].Enqueue(proj);
     }
 }

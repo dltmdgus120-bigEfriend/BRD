@@ -1359,7 +1359,7 @@ MonoBehaviour:
   panBorderThickness: 2
   mapLimit: {x: 50, y: 50}
   zoomSpeed: 20
-  minSize: 0
+  minSize: 2
   maxSize: 15
   smoothTime: 10
 --- !u!1 &336636411
@@ -7061,6 +7061,9 @@ MonoBehaviour:
   enemyPrefab: {fileID: 2461428311817073197, guid: 2d77df2b71901ad45aa9066df79e28af,
     type: 3}
   enemyPoolSize: 80
+  allyPrefab: {fileID: 3539101861832537204, guid: 5d8c8d78232b6494fa16e341ff2c9fd5,
+    type: 3}
+  allyPoolSize: 100
   vfxPrefab: {fileID: 5985634496115995773, guid: 463cf9f7af4680240898f6aeba3fe3e6,
     type: 3}
   vfxPoolSize: 20
@@ -9251,13 +9254,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rank1Units:
   - {fileID: 11400000, guid: 35514f882c5d41d498bc3fcf77e642f2, type: 2}
-  rank2Units:
-  - {fileID: 11400000, guid: c9c60c23e66815845bfdc864261e6e76, type: 2}
-  rank3Units:
-  - {fileID: 11400000, guid: e6ac579121ed4d54fa166deaacde2fec, type: 2}
+  - {fileID: 11400000, guid: d83661e3b244d3440b671bb748a33cc6, type: 2}
+  - {fileID: 11400000, guid: 273d47b3918f24a4e81e87f4fbf67ede, type: 2}
+  rank2Units: []
+  rank3Units: []
   hiddenUnits: []
-  probRank1: 50
-  probRank2: 50
+  probRank1: 100
+  probRank2: 0
   probRank3: 0
   probHidden: 0
   spawnRadius: 3

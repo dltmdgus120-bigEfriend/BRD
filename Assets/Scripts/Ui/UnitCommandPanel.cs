@@ -279,7 +279,7 @@ public class UnitCommandPanel : MonoBehaviour
 
                 // 선택 해제 및 삭제
                 rtsController.selectedUnits.Remove(agent);
-                Destroy(agent.gameObject);
+                PoolManager.Instance.ReturnAlly(agent.gameObject);
                 soldCount++;
             }
         }
@@ -377,20 +377,27 @@ public class UnitCommandPanel : MonoBehaviour
 
         if (rtsController.selectedUnits.Contains(mainAgent))
             rtsController.selectedUnits.Remove(mainAgent);
-        Destroy(mainAgent.gameObject);
+        PoolManager.Instance.ReturnAlly(mainAgent.gameObject);
 
         foreach (var p in partnersToDestroy)
         {
             var pAgent = p.GetComponent<UnityEngine.AI.NavMeshAgent>();
             if (pAgent != null && rtsController.selectedUnits.Contains(pAgent))
                 rtsController.selectedUnits.Remove(pAgent);
-            Destroy(p.gameObject);
+            PoolManager.Instance.ReturnAlly(p.gameObject);
         }
 
         rtsController.ClearSelection();
 
         // 결과물 소환
-        GameObject newUnit = Instantiate(recipe.resultUnit.prefab, spawnPos, Quaternion.identity);
+        GameObject newUnit = PoolManager.Instance.GetAlly(spawnPos);
+
+        UnitStat newStat = newUnit.GetComponent<UnitStat>();
+        if (newStat != null)
+        {
+            // InitAlly 라는 초기화 함수가 UnitStat 쪽에 있어야 합니다!
+            newStat.InitAlly(recipe.resultUnit);
+        }
 
         var agent = newUnit.GetComponent<UnityEngine.AI.NavMeshAgent>();
         if (agent != null)
@@ -408,9 +415,7 @@ public class UnitCommandPanel : MonoBehaviour
                 }
             }
         }
-
-        UnitStat newStat = newUnit.GetComponent<UnitStat>();
-        if (newStat != null) newStat.data = recipe.resultUnit;
+        
 
         if (SoundManager.Instance != null)
             SoundManager.Instance.PlayVoice(recipe.resultUnit.summonVoice);

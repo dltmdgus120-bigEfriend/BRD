@@ -15,8 +15,10 @@ MonoBehaviour:
   unitName: "\uD0C0\uC774\uB2E4"
   level: "1\uC131"
   rank: 1
-  prefab: {fileID: 3539101861832537204, guid: 038d313dec7830a4bbfa9a8b23bd2181, type: 3}
+  prefab: {fileID: 0}
   icon: {fileID: 21300000, guid: 9e2d7c90ba4cf304a9631be70237fc11, type: 3}
+  animController: {fileID: 22100000, guid: 1b661f9d8200442489ace8c8671f36ce, type: 2}
+  unitSize: 1
   summonVoice: {fileID: 0}
   attackSound: {fileID: 8300000, guid: f35e23067ce186646af17f326bacfa32, type: 3}
   sellPrice: 10

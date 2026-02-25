@@ -15,8 +15,10 @@ MonoBehaviour:
   unitName: "\uBA54\uC8F5"
   level: "1\uC131"
   rank: 1
-  prefab: {fileID: 3539101861832537204, guid: 7831c46f11cc3cb438465c3c9170d937, type: 3}
+  prefab: {fileID: 0}
   icon: {fileID: 21300000, guid: cca4048038c7dd44ca824ad48a1b25bb, type: 3}
+  animController: {fileID: 22100000, guid: 913c29613c97ffd4889c8b6799082a2e, type: 2}
+  unitSize: 1
   summonVoice: {fileID: 0}
   attackSound: {fileID: 8300000, guid: bf12e37115c8f32488a969218461444c, type: 3}
   sellPrice: 10
@@ -31,6 +33,7 @@ MonoBehaviour:
   damage: 10
   projectilePrefab: {fileID: 8993644921441620398, guid: 0a6a829c230b90c43bb6406af3932913,
     type: 3}
+  attackWindUpRatio: 0.3
   description: "\uC548\uC2DD\uC758 \uC720\uB839"
   summonQuote: "\uC5EC\uAE30\uAC00 \uC0C8 \uC9D1\uC778\uAC00?"
   availableRecipes: []

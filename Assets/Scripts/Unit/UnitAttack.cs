@@ -179,7 +179,7 @@ public class UnitAttack : MonoBehaviour
             {
                 //  발사구가 지정되어 있으면 거기서 쏘고, 안 까먹고 안 넣었으면 원래대로 약간 위에서 쏩니다!
                 Vector3 spawnPos = firePoint != null ? firePoint.position : transform.position + Vector3.up * 0.5f;
-                GameObject projGO = Instantiate(stat.data.projectilePrefab, spawnPos, Quaternion.identity);
+                GameObject projGO = PoolManager.Instance.GetProjectile(stat.data.projectilePrefab, spawnPos);
                 Projectile projectile = projGO.GetComponent<Projectile>();
 
                 if (projectile != null)

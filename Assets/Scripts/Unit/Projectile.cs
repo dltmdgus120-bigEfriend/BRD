@@ -19,13 +19,17 @@ public class Projectile : MonoBehaviour
         ownerSkill = _owner;
 
         mainCam = Camera.main;
+
+        // 혹시 투사체에 꼬리(Trail Renderer)가 있다면, 이전 잔상을 지워줍니다.
+        TrailRenderer trail = GetComponent<TrailRenderer>();
+        if (trail != null) trail.Clear();
     }
 
     void Update()
     {
         if (target == null || !target.gameObject.activeInHierarchy)
         {
-            Destroy(gameObject); // (투사체 자체는 여전히 Destroy를 써도 무방합니다. 수가 적으니까요)
+            PoolManager.Instance.ReturnProjectile(gameObject);
             return;
         }
 
@@ -71,6 +75,7 @@ public class Projectile : MonoBehaviour
             }
         }
 
-        Destroy(gameObject);
+        
+        PoolManager.Instance.ReturnProjectile(gameObject);
     }
 }
