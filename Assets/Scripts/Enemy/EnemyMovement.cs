@@ -22,19 +22,34 @@ public class EnemyMovement : MonoBehaviour
     {
         waypoints = path;
         transform.position = waypoints[0].position;
+
+        // 풀링에서 꺼내올 때마다 "너의 다음 목표는 무조건 1번이야!" 라고 뇌를 씻어줍니다!
+        // (0번은 방금 스폰된 위치니까 1번으로 출발해야 합니다)
+        wavepointIndex = 1;
     }
 
     void Update()
     {
-        if (waypoints == null) return;
+        // 웨이포인트가 없거나 배열을 초과하면 에러 방지
+        if (waypoints == null || wavepointIndex >= waypoints.Length) return;
 
         Transform target = waypoints[wavepointIndex];
         Vector3 dir = target.position - transform.position;
-        transform.Translate(dir.normalized * speed * Time.deltaTime, Space.World);
 
-        if (Vector3.Distance(transform.position, target.position) <= 0.2f)
+        // 이번 1프레임 동안 내가 이동할 실제 거리 계산
+        float distanceThisFrame = speed * Time.deltaTime;
+
+        //  목표까지 남은 거리가 내가 지금 움직일 거리보다 짧거나 같으면? (즉, 이번 프레임에 도착한다면)
+        if (dir.magnitude <= distanceThisFrame)
         {
+            // 목표 지점을 뚫고 지나가지 않게 정확히 목표 지점에 강제로 안착시킵니다!
+            transform.position = target.position;
             GetNextWaypoint();
+        }
+        else
+        {
+            // 아직 멀었으면 원래대로 이동
+            transform.Translate(dir.normalized * distanceThisFrame, Space.World);
         }
 
         // ★ 애니메이션 처리

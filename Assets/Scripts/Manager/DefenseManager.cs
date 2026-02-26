@@ -161,10 +161,13 @@ public class DefenseManager : MonoBehaviour
         float timer = bossTimeLimit;
         while (timer > 0)
         {
-            if (currentBossInstance == null)
+            //  아예 파괴(null)되었거나, 죽어서 꺼진(!activeInHierarchy) 상태라면!
+            if (currentBossInstance == null || !currentBossInstance.activeInHierarchy)
             {
-                UpdateTimerUI("보스 처치!", 0);
-                yield return new WaitForSeconds(2f);
+                UpdateTimerUI("<color=yellow>보스 처치!</color>", 0);
+
+                // 쌩으로 넘어가면 어색하니까 1.5초 정도만 "보스 처치!" 문구를 보여주고 바로 다음 라운드로 스킵합니다.
+                yield return new WaitForSeconds(1.5f);
                 break;
             }
 
@@ -175,7 +178,8 @@ public class DefenseManager : MonoBehaviour
             yield return null;
         }
 
-        if (currentBossInstance != null && timer <= 0)
+        // 보스가 아직 살아있고(activeInHierarchy) 시간이 다 됐다면 게임 오버!
+        if (currentBossInstance != null && currentBossInstance.activeInHierarchy && timer <= 0)
         {
             Debug.Log("보스 타임오버!");
             GameOver();
