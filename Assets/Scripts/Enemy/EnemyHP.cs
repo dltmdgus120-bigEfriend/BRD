@@ -46,9 +46,9 @@ public class EnemyHP : MonoBehaviour
         transform.localScale = new Vector3(data.unitSize, data.unitSize, 1f);
     }
 
-    public void TakeDamage(int damage, AttackType type)
+    public int TakeDamage(int damage, AttackType type)
     {
-        if (data == null || currentHP <= 0) return; // 이미 죽은 애 때리기 방지
+        if (data == null || currentHP <= 0) return 0; // 이미 죽은 애 때리기 방지
 
         int finalDamage = damage;
 
@@ -74,6 +74,9 @@ public class EnemyHP : MonoBehaviour
         }
 
         if (currentHP <= 0) Die();
+
+        // 방어력 계산까지 다 끝난 찐 데미지를 반환!
+        return finalDamage;
     }
 
     // 체력바 스프라이트의 가로 길이(Scale X)를 조절하는 방식

@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3a30350584c4a74f9b7243f05323a05, type: 3}
+  m_Name: Bana_2
+  m_EditorClassIdentifier: 
+  unitName: 
+  level: 
+  rank: 0
+  prefab: {fileID: 0}
+  icon: {fileID: 0}
+  animController: {fileID: 0}
+  unitSize: 1
+  summonVoice: {fileID: 0}
+  attackSound: {fileID: 0}
+  sellPrice: 10
+  sellElif: 1
+  attribute: {fileID: 0}
+  race: {fileID: 0}
+  skills: []
+  attackType: 0
+  attackRange: 0
+  attackSpeed: 1
+  damage: 0
+  projectilePrefab: {fileID: 0}
+  attackWindUpRatio: 0.3
+  description: 
+  summonQuote: 
+  availableRecipes: []
+  isBuilding: 0

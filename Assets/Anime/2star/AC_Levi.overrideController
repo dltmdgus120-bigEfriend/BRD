@@ -7,7 +7,11 @@ AnimatorOverrideController:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: AC_Levi
-  m_Controller: {fileID: 9100000, guid: 67b9d841716ab3544a63a6818b9c7457, type: 2}
+  m_Controller: {fileID: 9100000, guid: 9a107fa58a97e824aa35548591edcf8b, type: 2}
   m_Clips:
-  - m_OriginalClip: {fileID: 7400000, guid: e63a0c4d0fb6acf499615a2818f6bc68, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 506a97bfb56bd1a458450df3585a2534, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: ae58536d9e18d8f4b8f99245b063ef09, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 5d11b2f7476caf8459ec7b3b7dce1150, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 8e0c5bd1d0265af4089c54cd40b2544f, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 9fc9ee999bba5e44ba905b777046a7e9, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 11004ad73d13cb34aaeb0fc41d32dc14, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: fd79e4edb40b2274b88730bdc79b973a, type: 2}

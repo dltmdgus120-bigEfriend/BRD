@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 092edcda85a5d584187ed3758d9bb38c, type: 3}
+  m_Name: Erpin_Bodyslam
+  m_EditorClassIdentifier: 
+  skillName: "\uB3CC\uACA8\uC5B4\uC5B4\uC5B4!!! \uC5B5\u22EF? "
+  icon: {fileID: 21300000, guid: 14ff6d598aef25e4f82f80a6772555b8, type: 3}
+  description: "\uC9C0\uD321\uC774\uC5D0 \uB9C8\uB825\uC744 \uAC00\uB4DD\uB2F4\uC544
+    \uB3CC\uACA9\uD574 \uC801\uB4E4\uC5D0\uAC8C \uBC94\uC704 \uB9C8\uBC95 \uD53C\uD574(500)
+    \uB97C \uC785\uD799\uB2C8\uB2E4. "
+  castVoice: {fileID: 0}
+  skillSound: {fileID: 0}
+  animTriggerName: Skill
+  castTime: 3
+  actionDelay: 0
+  attackType: 1
+  isPassive: 0
+  cooldown: 10
+  needTarget: 1
+  targetRange: 10
+  effectRadius: 10
+  isDashSkill: 1
+  isAttackProc: 0
+  procChance: 0
+  baseSkillDamage: 500
+  damageMultiplier: 1
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  impactVfxPrefab: {fileID: 4593184484909914552, guid: a1f1b91fd2c0c8e4897a9d97d8ab26a1,
+    type: 3}

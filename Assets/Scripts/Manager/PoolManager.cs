@@ -23,10 +23,15 @@ public class PoolManager : MonoBehaviour
     public GameObject vfxPrefab;   // 사망 파티클/이펙트 프리팹
     public int vfxPoolSize = 20;   // 2초면 사라지므로 20개면 충분함
 
+    [Header("데미지 팝업 설정")]
+    public GameObject damagePopupPrefab;
+    public int damagePopupPoolSize = 50;
+
     // 대기실 역할을 할 큐(Queue) 자료구조
     private Queue<GameObject> enemyPool = new Queue<GameObject>();
     private Queue<GameObject> vfxPool = new Queue<GameObject>();
     private Queue<GameObject> allyPool = new Queue<GameObject>();
+    private Queue<GameObject> damagePopupPool = new Queue<GameObject>();
 
     void Awake()
     {
@@ -59,6 +64,13 @@ public class PoolManager : MonoBehaviour
             GameObject ally = Instantiate(allyPrefab, transform);
             ally.SetActive(false);
             allyPool.Enqueue(ally);
+        }
+
+        for (int i = 0; i < damagePopupPoolSize; i++)
+        {
+            GameObject popup = Instantiate(damagePopupPrefab, transform);
+            popup.SetActive(false);
+            damagePopupPool.Enqueue(popup);
         }
     }
 
@@ -99,6 +111,9 @@ public class PoolManager : MonoBehaviour
     // 적이 죽었을 때 대기실로 돌려보내는 함수
     public void ReturnEnemy(GameObject enemy)
     {
+        // [방어막 추가] 이미 꺼져있으면 무시!
+        if (!enemy.activeSelf) return;
+
         enemy.SetActive(false);
         enemyPool.Enqueue(enemy);
     }
@@ -152,15 +167,52 @@ public class PoolManager : MonoBehaviour
     }
 
     //  투사체 집어넣기
-    public void ReturnProjectile(GameObject proj)
+  public void ReturnProjectile(GameObject proj)
     {
+        // [방어막 추가] 이미 꺼져있으면 무시! (투사체 증발 버그의 원인)
+        if (!proj.activeSelf) return; 
+
         proj.SetActive(false);
 
-        // 혹시나 대기실이 없으면 만들어줍니다. (안전장치)
         if (!projectilePools.ContainsKey(proj.name))
         {
             projectilePools[proj.name] = new Queue<GameObject>();
         }
         projectilePools[proj.name].Enqueue(proj);
+    }
+
+    // 강타(Proc) 스킬이나 치명타가 터졌을 때 부를 함수
+    public void ShowDamagePopup(Vector3 position, int damageAmount, AttackType type, bool isCrit = false)
+    {
+        GameObject popupObj = null;
+
+        if (damagePopupPool.Count > 0)
+        {
+            popupObj = damagePopupPool.Dequeue();
+        }
+        else
+        {
+            popupObj = Instantiate(damagePopupPrefab, transform);
+        }
+
+        popupObj.transform.position = position;
+        popupObj.SetActive(true);
+
+        DamagePopup popupScript = popupObj.GetComponent<DamagePopup>();
+        if (popupScript != null)
+        {
+            // 아까 만든 DamagePopup 스크립트의 Setup 함수 실행!
+            popupScript.Setup(damageAmount, type, isCrit);
+        }
+    }
+
+    // 팝업 텍스트가 수명을 다하면 다시 대기실로 돌아가는 함수
+    public void ReturnDamagePopup(GameObject popup)
+    {
+        // [방어막 추가] 
+        if (!popup.activeSelf) return;
+
+        popup.SetActive(false);
+        damagePopupPool.Enqueue(popup);
     }
 }

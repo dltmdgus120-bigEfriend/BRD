@@ -90,7 +90,8 @@ public class UnitAttack : MonoBehaviour
                 }
             }
 
-            if (target == null || Vector3.Distance(transform.position, target.position) > stat.data.attackRange)
+            //  타겟이 null이거나, '죽어서 대기실로 갔거나(!activeInHierarchy)', 사거리 밖이면 새로 찾기!
+            if (target == null || !target.gameObject.activeInHierarchy || Vector3.Distance(transform.position, target.position) > stat.data.attackRange)
             {
                 FindTarget();
             }
@@ -167,6 +168,14 @@ public class UnitAttack : MonoBehaviour
         // 1. 칼을 들어올리는 시간 대기 (이때 CancelAttack이 들어오면 데미지 안 나감!)
         yield return new WaitForSeconds(windUpTime);
 
+        // ★  선딜레이를 기다리는 동안 타겟이 다른 아군에게 맞아 죽었다면?
+        if (target == null || !target.gameObject.activeInHierarchy)
+        {
+            // 허공에 투사체를 쏘지 않고 공격을 여기서 취소합니다!
+            isAttacking = false;
+            yield break; // 코루틴 즉시 종료
+        }
+
         // 2. ----------------- 실제 타격 발생 지점 -----------------
         if (stat != null && stat.data != null && stat.data.attackSound != null)
         {
@@ -192,8 +201,19 @@ public class UnitAttack : MonoBehaviour
                 EnemyHP enemyHP = target.GetComponent<EnemyHP>();
                 if (enemyHP != null)
                 {
-                    enemyHP.TakeDamage(stat.data.damage, stat.data.attackType);
-                    if (skillController != null) skillController.TryAttackProc(target.position);
+                    // 1. 프록(강타)이 터졌는지 먼저 물어봄!
+                    bool isProc = false;
+                    if (skillController != null)
+                    {
+                        isProc = skillController.TryAttackProc(target.position);
+                    }
+
+                    // 2. 프록이 안 터졌을 때만 일반 평타 데미지를 줍니다! 
+                    // (즉, 프록이 터지면 평타는 생략되고 강타 데미지와 팝업만 발생!)
+                    if (!isProc)
+                    {
+                        enemyHP.TakeDamage(stat.data.damage, stat.data.attackType);
+                    }
                 }
             }
         }

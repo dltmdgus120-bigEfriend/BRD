@@ -2,20 +2,35 @@ using UnityEngine;
 
 public class AutoDestroy : MonoBehaviour
 {
-    public float delay = 2.0f; // 2초 뒤에 사라짐
+    public float delay = 2.0f; // 파티클이 없을 때의 기본 시간
+    private float actualDelay;
 
-    void Start()
+    // OnEnable()을 써야 풀에서 꺼낼 때마다 실행됩니다.
+    void OnEnable()
     {
-        // 파티클 시스템이 있다면, 파티클이 끝나는 시간을 자동으로 계산
         ParticleSystem ps = GetComponent<ParticleSystem>();
         if (ps != null)
         {
-            Destroy(gameObject, ps.main.duration + ps.main.startLifetime.constantMax);
+            actualDelay = ps.main.duration + ps.main.startLifetime.constantMax;
         }
         else
         {
-            // 파티클이 없으면 그냥 설정한 시간 뒤에 삭제
-            Destroy(gameObject, delay);
+            actualDelay = delay;
         }
+
+        // Destroy 대신 Invoke를 써서 지정된 시간 뒤에 ReturnToPool 함수를 실행합니다.
+        Invoke("ReturnToPool", actualDelay);
+    }
+
+    // 혹시나 시간이 되기 전에 다른 이유로 비활성화되면 Invoke를 취소해줍니다. (안전장치)
+    void OnDisable()
+    {
+        CancelInvoke("ReturnToPool");
+    }
+
+    void ReturnToPool()
+    {
+        // 풀 매니저에게 반납!
+        PoolManager.Instance.ReturnProjectile(gameObject);
     }
 }

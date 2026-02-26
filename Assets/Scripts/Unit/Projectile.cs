@@ -66,16 +66,21 @@ public class Projectile : MonoBehaviour
         EnemyHP enemy = target.GetComponent<EnemyHP>();
         if (enemy != null)
         {
-            // 적에게 데미지와 함께 공격 타입(attackType) 전달
-            enemy.TakeDamage(damage, attackType);
-
+            //  프록(강타)이 터졌는지 먼저 물어봅니다!
+            bool isProc = false;
             if (ownerSkill != null)
             {
-                ownerSkill.TryAttackProc(transform.position);
+                isProc = ownerSkill.TryAttackProc(transform.position);
+            }
+
+            // ★프록이 안 터졌을 때만 일반 평타 데미지를 줍니다!
+            // (프록이 터졌다면 평타 데미지는 캔슬되고 강타 스킬이 대신 데미지와 팝업을 발생시킴)
+            if (!isProc)
+            {
+                enemy.TakeDamage(damage, attackType);
             }
         }
 
-        
         PoolManager.Instance.ReturnProjectile(gameObject);
     }
 }

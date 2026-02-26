@@ -26,6 +26,9 @@ public abstract class SkillBase : ScriptableObject
     public float targetRange;     // 사거리 (커서 범위 제한용, 0이면 제한 없음)   
     public float effectRadius = 0f;  // 스킬 범위 (폭발 반경) - 이걸로 원 크기를 조절함
 
+    [Header("돌진 설정")]
+    public bool isDashSkill; // 체크하면 제자리가 아니라 마우스 위치로 몸을 날립니다!
+
     [Header("일반공격 발동 설정")]
     public bool isAttackProc;   // 체크하면 "공격 시 확률 발동" 스킬이 됨
     [Range(0, 100)]

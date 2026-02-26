@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class UnitSkillController : MonoBehaviour
 {
@@ -111,23 +112,45 @@ public class UnitSkillController : MonoBehaviour
         //  액티브 스킬이면 시전 코루틴 시작!
         if (!skill.isPassive)
         {
-            StartCoroutine(CastSkillRoutine(skill, targetPos));
-            cooldowns[skill] = skill.cooldown; // 쿨타임 시작
+            //  코루틴을 부를 때 index(0=Q, 1=W...) 값도 같이 넘겨줍니다!
+            StartCoroutine(CastSkillRoutine(index, skill, targetPos));
+            cooldowns[skill] = skill.cooldown;
         }
     }
 
     //스킬 시전 & 행동 제어 코루틴
-    private IEnumerator CastSkillRoutine(SkillBase skill, Vector3 targetPos)
+    private IEnumerator CastSkillRoutine(int skillIndex, SkillBase skill, Vector3 targetPos)
     {
         isCasting = true; // 시전 시작 (발 묶기)
 
         // 1. 하던 행동(이동, 평타) 즉시 강제 정지!
         if (unitAttack != null) unitAttack.OrderStop();
 
-        // 2. 애니메이션 실행
-        if (anim != null && !string.IsNullOrEmpty(skill.animTriggerName))
+        Vector3 startPos = transform.position;
+        Vector3 finalTargetPos = targetPos; // 진짜 터질 최종 위치
+
+        // 사거리 제한이 0보다 크게 설정되어 있다면?
+        if (skill.targetRange > 0)
         {
-            anim.SetTrigger(skill.animTriggerName);
+            float dist = Vector3.Distance(startPos, targetPos);
+            // 마우스로 찍은 곳이 내 사거리보다 멀면?
+            if (dist > skill.targetRange)
+            {
+                // 찍은 방향으로 사거리(targetRange) 끝까지만 목표 지점을 잘라냅니다!
+                Vector3 dir = (targetPos - startPos).normalized;
+                finalTargetPos = startPos + dir * skill.targetRange;
+            }
+        }
+
+        // 2, 애니메이션 실행 전, 몇 번째 스킬인지 Int 값을 먼저 꽂아줍니다!
+        if (anim != null)
+        {
+            anim.SetInteger("SkillIndex", skillIndex); // 0=Q, 1=W, 2=E, 3=R
+
+            if (!string.IsNullOrEmpty(skill.animTriggerName))
+            {
+                anim.SetTrigger(skill.animTriggerName); // 트리거 발사! (기본값 "Skill")
+            }
         }
 
         // 시전 사운드 재생 (유닛의 기합이나 대사!)
@@ -137,7 +160,26 @@ public class UnitSkillController : MonoBehaviour
             SoundManager.Instance.PlaySFX(skill.castVoice);
         }
 
-        if (skill.castTime > 0)
+        //  3. 돌진(Dash) OR 대기 처리
+        if (skill.isDashSkill && skill.castTime > 0)
+        {
+            NavMeshAgent agent = GetComponent<NavMeshAgent>();
+            if (agent != null) agent.enabled = false;
+
+            float timer = 0f;
+            while (timer < skill.castTime)
+            {
+                timer += Time.deltaTime;
+                float percent = timer / skill.castTime;
+
+                transform.position = Vector3.Lerp(startPos, finalTargetPos, percent);
+                yield return null;
+            }
+
+            transform.position = finalTargetPos;
+            if (agent != null) agent.enabled = true;
+        }
+        else if (skill.castTime > 0)
         {
             yield return new WaitForSeconds(skill.castTime);
         }
@@ -160,7 +202,7 @@ public class UnitSkillController : MonoBehaviour
         }
 
         // 폭발 및 데미지!
-        skill.Execute(stat, targetPos);
+        skill.Execute(stat, finalTargetPos);
 
         // 스킬이 끝났으니 뇌를 다시 켜고 자동 공격(Hold) 상태로 복귀
         if (unitAttack != null) unitAttack.OrderHold();
@@ -179,35 +221,28 @@ public class UnitSkillController : MonoBehaviour
         return 0f;
     }
 
-    public void TryAttackProc(Vector3 targetPos)
+    
+    public bool TryAttackProc(Vector3 targetPos)
     {
-        if (stat == null || stat.data.skills == null) return;
+        if (stat == null || stat.data.skills == null) return false;
 
-        // 유닛이 가진 모든 스킬을 검사
         for (int i = 0; i < stat.data.skills.Count; i++)
         {
             SkillBase skill = stat.data.skills[i];
 
-            // 1. "평타 발동" 스킬이 아니면 패스
             if (skill == null || !skill.isAttackProc) continue;
-
-            // 2. 쿨타임 중이면 패스
             if (cooldowns.ContainsKey(skill) && cooldowns[skill] > 0) continue;
 
-            // 3. 확률 계산 (주사위 굴리기)
-            // Random.value는 0.0 ~ 1.0 사이의 랜덤 값 (예: 0.15)
-            // procChance가 20이면 -> 20/100 = 0.2보다 작으면 당첨!
             if (Random.value <= (skill.procChance / 100f))
             {
-                // 당첨! 스킬 발사
                 Debug.Log($" {skill.skillName} 발동! (확률: {skill.procChance}%)");
 
-                // 실행
                 skill.Execute(stat, targetPos);
-
-                // 쿨타임 적용
                 cooldowns[skill] = skill.cooldown;
+
+                return true; //  프록이 성공적으로 터졌다고 알려줌!
             }
         }
+        return false; // 안 터짐
     }
 }
