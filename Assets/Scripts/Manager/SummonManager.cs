@@ -48,6 +48,11 @@ public class SummonManager : MonoBehaviour
         }
     }
 
+    void Start()
+    {
+        UpdateUI(); 
+    }
+
     public void OnClickSummon()
     {
         if (currentTickets > 0)

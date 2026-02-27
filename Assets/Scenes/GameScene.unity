@@ -4547,6 +4547,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 336636412}
     m_Modifications:
+    - target: {fileID: 1462694116023313732, guid: 084041cfd53185247ad671907a2c7620,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7338962200726512930, guid: 084041cfd53185247ad671907a2c7620,
         type: 3}
       propertyPath: m_Name
@@ -9370,15 +9375,15 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 88b1441afad011c4c96b2bb758df150b, type: 2}
   - {fileID: 11400000, guid: 65a71b04a98a8e941bbb7968941eee89, type: 2}
   hiddenUnits: []
-  probRank1: 0
-  probRank2: 0
-  probRank3: 100
+  probRank1: 70
+  probRank2: 20
+  probRank3: 10
   probHidden: 0
   spawnRadius: 3
   spawnPoint: {fileID: 1001479284}
-  currentTickets: 3
-  ticketInterval: 1
-  ticketAmount: 2
+  currentTickets: 5
+  ticketInterval: 20
+  ticketAmount: 5
   ticketText: {fileID: 2055640012}
 --- !u!4 &1752383328
 Transform:
@@ -9523,8 +9528,8 @@ MonoBehaviour:
   maxEnemyCount: 70
   currentEnemyCount: 0
   currentRound: 0
-  roundTime: 5
-  prepTime: 0
+  roundTime: 20
+  prepTime: 5
   isGameOver: 0
   targetRound: 50
   isVictory: 0
@@ -11144,7 +11149,7 @@ GameObject:
   - component: {fileID: 2055640013}
   - component: {fileID: 2055640012}
   m_Layer: 5
-  m_Name: Text (Legacy)
+  m_Name: Txt_Ticket
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

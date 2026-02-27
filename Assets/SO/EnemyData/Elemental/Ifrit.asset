@@ -20,7 +20,7 @@ MonoBehaviour:
   isBoss: 0
   attribute: {fileID: 11400000, guid: 848c245de135dcd45930b2d544fd416e, type: 2}
   race: {fileID: 11400000, guid: 68dbebb4e61fd10468a91f358028416c, type: 2}
-  maxHP: 100
+  maxHP: 120
   armor: 0
   magicResist: 0
   moveSpeed: 6
