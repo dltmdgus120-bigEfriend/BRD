@@ -17,7 +17,7 @@ MonoBehaviour:
   description: "\uAC00\uACF5\uD560 \uADFC\uB825\uC744 \uC9C0\uB2C8\uACE0 \uC788\uC9C0\uB9CC
     \uBCF8\uCCB4\uC758 \uC9C0\uB2A5 \uC218\uC900\uC774 \uADF8\uAC78 \uB2E4 \uAE4E\uC544\uBA39\uACE0
     \uC788\uB2E4. \uBC30\uAC00 \uACE0\uD504\uAC70\uB098 \uD654\uAC00 \uB0A0\uB54C\uB9C8\uB2E4
-    \uC870\uAE08\uC529 \uADF8 \uD798\uC774 \uD280\uC5B4\uB098\uC628\uB2E4. \n20%
+    \uC870\uAE08\uC529 \uADF8 \uD798\uC774 \uD280\uC5B4\uB098\uC628\uB2E4. \n\n20%
     \uD655\uB960\uB85C \uAC15\uD558\uAC8C \uB54C\uB9BD\uB2C8\uB2E4."
   castVoice: {fileID: 0}
   skillSound: {fileID: 0}
@@ -33,7 +33,7 @@ MonoBehaviour:
   isDashSkill: 0
   isAttackProc: 1
   procChance: 20
-  bonusDamage: 300
+  Damage: 300
   hitVFX: {fileID: 4021103657954561961, guid: b95dd25e2703e7b498cf14338fe4b5e0, type: 3}
   enemyLayer:
     serializedVersion: 2

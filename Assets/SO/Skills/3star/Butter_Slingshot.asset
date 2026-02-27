@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9017209c2fb5b74b9dc1b76f8f64b55, type: 3}
+  m_Name: Butter_Slingshot
+  m_EditorClassIdentifier: 
+  skillName: "\uC0C8\uCB41! \uC4D4\uD29C\uB77C\uC774\uD06C! "
+  icon: {fileID: 21300000, guid: 94adf7108bca399419e512d760bbd9f7, type: 3}
+  description: "\uC9F1\uB3CC\uC774 \uAE09\uC18C\uC5D0 \uB9DE\uC558\uB2E4. \n\n20%
+    \uD655\uB960\uB85C \uAC15\uD654 \uACF5\uACA9\uC774 \uB429\uB2C8\uB2E4."
+  castVoice: {fileID: 0}
+  skillSound: {fileID: 0}
+  animTriggerName: Skill
+  castTime: 0.5
+  actionDelay: 0
+  attackType: 0
+  isPassive: 0
+  cooldown: 0
+  needTarget: 0
+  targetRange: 0
+  effectRadius: 0
+  isDashSkill: 0
+  isAttackProc: 1
+  procChance: 20
+  Damage: 300
+  hitVFX: {fileID: 0}
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 128

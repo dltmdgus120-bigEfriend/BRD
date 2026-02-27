@@ -25,13 +25,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4247329922720482130}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.6408563, y: 0.18301271, z: -0.29883632, w: 0.6830128}
+  m_LocalRotation: {x: -0.092295915, y: 0.43045935, z: -0.7010574, w: 0.5609855}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7049522933759215175}
-  m_LocalEulerAnglesHint: {x: -50, y: 80, z: -90}
+  m_LocalEulerAnglesHint: {x: 30, y: 45, z: -90}
 --- !u!212 &49102117335801737
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -73,12 +73,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 5e98aa63461a47443bef994f9568e23d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e994a319ecdd4ea47a071b85bebc7b70, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 30.24, y: 40.319996}
+  m_Size: {x: 10.24, y: 10.24}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -94,6 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7049522933759215175}
   - component: {fileID: 1939624269290154807}
+  - component: {fileID: 7994876109164284155}
   m_Layer: 0
   m_Name: BreadMeteor
   m_TagString: Untagged
@@ -109,14 +110,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8695790041649874011}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.43468097, y: 0.06975853, z: 0.59672576, w: 0.6708984}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8625765462808527159}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 30, y: 45, z: 95.969}
 --- !u!114 &1939624269290154807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129,3 +130,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00f22f34e6695454da121e8b18439f00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7994876109164284155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8695790041649874011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af3edc18dd6bf24458f50262d91fd494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 2

@@ -9351,16 +9351,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rank1Units:
+  - {fileID: 11400000, guid: 0659cf4ea8c93664c958fb36fe306ba1, type: 2}
   - {fileID: 11400000, guid: 35514f882c5d41d498bc3fcf77e642f2, type: 2}
   - {fileID: 11400000, guid: d83661e3b244d3440b671bb748a33cc6, type: 2}
+  - {fileID: 11400000, guid: 83e3d3c32ed0ca04f94741a9e3823286, type: 2}
+  - {fileID: 11400000, guid: 273d47b3918f24a4e81e87f4fbf67ede, type: 2}
+  - {fileID: 11400000, guid: 58fe6dc806db7c94cbd385401e8297b7, type: 2}
+  - {fileID: 11400000, guid: 98caedf6f88047944836632a1a27f1e5, type: 2}
+  - {fileID: 11400000, guid: b8cc9f74aa6131b42989b80e4245aa1b, type: 2}
+  - {fileID: 11400000, guid: 6f82f4bf92219af4ead5cbefd557643b, type: 2}
+  - {fileID: 11400000, guid: d376380838f50274ca77c65cf459dc03, type: 2}
+  - {fileID: 11400000, guid: ea2abfbc525720a43a045bdafb2d5cf4, type: 2}
+  - {fileID: 11400000, guid: f24cdf8a6051afa49857dcb349340d2a, type: 2}
   rank2Units:
   - {fileID: 11400000, guid: c9c60c23e66815845bfdc864261e6e76, type: 2}
   rank3Units:
   - {fileID: 11400000, guid: e6ac579121ed4d54fa166deaacde2fec, type: 2}
+  - {fileID: 11400000, guid: 88b1441afad011c4c96b2bb758df150b, type: 2}
+  - {fileID: 11400000, guid: 65a71b04a98a8e941bbb7968941eee89, type: 2}
   hiddenUnits: []
   probRank1: 0
-  probRank2: 70
-  probRank3: 30
+  probRank2: 0
+  probRank3: 100
   probHidden: 0
   spawnRadius: 3
   spawnPoint: {fileID: 1001479284}

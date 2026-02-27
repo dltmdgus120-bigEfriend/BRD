@@ -7,5 +7,13 @@ AnimatorOverrideController:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: AC_Butter
-  m_Controller: {fileID: 0}
-  m_Clips: []
+  m_Controller: {fileID: 9100000, guid: 9a107fa58a97e824aa35548591edcf8b, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 0bb49658079e51e4fba0238cc2ddf3a5, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: cd8f3a9a737794340a887f129bcd84a1, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: ae58536d9e18d8f4b8f99245b063ef09, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 886c30fe7f129664ea24923c254a16a0, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 8e0c5bd1d0265af4089c54cd40b2544f, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 506c573a27c4a75419255611c603a7d3, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 11004ad73d13cb34aaeb0fc41d32dc14, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 623503c1a1e1e9f47b74c2c072dfac12, type: 2}

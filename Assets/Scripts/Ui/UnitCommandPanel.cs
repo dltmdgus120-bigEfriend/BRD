@@ -426,9 +426,9 @@ public class UnitCommandPanel : MonoBehaviour
             LogManager.Instance.ShowLog($"[조합 성공] {recipe.resultUnit.unitName} 등장!", LogType.System);
 
             // 2. 캐릭터 대사 띄우기 (설명이 있을 때만)
-            if (!string.IsNullOrEmpty(recipe.resultUnit.description))
+            if (!string.IsNullOrEmpty(recipe.resultUnit.summonQuote))
             {
-                string dialogueText = $"<color=orange>[{recipe.resultUnit.unitName}]</color> {recipe.resultUnit.description}";
+                string dialogueText = $"<color=orange>[{recipe.resultUnit.unitName}]</color> {recipe.resultUnit.summonQuote}";
                 LogManager.Instance.ShowLog(dialogueText, LogType.Dialogue);
             }
         }

@@ -16,7 +16,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 316f9d444709cb143bd7f5f3aa9423af, type: 3}
   description: "\uBE75\uD14C\uC624!"
   castVoice: {fileID: 0}
-  skillSound: {fileID: 8300000, guid: 415884183e8fd85458ed1e34ae53cb9c, type: 3}
+  skillSound: {fileID: 0}
   animTriggerName: Skill
   castTime: 2
   actionDelay: 2
@@ -26,9 +26,10 @@ MonoBehaviour:
   needTarget: 1
   targetRange: 0
   effectRadius: 12
+  isDashSkill: 0
   isAttackProc: 0
   procChance: 0
-  damage: 100
+  damage: 1000
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128

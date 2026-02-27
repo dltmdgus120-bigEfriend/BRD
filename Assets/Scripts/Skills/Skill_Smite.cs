@@ -4,7 +4,7 @@ using UnityEngine;
 public class Skill_Smite : SkillBase
 {
     [Header("강타 설정")]
-    public int bonusDamage = 50;
+    public int Damage = 50;
     public GameObject hitVFX;
 
     public LayerMask enemyLayer;
@@ -36,7 +36,7 @@ public class Skill_Smite : SkillBase
             // 평타에 맞아 이미 죽은(HP가 0인) 시체는 때리지 않고 넘어갑니다!
             if (enemy != null && enemy.currentHP > 0)
             {
-                int finalDamage = enemy.TakeDamage(bonusDamage, attackType);
+                int finalDamage = enemy.TakeDamage(Damage, attackType);
 
                 if (PoolManager.Instance != null)
                 {

@@ -13,20 +13,31 @@ MonoBehaviour:
   m_Name: Butter_3
   m_EditorClassIdentifier: 
   unitName: "\uBC84\uD130"
+  level: "3\uC131"
   rank: 3
   prefab: {fileID: 3539101861832537204, guid: a82326c8fe77ed64485cf909fcc8fe78, type: 3}
   icon: {fileID: 21300000, guid: 3e1543c487f1c2844846af158a411954, type: 3}
-  summonVoice: {fileID: 0}
-  sellPrice: 10
+  animController: {fileID: 22100000, guid: 2327862544c7bd84188b8f665a4ee310, type: 2}
+  unitSize: 1
+  summonVoice: {fileID: 8300000, guid: 9a5a278b52e096546adc4c8203e2edfa, type: 3}
+  attackSound: {fileID: 8300000, guid: bf12e37115c8f32488a969218461444c, type: 3}
+  sellPrice: 30
   sellElif: 3
   attribute: {fileID: 11400000, guid: 0f32292e2942f66458a8ac13924b8d6b, type: 2}
   race: {fileID: 11400000, guid: 4caff94156db8024ca66be9a41361916, type: 2}
-  skills: []
+  skills:
+  - {fileID: 11400000, guid: 1c043960c42fecf4b9ef85cef81c2462, type: 2}
+  - {fileID: 11400000, guid: 80793d9c48d5e8845a32547edead0d4c, type: 2}
   attackType: 0
-  attackRange: 5
+  attackRange: 10
   attackSpeed: 1
-  damage: 10
-  projectilePrefab: {fileID: 0}
-  description: "\uC6B0\uB9AC \uAC19\uC774 \uB180\uC544\uC694! "
+  damage: 100
+  projectilePrefab: {fileID: 1708553844359547910, guid: 1888219293fb761478a416a6abddac14,
+    type: 3}
+  attackWindUpRatio: 0.3
+  description: "\uD56D\uC0C1 \uACBD\uCF8C\uD558\uACE0 \uBC1D\uC740 \uC131\uACA9\uC758
+    \uC218\uC778. \uD56D\uC0C1 \uCE5C\uAD6C\uB97C \uB9CC\uB4E4\uB824\uACE0 \uB178\uB825\uD55C\uB2E4. "
+  summonQuote: "\uC6B0\uB9AC \uAC19\uC774 \uB180\uC544\uC694! \uBB34\uC2A8 \uB180\uC774
+    \uD560\uAE4C\uC694?"
   availableRecipes: []
   isBuilding: 0

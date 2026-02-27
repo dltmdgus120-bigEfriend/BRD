@@ -179,6 +179,13 @@ public class ChatSystem : MonoBehaviour
             }          
       }
 
+        // 재료가 다 모였는지 개수 확인! (이거 없으면 재료 없을 때 게임 터집니다)
+        if (ingredientsToDestroy.Count != recipe.ingredients.Count)
+        {
+            LogManager.Instance.ShowLog("<color=red>[안내]</color> 히든 조합에 필요한 재료가 맵에 없습니다!");
+            return;
+        }
+
         // 2. 소환 위치 잡기 (첫 번째 재료 위치)
         Vector3 spawnPos = ingredientsToDestroy[0].transform.position;
 
@@ -190,38 +197,36 @@ public class ChatSystem : MonoBehaviour
             {
                 rts.selectedUnits.Remove(unit.GetComponent<UnityEngine.AI.NavMeshAgent>());
             }
-            Destroy(unit.gameObject);
+            PoolManager.Instance.ReturnAlly(unit.gameObject);
         }
 
         // 선택 초기화 (찌꺼기 제거)
         if (rts != null) rts.ClearSelection();
 
         // 4. 핵심 수정: 5성 유닛 소환 및 Warp 적용 (에러 방지)
-        GameObject newUnit = Instantiate(recipe.resultUnit.prefab, spawnPos, Quaternion.identity);
+        UnityEngine.AI.NavMeshHit hit;
+        if (UnityEngine.AI.NavMesh.SamplePosition(spawnPos, out hit, 5.0f, UnityEngine.AI.NavMesh.AllAreas))
+        {
+            spawnPos = hit.position; // 안전한 바닥 위치로 보정
+        }
+
+        GameObject newUnit = PoolManager.Instance.GetAlly(spawnPos);
 
         var agent = newUnit.GetComponent<UnityEngine.AI.NavMeshAgent>();
         if (agent != null)
         {
-            // (1) 일단 끈다 (생성 직후 에러 방지)
             agent.enabled = false;
-
-            // (2) 위치를 확실하게 잡는다
             newUnit.transform.position = spawnPos;
-
-            // (3) 다시 켠다
             agent.enabled = true;
-
-            // (4) Warp로 바닥에 안착시킨다 (반경 5m 내 바닥 찾기)
-            UnityEngine.AI.NavMeshHit hit;
-            if (UnityEngine.AI.NavMesh.SamplePosition(spawnPos, out hit, 5.0f, UnityEngine.AI.NavMesh.AllAreas))
-            {
-                agent.Warp(hit.position);
-            }
+            agent.Warp(spawnPos);
         }
 
         // 5. 데이터 주입
         UnitStat newStat = newUnit.GetComponent<UnitStat>();
-        if (newStat != null) newStat.data = recipe.resultUnit;
+        if (newStat != null)
+        {
+            newStat.InitAlly(recipe.resultUnit); // 여기서 스탯, 크기, 애니메이션 싹 다 변신!
+        }
 
         // 6. 등장 사운드
         if (SoundManager.Instance != null)
