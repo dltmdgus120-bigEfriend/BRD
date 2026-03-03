@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Mynx_1
   m_EditorClassIdentifier: 
   unitName: "\uBC0D\uC2A4"
-  level: "1\uC131"
+  rankIcon: {fileID: 21300000, guid: 05819eba4037663458c98ba873395f8d, type: 3}
   rank: 1
   prefab: {fileID: 0}
   icon: {fileID: 21300000, guid: aeb63025cbdb6734fa8e2f62a3fa9199, type: 3}

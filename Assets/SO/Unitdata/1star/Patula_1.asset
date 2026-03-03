@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Patula_1
   m_EditorClassIdentifier: 
   unitName: "\uD30C\uD2B8\uB77C"
-  level: "1\uC131"
+  rankIcon: {fileID: 21300000, guid: 05819eba4037663458c98ba873395f8d, type: 3}
   rank: 1
   prefab: {fileID: 0}
   icon: {fileID: 21300000, guid: 20c56bedff6ba5144b2f64d51a8cf702, type: 3}

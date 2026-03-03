@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Kyuri_1
   m_EditorClassIdentifier: 
   unitName: "\uD050\uC774"
-  level: "1\uC131"
+  rankIcon: {fileID: 21300000, guid: 05819eba4037663458c98ba873395f8d, type: 3}
   rank: 1
   prefab: {fileID: 0}
   icon: {fileID: 21300000, guid: bec37b5a67dcc2141a951bacc66a0a07, type: 3}

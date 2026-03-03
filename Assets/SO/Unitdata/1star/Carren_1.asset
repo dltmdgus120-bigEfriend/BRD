@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Carren_1
   m_EditorClassIdentifier: 
   unitName: "\uCE74\uB80C"
-  level: "1\uC131"
+  rankIcon: {fileID: 21300000, guid: 05819eba4037663458c98ba873395f8d, type: 3}
   rank: 1
   prefab: {fileID: 0}
   icon: {fileID: 21300000, guid: 5615190431039c84ba7371a145a97ae0, type: 3}

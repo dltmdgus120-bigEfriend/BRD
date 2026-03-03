@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Canta_2
   m_EditorClassIdentifier: 
   unitName: "\uCE78\uD0C0"
-  level: "2\uC131"
+  rankIcon: {fileID: 21300000, guid: 7b627c4b8359bb44e8832769e07bc66a, type: 3}
   rank: 2
   prefab: {fileID: 8316526242042261379, guid: fa7448fb93effac4088ae2a162e0c72d, type: 3}
   icon: {fileID: 21300000, guid: 9b48b9a87d5cf04419e94f671de0f3b3, type: 3}

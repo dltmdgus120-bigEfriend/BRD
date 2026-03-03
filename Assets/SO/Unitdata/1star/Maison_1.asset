@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Maison_1
   m_EditorClassIdentifier: 
   unitName: "\uBA54\uC8F5"
-  level: "1\uC131"
+  rankIcon: {fileID: 21300000, guid: 05819eba4037663458c98ba873395f8d, type: 3}
   rank: 1
   prefab: {fileID: 0}
   icon: {fileID: 21300000, guid: cca4048038c7dd44ca824ad48a1b25bb, type: 3}

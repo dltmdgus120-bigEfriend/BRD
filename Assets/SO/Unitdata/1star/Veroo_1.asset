@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Veroo_1
   m_EditorClassIdentifier: 
   unitName: "\uBCA0\uB8E8"
-  level: "1\uC131"
+  rankIcon: {fileID: 21300000, guid: 05819eba4037663458c98ba873395f8d, type: 3}
   rank: 1
   prefab: {fileID: 0}
   icon: {fileID: 21300000, guid: 85eb47e84aed2414fafc1c90849ffb17, type: 3}

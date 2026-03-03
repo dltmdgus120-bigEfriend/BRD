@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Round 14
   m_EditorClassIdentifier: 
   enemyToSpawn: {fileID: 11400000, guid: a4146dcb02e6ce741952af9a65e1a87d, type: 2}
-  count: 10
+  count: 1
   spawnRate: 1

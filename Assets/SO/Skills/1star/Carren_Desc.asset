@@ -16,9 +16,10 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 5f06ab02a549bef49b0421bf8eb5c61f, type: 3}
   description: "\uCE74\uB80C\uC740 \uC694\uB9AC\uB97C \uD558\uC9C0 \uC54A\uC740 \uC0C1\uD0DC\uC758,
     \uC6D0\uC7AC\uB8CC\uB97C \uADF8\uB300\uB85C \uC12D\uCDE8\uD574\uC57C \uD55C\uB2E4\uB294
-    '\uADFC\uBCF8 \uC0DD\uC2DD\uAC00'\uB2E4. \r\n\uD55C \uB54C \uC0DD\uC2DD \uD2B8\uB80C\uB4DC\uB97C
+    '\uADFC\uBCF8 \uC0DD\uC2DD\uAC00'\uB2E4. \uD55C \uB54C \uC0DD\uC2DD \uD2B8\uB80C\uB4DC\uB97C
     \uC8FC\uB3C4\uD588\uC9C0\uB9CC, \uB4DC\uB808\uC2F1\uC744 \uBFCC\uB824\uBA39\uB294
-    \uC704\uC120\uC790\uB77C\uB294 \uAC83\uC774 \uBC1D\uD600\uC838 \uBAB0\uB77D\uD588\uB2E4. "
+    \uC704\uC120\uC790\uB77C\uB294 \uAC83\uC774 \uBC1D\uD600\uC838 \uBAB0\uB77D\uD588\uB2E4.
+    \r\n"
   castVoice: {fileID: 0}
   skillSound: {fileID: 0}
   animTriggerName: 
@@ -30,6 +31,7 @@ MonoBehaviour:
   needTarget: 0
   targetRange: 0
   effectRadius: 0
+  isDashSkill: 0
   isAttackProc: 0
   procChance: 0
   bonusDamage: 0

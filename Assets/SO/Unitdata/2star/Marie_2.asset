@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Marie_2
   m_EditorClassIdentifier: 
   unitName: 
-  level: 
-  rank: 0
+  rankIcon: {fileID: 21300000, guid: 7b627c4b8359bb44e8832769e07bc66a, type: 3}
+  rank: 2
   prefab: {fileID: 0}
   icon: {fileID: 0}
   animController: {fileID: 0}

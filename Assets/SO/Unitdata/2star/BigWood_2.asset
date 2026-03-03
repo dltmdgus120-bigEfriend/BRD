@@ -12,27 +12,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3a30350584c4a74f9b7243f05323a05, type: 3}
   m_Name: BigWood_2
   m_EditorClassIdentifier: 
-  unitName: 
-  level: 
-  rank: 0
+  unitName: "\uBE45\uC6B0\uB4DC"
+  rankIcon: {fileID: 21300000, guid: 7b627c4b8359bb44e8832769e07bc66a, type: 3}
+  rank: 2
   prefab: {fileID: 0}
-  icon: {fileID: 0}
-  animController: {fileID: 0}
+  icon: {fileID: 21300000, guid: 4809d6b010258a449a90f81f8619868b, type: 3}
+  animController: {fileID: 22100000, guid: e88465769e0f96043b196d06b182808d, type: 2}
   unitSize: 1
   summonVoice: {fileID: 0}
-  attackSound: {fileID: 0}
-  sellPrice: 10
-  sellElif: 1
-  attribute: {fileID: 0}
-  race: {fileID: 0}
-  skills: []
+  attackSound: {fileID: 8300000, guid: 14c51788c6b8dda4c9027f8df4d1d10a, type: 3}
+  sellPrice: 20
+  sellElif: 2
+  attribute: {fileID: 11400000, guid: f6a7a3fe9ed57974b9b582c715d375d9, type: 2}
+  race: {fileID: 11400000, guid: 68dbebb4e61fd10468a91f358028416c, type: 2}
+  skills:
+  - {fileID: 11400000, guid: 63cbfd9c7372b0b429415411fa77ad3a, type: 2}
   attackType: 0
-  attackRange: 0
+  attackRange: 5
   attackSpeed: 1
-  damage: 0
+  damage: 30
   projectilePrefab: {fileID: 0}
-  attackWindUpRatio: 0.3
-  description: 
-  summonQuote: 
+  attackWindUpRatio: 0.5
+  description: "\uB4EC\uC9C1\uD574\uBCF4\uC774\uB294 \uB098\uBB34 \uC815\uB839. \uB300\uD654\uB97C
+    \uD558\uB2E4\uBCF4\uBA74 \uC5B4\uB518\uAC00 \uBAA8\uB974\uAC8C \uC18C\uB984\uB3CB\uB294
+    \uB9D0\uC744 \uD55C\uB2E4\uACE0 \uD55C\uB2E4."
+  summonQuote: "\uD6C4\uC6B1, \uD6C4\uC6B1! \uAD50\uC8FC, \uADF8\uB300\uB85C \uD55C\uBC88
+    \uB354!"
   availableRecipes: []
   isBuilding: 0

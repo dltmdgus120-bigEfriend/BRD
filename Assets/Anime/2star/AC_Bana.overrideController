@@ -7,5 +7,11 @@ AnimatorOverrideController:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: AC_Bana
-  m_Controller: {fileID: 0}
-  m_Clips: []
+  m_Controller: {fileID: 9100000, guid: 9a107fa58a97e824aa35548591edcf8b, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: ae58536d9e18d8f4b8f99245b063ef09, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 4fb64ad3ff3990c4bb9e5ef164719ad6, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 8e0c5bd1d0265af4089c54cd40b2544f, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: ee198b07836369a40947115affb55891, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 11004ad73d13cb34aaeb0fc41d32dc14, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: c0101cd1d986b9843b8c8e1767b5d451, type: 2}

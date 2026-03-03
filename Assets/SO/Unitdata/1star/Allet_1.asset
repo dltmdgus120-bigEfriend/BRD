@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Allet_1
   m_EditorClassIdentifier: 
   unitName: "\uC54C\uB808\uD2B8"
-  level: "1\uC131"
+  rankIcon: {fileID: 21300000, guid: 05819eba4037663458c98ba873395f8d, type: 3}
   rank: 1
   prefab: {fileID: 0}
   icon: {fileID: 21300000, guid: eea541c1a790b314685db0fd330d95d4, type: 3}

@@ -11,8 +11,8 @@ public class UnitInfoPanel : MonoBehaviour
     [Header("1. 단일 선택 UI")]
     public GameObject contentRoot; // 기존 단일 정보창
     public Image portraitImage;
-    public TMP_Text nameText;      
-    public TMP_Text rankText;    
+    public TMP_Text nameText;
+    public Image rankImage;
     public TMP_Text damageText;
     public TMP_Text speedText;
     public TMP_Text rangeText;
@@ -110,7 +110,20 @@ public class UnitInfoPanel : MonoBehaviour
         UnitData data = stat.data;
         if (portraitImage != null) portraitImage.sprite = data.icon;
         if (nameText != null) nameText.text = data.unitName;
-        if (rankText != null) rankText.text = $"{data.level}";
+
+        if (rankImage != null)
+        {
+            if (data.rankIcon != null)
+            {
+                rankImage.gameObject.SetActive(true);
+                rankImage.sprite = data.rankIcon;
+            }
+            else
+            {
+                // 이미지가 세팅 안 되어있으면 투명한 사각형이 나오지 않게 꺼줍니다.
+                rankImage.gameObject.SetActive(false);
+            }
+        }
 
         if (descriptionText != null) descriptionText.text = data.description;
        

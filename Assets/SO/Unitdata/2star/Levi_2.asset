@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Levi_2
   m_EditorClassIdentifier: 
   unitName: "\uB808\uBE44"
-  level: "2\uC131"
+  rankIcon: {fileID: 21300000, guid: 7b627c4b8359bb44e8832769e07bc66a, type: 3}
   rank: 2
   prefab: {fileID: 3539101861832537204, guid: 6c0f10928efcc9a4191bedd5e167fa6c, type: 3}
   icon: {fileID: 21300000, guid: 13af9f66ace00424a88ff5b15bcad713, type: 3}
@@ -33,7 +33,8 @@ MonoBehaviour:
   damage: 30
   projectilePrefab: {fileID: 0}
   attackWindUpRatio: 0.5
-  description: "\uC9E0\uB0B4 \uB098\uB294 \uC54C\uBC14"
-  summonQuote: "\uB124,\uB124\uB124?"
+  description: "\uC9E0\uB0B4 \uB098\uB294 \uC54C\uBC14. \uC9C0\uAE08\uC740 \uADF9\uC7A5\uC54C\uBC14
+    \uB300\uD0C0\uB97C \uD558\uACE0 \uC788\uB2E4."
+  summonQuote: "\uC0AC\uC7A5\uB2D8 \uB098\uBE60\uC694!"
   availableRecipes: []
   isBuilding: 0

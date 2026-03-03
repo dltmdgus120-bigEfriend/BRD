@@ -85,7 +85,7 @@ public class UnitCommandPanel : MonoBehaviour
 
                 string skillTypeTag = skill.isPassive ? "\n<color=yellow>[패시브]</color>" :
                                      (skill.isAttackProc ? "\n<color=orange>[자동 발동]</color>" :
-                                     $"\n<color=cyan>[쿨타임: {skill.cooldown}초]</color>");
+                                     $"\n<color=black>[쿨타임: {skill.cooldown}초]</color>");
 
                 slots[slotIdx].Setup(
                     skill.icon,

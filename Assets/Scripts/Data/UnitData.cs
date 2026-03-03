@@ -1,12 +1,13 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.Properties;
 
 [CreateAssetMenu(fileName = "New Unit", menuName = "Trickcal/Unit Data")]
 public class UnitData : ScriptableObject
 {
     [Header("사도 정보")]
     public string unitName;
-    public string level;
+    public Sprite rankIcon;
     public int rank;
     public GameObject prefab;  // 일단은 내비둔다. 
     

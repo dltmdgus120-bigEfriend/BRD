@@ -13,10 +13,14 @@ MonoBehaviour:
   m_Name: Espi_2
   m_EditorClassIdentifier: 
   unitName: Espi
+  rankIcon: {fileID: 21300000, guid: 7b627c4b8359bb44e8832769e07bc66a, type: 3}
   rank: 2
   prefab: {fileID: 8316526242042261379, guid: c81c6348c112ba0419a27cf5e8e363a4, type: 3}
   icon: {fileID: 21300000, guid: 30448f38fd1736e44bbb52f4482f9065, type: 3}
+  animController: {fileID: 0}
+  unitSize: 1
   summonVoice: {fileID: 0}
+  attackSound: {fileID: 0}
   sellPrice: 10
   sellElif: 2
   attribute: {fileID: 0}
@@ -27,6 +31,8 @@ MonoBehaviour:
   attackSpeed: 1
   damage: 0
   projectilePrefab: {fileID: 0}
+  attackWindUpRatio: 0.3
   description: "\uC5D0\uC2A4\uD53C"
+  summonQuote: 
   availableRecipes: []
   isBuilding: 0
